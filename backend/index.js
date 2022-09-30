@@ -1,9 +1,12 @@
 const express = require("express");
+const colors = require("colors");
 const cors = require("cors");
-const db = require("./db");
+const connectDB = require("./src/config/db");
 const dotenv = require("dotenv");
 dotenv.config();
 const { errorHandler } = require("./src/middleware/errorMiddleware");
+
+connectDB();
 
 // App
 const app = express();
