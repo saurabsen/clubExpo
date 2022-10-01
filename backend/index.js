@@ -23,6 +23,7 @@ app.get("/", async (req, res) => {
 });
 
 app.use("/api/clubs", require("./src/routes/clubRoutes"));
+app.use("/api/users", require("./src/routes/userRoutes"));
 
 app.use(errorHandler);
 
