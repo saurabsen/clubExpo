@@ -1,5 +1,15 @@
 # Club Explore
 
+Team Members
+
+- Akhil noone
+- Divyank Sachdeva
+- Ed Fernandez
+- Harshit Punn
+- Kiran Kumar
+- Pavan Soratur
+- Saurab Sen
+
 ## Installation
 
 Clone this project to test locally
@@ -29,6 +39,7 @@ Add the following in the .env file inside `backend` folder :
 `MONGO_USERNAME`
 
 `MONGO_PASSWORD`
+
 ## Run Locally
 
 Start server
