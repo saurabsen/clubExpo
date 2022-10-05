@@ -1,4 +1,9 @@
 import { useState, useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
+import { Spinner } from '../../components';
+import { register, reset } from '../../features/auth/authSlice';
 import './register.css';
 
 const Register = () => {
@@ -11,6 +16,23 @@ const Register = () => {
 
   const { name, email, password, confirmedPassword } = formData;
 
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const { user, isLoading, isError, isSuccess, message } = useSelector((state) => state.auth);
+
+  useEffect(() => {
+    if (isError) {
+      toast.error(message);
+    }
+
+    if (isSuccess || user) {
+      navigate('/');
+    }
+
+    dispatch(reset());
+  }, [user, isError, isSuccess, message, navigate, dispatch]);
+
   const handleOnChange = (e) => {
     setFormData((prevState) => ({
       ...prevState,
@@ -20,10 +42,26 @@ const Register = () => {
 
   const handleOnSubmit = (e) => {
     e.preventDefault();
+
+    if (password !== confirmedPassword) {
+      toast.error('Passwords do not match.');
+    } else {
+      const userData = {
+        name,
+        email,
+        password,
+      };
+
+      dispatch(register(userData));
+    }
   };
 
+  if (isLoading) {
+    return <Spinner />;
+  }
+
   return (
-    <>
+    <div className='container'>
       <section className='heading'>
         <h1>Register</h1>
         <p>Please create an account</p>
@@ -76,7 +114,7 @@ const Register = () => {
           </div>
         </form>
       </section>
-    </>
+    </div>
   );
 };
 
