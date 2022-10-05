@@ -1,15 +1,15 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 
 const clubSchema = mongoose.Schema(
   {
     user: {
       type: mongoose.Schema.Types.ObjectId,
       required: true,
-      ref: "User",
+      ref: 'User',
     },
     text: {
       type: String,
-      required: [true, "Please add a text"],
+      required: [true, 'Please add a text'],
     },
   },
   {
@@ -17,4 +17,4 @@ const clubSchema = mongoose.Schema(
   }
 );
 
-module.exports = mongoose.model("Club", clubSchema);
+module.exports = mongoose.model('Club', clubSchema);

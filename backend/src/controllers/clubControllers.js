@@ -1,6 +1,6 @@
-const asyncHandler = require("express-async-handler");
+const asyncHandler = require('express-async-handler');
 
-const Club = require("../models/clubModel");
+const Club = require('../models/clubModel');
 
 // @desc get clubs
 // @route GET /api/clubs
@@ -15,7 +15,7 @@ const getClubs = asyncHandler(async (req, res) => {
 // @access Private
 const setClubs = asyncHandler(async (req, res) => {
   if (!req.body.text) {
-    res.status(400).json({ message: "Please sent text" });
+    res.status(400).json({ message: 'Please sent text' });
     // throw new Error("Please add a text field");
   }
 
@@ -32,7 +32,7 @@ const updateClubs = asyncHandler(async (req, res) => {
   const club = await Club.findById(req.params.id);
   if (!club) {
     res.status(400);
-    throw new Error("Club not found");
+    throw new Error('Club not found');
   }
 
   const updatedClub = await Club.findByIdAndUpdate(req.params.id, req.body, {
@@ -48,7 +48,7 @@ const deleteClubs = asyncHandler(async (req, res) => {
   const club = await Club.findById(req.params.id);
   if (!club) {
     res.status(400);
-    throw new Error("Club not found");
+    throw new Error('Club not found');
   }
 
   await club.remove();

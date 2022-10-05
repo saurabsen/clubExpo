@@ -1,24 +1,26 @@
-const jwt = require("jsonwebtoken");
-const bcrypt = require("bcryptjs");
-const asyncHandler = require("express-async-handler");
-const User = require("../models/userModel");
+const jwt = require('jsonwebtoken');
+const bcrypt = require('bcryptjs');
+const asyncHandler = require('express-async-handler');
+const User = require('../models/userModel');
 
-// @desc register user
+// @desc Register a new user
 // @route POST /api/users
 // @access Public
 const registerUser = asyncHandler(async (req, res) => {
-  const { name, email, university, password } = req.body;
-  if (!name || !email || !university || !password) {
+  const { name, email, password } = req.body;
+
+  // fields validation
+  if (!name || !email || !password) {
     res.status(400);
-    throw new Error("Please enter all the required details");
+    throw new Error('Please enter all the fields.');
   }
 
-  //check if user exist
-  const existUser = await User.findOne({ email });
+  //check if user exists
+  const userExists = await User.findOne({ email });
 
-  if (existUser) {
+  if (userExists) {
     res.status(400);
-    throw new Error("User alreday exist");
+    throw new Error('User alreday exists.');
   }
 
   //hash password
@@ -27,27 +29,72 @@ const registerUser = asyncHandler(async (req, res) => {
 
   //create user
   const user = await User.create({
-    name: req.body.name,
-    email: req.body.email,
-    university: req.body.university,
+    name,
+    email,
     password: hashedPassword,
   });
-  res.json({ message: "User Created" });
+
+  if (user) {
+    res.status(201).json({
+      _id: user.id,
+      name: user.name,
+      email: user.email,
+      token: generateJWT(user.id),
+    });
+  } else {
+    res.status(400);
+    throw new Error('Invalid user data.');
+  }
 });
 
-// @desc register user
+// @desc Authenticate a user
 // @route POST /api/users/login
 // @access Public
 const loginUser = asyncHandler(async (req, res) => {
-  res.json({ message: "login User" });
+  const { email, password } = req.body;
+
+  // fields validation
+  if (!email || !password) {
+    res.status(400);
+    throw new Error('Please enter all the fields.');
+  }
+
+  //check if user exists
+  const userExists = await User.findOne({ email });
+
+  if (!userExists) {
+    res.status(400);
+    throw new Error('User not registered.');
+  }
+
+  // compare password and send token
+  if (await bcrypt.compare(password, userExists.password)) {
+    res.json({
+      _id: userExists.id,
+      name: userExists.name,
+      email: userExists.email,
+      token: generateJWT(userExists.id),
+    });
+  } else {
+    res.status(400);
+    throw new Error('Invalid credentials.');
+  }
+
+  res.json({ message: 'login User' });
 });
 
-// @desc register user
+// @desc Get user data
 // @route GET /api/users/me
-// @access Public
+// @access Private
 const getMe = asyncHandler(async (req, res) => {
-  res.json({ message: "User Details" });
+  // getting user object from the authMiddleware i.e protect function
+  res.status(200).json(req.user);
 });
+
+// Generate a JWT token
+const generateJWT = (userId) => {
+  return jwt.sign({ userId }, process.env.JWT_SECRET, { expiresIn: '30d' });
+};
 
 module.exports = {
   registerUser,

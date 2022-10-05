@@ -1,23 +1,19 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 
 const userSchema = mongoose.Schema(
   {
     name: {
       type: String,
-      required: [true, "Please give your name"],
+      required: [true, 'Please enter your name.'],
     },
     email: {
       type: String,
-      required: [true, "Please enter your email"],
+      required: [true, 'Please enter your email ID.'],
       unique: true,
-    },
-    university: {
-      type: String,
-      required: [true, "Please enter your university"],
     },
     password: {
       type: String,
-      required: [true, "Please enter your password"],
+      required: [true, 'Please enter a password.'],
     },
   },
   {
@@ -25,4 +21,4 @@ const userSchema = mongoose.Schema(
   }
 );
 
-module.exports = mongoose.model("User", userSchema);
+module.exports = mongoose.model('User', userSchema);
