@@ -1,1 +1,1 @@
-# Club Explore Frontend
+# Clubspace Frontend

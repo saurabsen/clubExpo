@@ -1,4 +1,5 @@
-import Main from './Main/Main';
-import Profile from './Profile/Profile';
+import Home from './Home/Home';
+import Register from './Register/Register';
+import Login from './Login/Login';
 
-export { Main, Profile };
+export { Home, Register, Login };
