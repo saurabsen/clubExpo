@@ -6,7 +6,7 @@ const eventSchema = mongoose.Schema(
       type: String,
       required: [true, "Please add a name for this event"],
     },
-    feature_image: {
+    featureImage: {
       type: String,
       required: [true, "Please add feature image url for this event"],
     },
@@ -14,11 +14,11 @@ const eventSchema = mongoose.Schema(
       type: String,
       required: [true, "Please add a description for this event"],
     },
-    start_date: {
+    startDate: {
       type: Date,
       required: [true, "Please add a start date for this event"],
     },
-    end_date: {
+    endDate: {
       type: Date,
       required: [true, "Please add a start date for this event"],
     },
@@ -38,15 +38,15 @@ const eventSchema = mongoose.Schema(
       type: String,
       required: [true, "Please add contact details for this event"],
     },
-    club_id: {
+    clubId: {
       type: String,
       required: [true, "Please add primary key of club hosting this event"],
     },
-    create_by_admin: {
+    createdByAdmin: {
       type: String,
       required: [true, "Please add primary key of club admin that created this event"],
     },
-    available_spots: {
+    availableSpots: {
       type: Number,
       required: [true, "Please add number of spots for this event"],
     },
