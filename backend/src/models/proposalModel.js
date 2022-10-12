@@ -2,7 +2,7 @@ const mongoose = require("mongoose")
 
 const proposalSchema = mongoose.Schema(
   {
-    club_name: {
+    clubName: {
       type: String,
       required: [true, "Please enter your proposed club name"],
     },
@@ -10,11 +10,11 @@ const proposalSchema = mongoose.Schema(
       type: String,
       required: [true, "Please enter a description of your proposed club"],
     },
-    no_of_events_month: {
+    noOfEventsMonth: {
       type: Number,
       required: [true, "Please enter your estimate number of events per month"],
     },
-    requested_by: {
+    requestedBy: {
       type: String,
       required: [true, "Please enter primary key of user proposing this club"],
     },
@@ -22,6 +22,17 @@ const proposalSchema = mongoose.Schema(
       type: Array,
       required: [true, "Please enter an array of primary keys of users co-proposing the club"],
     },
+    approvalStatus: {
+      type: String,
+      required: [true, "Please enter the approval status of this club"],
+    },
+    approvalStatusReason: {
+      type: String,
+      required: [false, "Please enter an array of primary keys of users co-proposing the club"],
+    },
+  },
+  {
+    timestamps: true,
   }
 )
 
