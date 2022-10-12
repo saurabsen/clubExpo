@@ -50,6 +50,9 @@ const eventSchema = mongoose.Schema(
       type: Number,
       required: [true, "Please add number of spots for this event"],
     },
+  }, 
+  {
+    timestamps: true,
   }
 )
 
