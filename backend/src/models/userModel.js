@@ -38,16 +38,16 @@ const userSchema = mongoose.Schema(
       required: [true, "Please enter your country"],
     },
     organizationID: {
-      type: String,
+      type: Number,
     },
     badges: {
-      type: String,
+      type: Array,
     },
     clubsJoined: {
-      type: String,
+      type: Array,
     },
     eventsAttended: {
-      type: String,
+      type: Array,
     },
     profileImage: {
       type: String,

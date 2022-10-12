@@ -105,7 +105,9 @@ const loginUser = asyncHandler(async (req, res) => {
 // @route GET /api/users/me
 // @access Public
 const getMe = asyncHandler(async (req, res) => {
-  res.json({ message: "User Details" });
+  const { email } = req.body;
+  const user = await User.findOne({ email });
+  res.json({ name: user.name, email: user.email });
 });
 
 module.exports = {
