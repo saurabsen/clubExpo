@@ -7,8 +7,33 @@ const User = require("../models/userModel");
 // @route POST /api/users
 // @access Public
 const registerUser = asyncHandler(async (req, res) => {
-  const { name, email, university, password } = req.body;
-  if (!name || !email || !university || !password) {
+  const {
+    firstName,
+    lastName,
+    phoneNumber,
+    email,
+    gender,
+    userRole,
+    address,
+    zipcode,
+    country,
+    organizationID,
+    badges,
+    clubsJoined,
+    eventsAttended,
+    profileImage,
+    password,
+  } = req.body;
+  if (
+    !firstName ||
+    !lastName ||
+    !email ||
+    !organizationID ||
+    !password ||
+    !country ||
+    !zipcode ||
+    !address
+  ) {
     res.status(400);
     throw new Error("Please enter all the required details");
   }
@@ -27,9 +52,20 @@ const registerUser = asyncHandler(async (req, res) => {
 
   //create user
   const user = await User.create({
-    name,
+    firstName,
+    lastName,
+    phoneNumber,
     email,
-    university,
+    gender,
+    userRole,
+    address,
+    zipcode,
+    country,
+    organizationID,
+    badges,
+    clubsJoined,
+    eventsAttended,
+    profileImage,
     password: hashedPassword,
   });
 
