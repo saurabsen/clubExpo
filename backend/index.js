@@ -24,13 +24,8 @@ app.get("/", async (req, res) => {
 
 app.use("/api/clubs", require("./src/routes/clubRoutes"));
 app.use("/api/users", require("./src/routes/userRoutes"));
-app.use("/api/events", require("./src/routes/eventRoutes"))
-
-// Add app.use for events
-// app.use("/api/events", require("./src/routes/userRoutes"));
-
-// Add route for events
-// Add controller for events
+app.use("/api/proposals", require("./src/routes/proposalRoutes"));
+app.use("/api/events", require("./src/routes/eventRoutes"));
 
 app.use(errorHandler);
 
