@@ -18,26 +18,25 @@ const clubSchema = mongoose.Schema(
     },
     createdBy: {
       type: mongoose.Schema.Types.ObjectId,
-      required: true,
+      required: [true, `Please enter club creator's user ID`],
       ref: 'User',
     },
     admins: [
       {
-        type: mongoose.Schema.Types.ObjectId,
-        required: true,
-        ref: 'User',
+        type: String,
+        required: [true, 'Please enter admin email IDs'],
       },
     ],
     acceptedMembers: [
       {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'User',
+        type: String,
+        required: [true, 'Please enter accepted member email IDs'],
       },
     ],
     pendingMembers: [
       {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'User',
+        type: String,
+        required: [true, 'Please enter pending member email IDs'],
       },
     ],
     events: [
@@ -54,7 +53,6 @@ const clubSchema = mongoose.Schema(
     ],
     status: {
       type: String,
-      required: [true, `Please enter club's status - active or archived`],
     },
     tags: [
       {
