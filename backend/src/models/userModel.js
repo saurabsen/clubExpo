@@ -1,60 +1,68 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 
 const userSchema = mongoose.Schema(
   {
     firstName: {
       type: String,
-      required: [true, "Please give your first name"],
+      required: [true, 'Please enter your first name'],
     },
     lastName: {
       type: String,
-      required: [true, "Please give your last name"],
+      required: [true, 'Please enter your last name'],
     },
     phoneNumber: {
       type: String,
     },
     email: {
       type: String,
-      required: [true, "Please give your email"],
+      required: [true, 'Please enter your email id'],
       unique: true,
     },
     gender: {
       type: String,
-      required: [true, "Please enter your gender"],
     },
     userRole: {
       type: String,
     },
     address: {
       type: String,
-      required: [true, "Please give your address"],
+      required: [true, 'Please enter your address'],
     },
     zipcode: {
       type: String,
-      required: [true, "Please enter your zipcode"],
+      required: [true, 'Please enter your zipcode'],
     },
     country: {
       type: String,
-      required: [true, "Please enter your country"],
+      required: [true, 'Please enter your country name'],
     },
     organizationID: {
       type: Number,
     },
-    badges: {
-      type: Array,
-    },
-    clubsJoined: {
-      type: Array,
-    },
-    eventsAttended: {
-      type: Array,
-    },
+    badges: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Badge',
+      },
+    ],
+    clubsJoined: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Club',
+      },
+    ],
+    eventsAttended: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Event',
+      },
+    ],
     profileImage: {
       type: String,
     },
     password: {
       type: String,
-      required: [true, "Please enter your password"],
+      required: [true, 'Please enter your password'],
     },
   },
   {
@@ -62,4 +70,4 @@ const userSchema = mongoose.Schema(
   }
 );
 
-module.exports = mongoose.model("User", userSchema);
+module.exports = mongoose.model('User', userSchema);
