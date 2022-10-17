@@ -1,4 +1,4 @@
-import axios from 'axios'
+import { events } from '../../common/api';
 import { FETCH_EVENTS, GET_FETCH_EVENTS_DATA_SUCCESS, GET_FETCH_EVENTS_DATA_ERROR  } from './types';
 
 export const getAllEventsData = (queryString) => {
@@ -8,7 +8,7 @@ export const getAllEventsData = (queryString) => {
     })
 
     try {
-      const data = await axios.get(`/api/${queryString}`);
+      const data = await events.getEvents(`${queryString}`);
       
       dispatch({
         type: GET_FETCH_EVENTS_DATA_SUCCESS,
