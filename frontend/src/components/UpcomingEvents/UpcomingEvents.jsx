@@ -2,7 +2,7 @@ import './upcomingevents.css';
 
 const UpcomingEvents = () => {
   return (
-    <div className='upcomingevents'>
+    <div className="upcomingevents">
       <h2>Upcoming Events</h2>
     </div>
   );

@@ -2,7 +2,7 @@ import './memberlist.css';
 
 const MemberList = () => {
   return (
-    <div className='memberlist'>
+    <div className="memberlist">
       <h2>Member List</h2>
     </div>
   );
