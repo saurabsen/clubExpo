@@ -1,20 +1,68 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 
 const clubSchema = mongoose.Schema(
   {
-    user: {
-      type: mongoose.Schema.Types.ObjectId,
-      required: true,
-      ref: "User",
-    },
-    text: {
+    name: {
       type: String,
-      required: [true, "Please add a text"],
+      required: [true, 'Please enter club name'],
     },
+    logoImage: {
+      type: String,
+    },
+    coverImage: {
+      type: String,
+    },
+    description: {
+      type: String,
+      required: [true, 'Please enter club description'],
+    },
+    createdBy: {
+      type: mongoose.Schema.Types.ObjectId,
+      required: [true, `Please enter club creator's user ID`],
+      ref: 'User',
+    },
+    admins: [
+      {
+        type: String,
+        required: [true, 'Please enter admin email IDs'],
+      },
+    ],
+    acceptedMembers: [
+      {
+        type: String,
+        required: [true, 'Please enter accepted member email IDs'],
+      },
+    ],
+    pendingMembers: [
+      {
+        type: String,
+        required: [true, 'Please enter pending member email IDs'],
+      },
+    ],
+    events: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Event',
+      },
+    ],
+    badges: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Badge',
+      },
+    ],
+    status: {
+      type: String,
+    },
+    tags: [
+      {
+        type: String,
+      },
+    ],
   },
   {
     timestamps: true,
   }
 );
 
-module.exports = mongoose.model("Club", clubSchema);
+module.exports = mongoose.model('Club', clubSchema);

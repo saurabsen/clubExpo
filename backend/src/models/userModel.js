@@ -1,23 +1,68 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 
 const userSchema = mongoose.Schema(
   {
-    name: {
+    firstName: {
       type: String,
-      required: [true, "Please give your name"],
+      required: [true, 'Please enter your first name'],
+    },
+    lastName: {
+      type: String,
+      required: [true, 'Please enter your last name'],
+    },
+    phoneNumber: {
+      type: String,
     },
     email: {
       type: String,
-      required: [true, "Please enter your email"],
+      required: [true, 'Please enter your email id'],
       unique: true,
     },
-    university: {
+    gender: {
       type: String,
-      required: [true, "Please enter your university"],
+    },
+    userRole: {
+      type: String,
+    },
+    address: {
+      type: String,
+      required: [true, 'Please enter your address'],
+    },
+    zipcode: {
+      type: String,
+      required: [true, 'Please enter your zipcode'],
+    },
+    country: {
+      type: String,
+      required: [true, 'Please enter your country name'],
+    },
+    organizationID: {
+      type: Number,
+    },
+    badges: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Badge',
+      },
+    ],
+    clubsJoined: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Club',
+      },
+    ],
+    eventsAttended: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Event',
+      },
+    ],
+    profileImage: {
+      type: String,
     },
     password: {
       type: String,
-      required: [true, "Please enter your password"],
+      required: [true, 'Please enter your password'],
     },
   },
   {
@@ -25,4 +70,4 @@ const userSchema = mongoose.Schema(
   }
 );
 
-module.exports = mongoose.model("User", userSchema);
+module.exports = mongoose.model('User', userSchema);
