@@ -39,7 +39,7 @@ const submitProposal = asyncHandler(async (req, res) => {
 // @desc Get one proposal using id
 // @route GET /api/proposals/:proposalId
 // @access Public
-const getOneProposal = asyncHandler(async (req, res) => {
+const getProposal = asyncHandler(async (req, res) => {
   const { proposalId } = req.params;
 
   const targetProposal = await Proposal.findOne({ _id: proposalId });
@@ -61,7 +61,7 @@ Body should be structured as follows:
   "statusArray" : ["statusCode1", "statusCode2", ...]
 }
 */
-const getMultipleProposalsByStatus = asyncHandler(async (req, res) => {
+const getProposalsByStatus = asyncHandler(async (req, res) => {
   const { statusArray } = req.body;
 
   let filterArray = [];
@@ -135,8 +135,8 @@ const deleteProposal = asyncHandler(async (req, res) => {
 
 module.exports = {
   submitProposal,
-  getOneProposal,
-  getMultipleProposalsByStatus,
+  getProposal,
+  getProposalsByStatus,
   updateProposal,
   deleteProposal,
 };
