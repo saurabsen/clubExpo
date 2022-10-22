@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { Header } from './components';
-import { Home } from './views';
+import { Home, ClubsJoined,DiscoverClubs } from './views';
 
 const App = () => {
   const [searchResults, setSearchResults] = useState([]);
@@ -17,6 +17,8 @@ const App = () => {
         <div>
           <Routes>
             <Route path="/" element={<Home />} />
+            <Route path="/clubs-joined" element={<ClubsJoined />} />
+            <Route path="/discover-clubs" element={<DiscoverClubs />} />
           </Routes>
         </div>
       </Router>
