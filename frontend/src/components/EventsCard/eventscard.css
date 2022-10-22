@@ -1,6 +1,6 @@
 .eventscard {
   border: 1px solid hsla(120, 1%, 89%, 1);
-  padding: 12px 10px;
+  padding: 24px 24px;
   border-radius: 3.7px;
   margin-bottom: 24px;
   box-shadow: 2px 2px 2px hsla(0, 0%, 0%, 0.08);
@@ -38,11 +38,17 @@
 
 .eventscard h4 {
   margin: 12px 0 8px 0;
+  font-size: 20px;
+}
+
+.eventscard .desktopEventName {
+  display: none;
 }
 
 .eventscard-main {
   margin-bottom: 16px;
   color: hsla(120, 5%, 53%, 1);
+  line-height: 25.6px;
 }
 
 .eventscard-main-image {
@@ -50,6 +56,7 @@
   background-size: cover;
   height: 218px;
   width: 100%;
+  margin-top: 22px;
   margin-bottom: 5px;
   border-radius: 8px;
 }
@@ -140,11 +147,20 @@
       flex-flow: row wrap;
       row-gap: 16px;
     }
+
+    .eventscard .mobileEventName {
+      display: none;
+    }
+
+    .eventscard .desktopEventName {
+      display: inline-block;
+    }
     
     .eventscard-main-image {
       margin: 0;
       flex: 1 1 200px;
       height: 182px;
+      margin-top: 0;
     }
     
     .eventscard-buttons {
