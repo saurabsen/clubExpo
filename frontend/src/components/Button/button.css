@@ -1,0 +1,61 @@
+.standardui-button a {
+  display: flex;
+  flex-flow: row;
+  justify-content: center;
+  align-items: center;
+  column-gap: 6px;
+  border: 1px solid hsla(263, 73%, 43%, 1);
+  border-radius: 8px;
+  background-color: hsla(263, 73%, 43%, 1);
+  color: white;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.standardui-button a:hover {
+  background-color: hsla(263, 55%, 58%, 1);
+}
+
+.standardui-button.button-disabled a {
+  background-color: #E0E2E0;
+  color: #808780;
+  border-color: #E0E2E0;
+}
+
+.standardui-button.type-outline a {
+  border: 1px solid hsla(263, 73%, 43%, 1);
+  background-color: white;
+  color: hsla(263, 73%, 43%, 1);
+}
+
+.standardui-button.type-outline a:hover {
+  border: 1px solid hsla(263, 55%, 58%, 1);
+  color: hsla(263, 55%, 58%, 1);
+  
+}
+
+.standardui-button.type-outline.button-disabled a {
+  border: 1px solid hsla(120, 3%, 88%, 1);
+  color: #808780;
+  
+}
+
+.standardui-button.type-text a {
+  border: none;
+  background-color: white;
+  color: hsla(263, 73%, 43%, 1);
+  
+}
+
+.standardui-button.type-text a:hover {
+  color: hsla(263, 55%, 58%, 1);
+}
+
+.standardui-button.type-text.button-disabled a {
+  color: #808780;
+  
+}
+
+.standardui-button .button-svg {
+  fill: white;
+}
