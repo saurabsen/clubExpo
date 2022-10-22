@@ -3,6 +3,7 @@ import locationSvg from '../../assets/icons/location.svg';
 import calendarSvg from '../../assets/icons/calendar.svg';
 import moneySvg from '../../assets/icons/money.svg';
 import clockSvg from '../../assets/icons/clock.svg';
+import Button from '../Button/Button';
 
 const EventsCard = ({clubName,
   clubLogoUrl,
@@ -17,7 +18,10 @@ const EventsCard = ({clubName,
   registerClickHandler,
   cardClickHandler,
   shareClickHandler,
-  attendeeImgUrlList}) => {
+  attendeeImgUrlList,
+  withinClub,
+  registered,
+  clubAdminView}) => {
   return (
     <div className="eventscard">
       <div className="eventscard-header">
@@ -25,13 +29,15 @@ const EventsCard = ({clubName,
           <div className="eventscard-clubbrand-logo" style={{backgroundImage: `url(${clubLogoUrl})`}}></div>
           <p>{clubName}</p>
         </div>
-        <h4>{eventName}</h4>
+        <h4 className='desktopEventName'>{eventName}</h4>
       </div>
       <div className="eventscard-img-btn-wrapper">
         <div className="eventscard-main-image" style={{backgroundImage: `url(${eventImgUrl})`}}></div>
+        <h4 className='mobileEventName'>{eventName}</h4>
         <div className="eventscard-buttons">
-          <button className="eventscard-btn-share">Share</button>
-          <button className="eventscard-btn-register btnprimary">Register</button>
+          {/* <button className="eventscard-btn-share">Share</button> */}
+          <Button type='outline' isText={false} isIcon={true} iconType="share" iconAltText='Share' widthPx={68} />
+          <Button innerText='Register' />
         </div>
 
       </div>
