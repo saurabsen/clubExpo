@@ -1,0 +1,26 @@
+.home {
+  grid-template-columns: 2fr 7fr 3fr;
+  display: grid;
+  width: 100%;
+  padding: 0 40px;
+}
+
+.column-1 {
+  min-height: 60vh;
+}
+
+.column-1,
+.column-2 {
+  border-right: 1px solid #e0e2e0;
+  height: 100%;
+}
+
+.column-3 div {
+  border-bottom: 1px solid #e0e2e0;
+}
+
+.column-3 {
+  display: grid;
+  grid-template-rows: 1fr 1fr;
+  gap: 1rem;
+}
