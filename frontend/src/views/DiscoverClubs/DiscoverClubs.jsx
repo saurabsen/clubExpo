@@ -1,19 +1,23 @@
+import { useEffect } from 'react';
 import './discoverclubs.css';
-import SideBar from '../../components/Sidebar/SideBar';
 import ClubCard from '../../components/ClubCard/ClubCard';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
+import { useActions } from '../../hooks/useActions';
+import { useTypedSelector } from '../../hooks/useTypedSelector';
+
 
 
 const DiscoverClubs = () => {
+  const { getAllClubsData } = useActions();
+  const allDiscoverClubsData = useTypedSelector((state) => state.clubs);
+
+  useEffect(() => {
+    getAllClubsData('');
+    console.log(allDiscoverClubsData);
+  },[]);
   return (
     <>
-    <div className="home">
-      <div className="column-1">
-        <SideBar userRole="member" />
-      </div>
-
-      <div className="" >
       <Box sx={{ flexGrow: 1 }}>
         <Grid container spacing={2} sx={{ p:2}}>
           <Grid item xs={4}>
@@ -27,9 +31,6 @@ const DiscoverClubs = () => {
           </Grid>
         </Grid>
       </Box>
-      </div>
-      
-    </div>
     </>
   );
 };
