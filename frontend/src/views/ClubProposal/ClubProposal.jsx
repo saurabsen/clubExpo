@@ -24,8 +24,12 @@ export default function ClubProposal() {
     noOfEventsMonth: '',
     createdBy: userID,
     members: '',
-    approvalStatus: '',
-    approvalStatusReason: ''
+    approvalStatus: 'Pending',
+    approvalStatusReason: '',
+    isManageClub: '',
+    clubPurpose: '',
+    clubInterest: '',
+    clubActivities: ''
   });
 
   const isStepOptional = (step) => {
@@ -100,8 +104,8 @@ export default function ClubProposal() {
     console.log(data, 'all proposl');
   };
 
-  const saveProposal = async (queryString) => {
-    const data = await axios.post(`http://localhost:3001/api/proposals/${queryString}`, status, {
+  const saveProposal = async (formValue) => {
+    const data = await axios.post(`http://localhost:3001/api/proposals/`, formValue, {
       headers: { Authorization: `Bearer ${tokenStr}` }
     });
     return data;
@@ -109,7 +113,7 @@ export default function ClubProposal() {
 
   return (
     <Box className="proposal-container" sx={{ width: '70%' }}>
-      <button onClick={getProposals('getproposals')}>get proposal</button>
+      {/* <button onClick={getProposals('getproposals')}>get proposal</button> */}
       <Stepper activeStep={activeStep}>
         {steps.map((label, index) => {
           const stepProps = {};
@@ -212,9 +216,9 @@ export default function ClubProposal() {
                   <p>How many events will this club organize per month?</p>
                   <TextField
                     fullWidth
-                    name="eventsPerMonth"
+                    name="noOfEventsMonth"
                     onChange={handleChange}
-                    value={formValue.eventsPerMonth}
+                    value={formValue.noOfEventsMonth}
                     id="outlined-password-input"
                     type="text"
                     autoComplete="current-password"
@@ -224,9 +228,9 @@ export default function ClubProposal() {
                   <p>List down the names of initial club members</p>
                   <TextField
                     fullWidth
-                    name="clubMembers"
+                    name="members"
                     onChange={handleChange}
-                    value={formValue.clubMembers}
+                    value={formValue.members}
                     id="outlined-password-input"
                     type="text"
                     autoComplete="current-password"
