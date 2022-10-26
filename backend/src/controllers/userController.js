@@ -7,7 +7,21 @@ const User = require('../models/userModel');
 // @route POST /api/users
 // @access Public
 const registerUser = asyncHandler(async (req, res) => {
-  const { firstName, lastName, email, address, zipcode, country, password } = req.body;
+  const { 
+    firstName,
+    lastName, 
+    phoneNumber,
+    email, 
+    gender,
+    userRole,
+    address, 
+    zipcode, 
+    country, 
+    badges,
+    clubsJoined,
+    eventsAttended,
+    profileImage,
+    password } = req.body;
 
   if (!firstName || !lastName || !email || !address || !zipcode || !country || !password) {
     res.status(400);
@@ -30,18 +44,18 @@ const registerUser = asyncHandler(async (req, res) => {
   const user = await User.create({
     firstName,
     lastName,
-    phoneNumber: '',
+    phoneNumber,
     email,
-    gender: '',
-    userRole: '',
+    gender,
+    userRole,
     address,
     zipcode,
     country,
     organizationID: 0, // default is 0 (There is no org with id 0)
-    badges: [],
-    clubsJoined: [],
-    eventsAttended: [],
-    profileImage: '',
+    badges,
+    clubsJoined,
+    eventsAttended,
+    profileImage,
     password: hashedPassword,
   });
 

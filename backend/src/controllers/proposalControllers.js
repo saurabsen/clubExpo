@@ -62,17 +62,21 @@ Body should be structured as follows:
 }
 */
 const getMultipleProposalsByStatus = asyncHandler(async (req, res) => {
+  const { statusArray } = req.body;
+
   let filterArray = [];
 
-  const proposals = await Proposal.find({});
-
-  proposals.forEach((status) => {
-    if (status.approvalStatus === "Approved") {
-      filterArray.push(status);
-    }
+  statusArray.forEach((status) => {
+    filterArray.push({ approvalStatus: status });
   });
 
-  res.status(200).json(filterArray);
+  const filterObject = {
+    $or: filterArray,
+  };
+
+  const proposals = await Proposal.find(filterObject);
+
+  res.status(200).json(proposals);
 });
 
 // @desc Update one proposal

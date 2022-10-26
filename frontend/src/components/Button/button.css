@@ -22,6 +22,24 @@
   border-color: #E0E2E0;
 }
 
+.standardui-button.type-invertedfill a {
+  border: 1px solid hsla(260, 60%, 96%, 1);
+  background-color: hsla(260, 60%, 96%, 1);
+  color: hsla(263, 73%, 43%, 1);
+}
+
+.standardui-button.type-invertedfill a:hover {
+  border: 1px solid hsla(263, 55%, 58%, 1);
+  
+}
+
+.standardui-button.type-invertedfill.button-disabled a {
+  background-color: #E0E2E0;
+  color: #808780;
+  border-color: #E0E2E0;
+  
+}
+
 .standardui-button.type-outline a {
   border: 1px solid hsla(263, 73%, 43%, 1);
   background-color: white;

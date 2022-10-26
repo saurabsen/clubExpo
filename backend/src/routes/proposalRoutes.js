@@ -1,5 +1,6 @@
 const express = require("express");
 const router = express.Router();
+const { protect } = require("../middleware/authMiddleware");
 const {
   submitProposal,
   getOneProposal,
@@ -8,10 +9,10 @@ const {
   deleteProposal,
 } = require("../controllers/proposalControllers");
 
-router.get("/getmultiple", getMultipleProposalsByStatus);
-router.get("/:proposalId", getOneProposal);
-router.put("/:proposalId", updateProposal);
-router.delete("/:proposalId", deleteProposal);
-router.post("/", submitProposal);
+router.post("/getproposals", getMultipleProposalsByStatus);
+router.get("/:proposalId", protect, getOneProposal);
+router.put("/:proposalId", protect, updateProposal);
+router.delete("/:proposalId", protect, deleteProposal);
+router.post("/", protect, submitProposal);
 
 module.exports = router;
