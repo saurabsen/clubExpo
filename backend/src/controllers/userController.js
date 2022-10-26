@@ -108,6 +108,35 @@ const getUser = asyncHandler(async (req, res) => {
   res.status(200).json(req.user);
 });
 
+// @desc Get Matching Users
+// @route POST /api/users/allusers
+// @access Private
+const getUsers = asyncHandler(async (req, res) => {
+  const users = await User.find(req.body);
+
+  // let matchingUsers = [];
+
+  // const unwrap = ({id, profileImage}) => ({id, profileImage});
+  
+  // users.forEach((userObj) => {
+  //   const newUserObj = unwrap(userObj);
+  //   matchingUsers.push(newUserObj);
+  // });
+
+  res.status(200).json(users);
+});
+
+// @desc Delete User
+// @route DELETE /api/users/me/:id
+// @access Private
+const deleteUser = asyncHandler(async (req, res) => {
+  const { id } = req.params;
+
+  const deleteMsg = await User.deleteOne({id: id});
+
+  res.status(200).json(deleteMsg);
+});
+
 // Generate a JWT Token
 const generateJWT = (userId) => {
   return jwt.sign({ userId }, process.env.JWT_SECRET, { expiresIn: '30d' });
@@ -117,4 +146,6 @@ module.exports = {
   registerUser,
   loginUser,
   getUser,
+  getUsers,
+  deleteUser,
 };
