@@ -6,11 +6,14 @@ import StepLabel from '@mui/material/StepLabel';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import TextField from '@mui/material/TextField';
+import { useActions } from '../../hooks/useActions';
+import { useTypedSelector } from '../../hooks/useTypedSelector';
 import './clubproposal.css';
 
 const steps = ['General info', 'Club info'];
 
 export default function ClubProposal() {
+  const { getAllProposalData } = useActions();
   const [activeStep, setActiveStep] = React.useState(0);
   const [skipped, setSkipped] = React.useState(new Set());
   const [formValue, setFormValue] = React.useState({

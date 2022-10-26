@@ -1,10 +1,12 @@
 import { combineReducers } from 'redux';
 import eventReducer from './events/reducer';
 import clubReducer from './clubs/reducer';
+import proposalReducer from './proposals/reducer';
 
 const rootReducer = combineReducers({
   events: eventReducer,
-  clubs: clubReducer
+  clubs: clubReducer,
+  proposals: proposalReducer
 });
 
 export default rootReducer;

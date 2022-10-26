@@ -1,8 +1,9 @@
 //import { clubs } from '../../common/api';
-import axios from  'axios';
+import axios from 'axios';
 import { FETCH_CLUBS, GET_FETCH_CLUBS_DATA_SUCCESS, GET_FETCH_CLUBS_DATA_ERROR } from './types';
 
 export const getAllClubsData = (queryString) => {
+  debugger;
   return async (dispatch) => {
     dispatch({
       type: FETCH_CLUBS
