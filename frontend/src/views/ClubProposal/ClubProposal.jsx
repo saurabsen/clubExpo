@@ -8,6 +8,7 @@ import Typography from '@mui/material/Typography';
 import TextField from '@mui/material/TextField';
 import { useActions } from '../../hooks/useActions';
 import { useTypedSelector } from '../../hooks/useTypedSelector';
+import axios from 'axios';
 import './clubproposal.css';
 
 const steps = ['General info', 'Club info'];
@@ -16,14 +17,15 @@ export default function ClubProposal() {
   const { getAllProposalData } = useActions();
   const [activeStep, setActiveStep] = React.useState(0);
   const [skipped, setSkipped] = React.useState(new Set());
+  const userID = '63544dfee21900bbca2866c7';
   const [formValue, setFormValue] = React.useState({
-    isManageClub: '',
-    clubPurpose: '',
-    clubInterest: '',
-    clubActivities: '',
     clubName: '',
-    eventsPerMonth: '',
-    clubMembers: ''
+    description: '',
+    noOfEventsMonth: '',
+    createdBy: userID,
+    members: '',
+    approvalStatus: '',
+    approvalStatusReason: ''
   });
 
   const isStepOptional = (step) => {
@@ -78,10 +80,36 @@ export default function ClubProposal() {
   const handleFromData = (e) => {
     e.preventDefault();
     console.log(formValue);
+    const response = saveProposal(formValue);
+    console.log(response);
+  };
+
+  // functions
+
+  const tokenStr =
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MzUwMmRiMzRhMjcwYmY0ZDFhMjc5MWIiLCJpYXQiOjE2NjYxOTg5NjMsImV4cCI6MTY2ODc5MDk2M30.lPOmtB9fdmlIhDIj_R4yAvnt04ZWmuReNPNESVAak_8';
+
+  const status = {
+    statusArray: 'Pending'
+  };
+
+  const getProposals = async (queryString) => {
+    const data = await axios.post(`http://localhost:3001/api/proposals/${queryString}`, status, {
+      headers: { Authorization: `Bearer ${tokenStr}` }
+    });
+    console.log(data, 'all proposl');
+  };
+
+  const saveProposal = async (queryString) => {
+    const data = await axios.post(`http://localhost:3001/api/proposals/${queryString}`, status, {
+      headers: { Authorization: `Bearer ${tokenStr}` }
+    });
+    return data;
   };
 
   return (
     <Box className="proposal-container" sx={{ width: '70%' }}>
+      <button onClick={getProposals('getproposals')}>get proposal</button>
       <Stepper activeStep={activeStep}>
         {steps.map((label, index) => {
           const stepProps = {};
