@@ -4,6 +4,7 @@ import calendarSvg from '../../assets/icons/calendar.svg';
 import moneySvg from '../../assets/icons/money.svg';
 import clockSvg from '../../assets/icons/clock.svg';
 import Button from '../Button/Button';
+import ButtonDropMenu from '../ButtonDropMenu/ButtonDropMenu';
 
 const EventsCard = ({clubName,
   clubLogoUrl,
@@ -19,25 +20,37 @@ const EventsCard = ({clubName,
   cardClickHandler,
   shareClickHandler,
   attendeeImgUrlList,
-  withinClub,
-  registered,
-  clubAdminView}) => {
+  withinClub=false,
+  registered=false,
+  clubAdminView=false}) => {
+
+  const clubBrand = (
+    <div className="eventscard-clubbrand">
+      <div className="eventscard-clubbrand-logo" style={{backgroundImage: `url(${clubLogoUrl})`}}></div>
+      <p>{clubName}</p>
+    </div>
+  );
+
+  const notRegisteredBtn = (
+    <Button type='filled' innerText='Register' />
+  );
+
+  const registeredBtn = (
+    <ButtonDropMenu />
+  );
+
   return (
-    <div className="eventscard">
+    <div className="eventscard" >
       <div className="eventscard-header">
-        <div className="eventscard-clubbrand">
-          <div className="eventscard-clubbrand-logo" style={{backgroundImage: `url(${clubLogoUrl})`}}></div>
-          <p>{clubName}</p>
-        </div>
+        {(withinClub === false) ? clubBrand : ""}
         <h4 className='desktopEventName'>{eventName}</h4>
       </div>
       <div className="eventscard-img-btn-wrapper">
         <div className="eventscard-main-image" style={{backgroundImage: `url(${eventImgUrl})`}}></div>
         <h4 className='mobileEventName'>{eventName}</h4>
         <div className="eventscard-buttons">
-          {/* <button className="eventscard-btn-share">Share</button> */}
-          <Button type='outline' isText={false} isIcon={true} iconType="share" iconAltText='Share' widthPx={68} />
-          <Button innerText='Register' />
+          <Button type='outline' desaturate={true} isText={false} isIcon={true} iconType="share" iconAltText='Share' widthPx={68} />
+          {(registered) ? registeredBtn : notRegisteredBtn}
         </div>
 
       </div>
@@ -65,10 +78,8 @@ const EventsCard = ({clubName,
           </div>
         </div>
       </div>
-      
-
-
     </div>
+
   );
 };
 
