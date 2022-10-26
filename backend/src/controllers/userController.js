@@ -133,7 +133,7 @@ const addClubToUser = asyncHandler(async (req, res) => {
   const { userid, clubid } = req.params;
 
   // Check if user exist
-  const existUser = await User.findOne({ id: userid });
+  const existUser = await User.findOne({ _id: userid });
 
   if (!existUser) {
     res.status(400);
@@ -154,7 +154,7 @@ const addClubToUser = asyncHandler(async (req, res) => {
   if (updatedUser) {
     res.status(200).json({
       id: updatedUser.id,
-      clubsJoined: updatedUser.clubsJoined
+      clubsJoined: clubArray
     })
   } else {
     res.status(400);
