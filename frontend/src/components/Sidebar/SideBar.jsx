@@ -7,6 +7,9 @@ import {
   Dashboard,
   Request
 } from '../../assets';
+import {
+  Link
+} from "react-router-dom";
 import './sidebar.css';
 
 const SideBar = ({ userRole }) => {
@@ -45,15 +48,23 @@ const SideBar = ({ userRole }) => {
           </>
         ) : (
           <>
+          <Link to="/">
             <li className="active-menu">
-              <img src={HomeIcon} alt="Home Icon" /> Home
+              
+                <img src={HomeIcon} alt="Home Icon" /> Home
+              
             </li>
+            </Link>
+            <Link to="/discover-clubs">
             <li>
               <img src={Discover} alt="Discover Clubs Icon" /> Discover Clubs
             </li>
+            </Link>
+            <Link to="/clubs-joined">
             <li>
               <img src={ClubsJoined} alt="Clubs Joined Icon" /> Clubs Joined
             </li>
+            </Link>
             <li>
               <img src={EventRegistered} alt="Events Registered Icon" /> Events Registered
             </li>

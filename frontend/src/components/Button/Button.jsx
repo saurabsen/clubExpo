@@ -5,7 +5,6 @@ import {ReactComponent as RightArrowSvg} from '../../assets/icons/right.svg';
 import {ReactComponent as DownArrowSvg} from '../../assets/icons/down.svg';
 
 const Button = ({ 
-  clickLink="", 
   type="filled", 
   state="default", 
   isText=true,
@@ -15,13 +14,16 @@ const Button = ({
   iconAltText="Share",
   desaturate=false,
   widthPx=190,
-  heightPx=51
+  heightPx=51,
+  clickLink="", 
+  clickHandler
 }) => {
 
   const typeClasses = {
     filled: "filled",
     outline: "outline",
     text: "text",
+    invertedfill: "invertedfill"
   };
 
   const stateClasses = {
@@ -53,6 +55,11 @@ const Button = ({
       otherIconStyles["stroke"] = "hsla(263, 73%, 43%, 1)";
   };
 
+  if (isIcon === true && type === "invertedfill") {
+      otherIconStyles["fill"] = "hsla(263, 73%, 43%, 1)";
+      otherIconStyles["stroke"] = "hsla(263, 73%, 43%, 1)";
+  };
+
   if (isIcon === true &&
     isText === false &&
     desaturate === true) {
@@ -69,9 +76,14 @@ const Button = ({
     style: {...iconStyle[iconType], ...otherIconStyles}
   });
 
+  const handleClick = (e) => {
+    e.preventDefault();
+    clickHandler(e);
+  };
+
   return (
     <div className={`button standardui-button type-${typeClasses[type]} button-${stateClasses[state]}`}>
-      <a href={clickLink} style={buttonStyle}>
+      <a href={clickLink} style={buttonStyle} onClick={handleClick}>
         {(isText) ? <p>{innerText}</p> : <></>}
         {(isIcon) ? iconElem : <></>}
       </a>
