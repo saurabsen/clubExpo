@@ -126,6 +126,43 @@ const getUsers = asyncHandler(async (req, res) => {
   res.status(200).json(users);
 });
 
+// @desc Add club to User
+// @route POST /api/users/:userid/join/:clubid
+// @access Private
+const addClubToUser = asyncHandler(async (req, res) => {
+  const { userid, clubid } = req.params;
+
+  // Check if user exist
+  const existUser = await User.findOne({ id: userid });
+
+  if (!existUser) {
+    res.status(400);
+    throw new Error('User not found');
+  }
+
+  let clubArray = existUser.clubsJoined
+
+  if (clubArray.indexOf(clubid) === -1) {
+    clubArray.push(clubid)
+  } else {
+    res.status(400);
+    throw new Error('User is already part of club');
+  }
+
+  const updatedUser = await User.findByIdAndUpdate(userid, {clubsJoined: clubArray}) 
+
+  if (updatedUser) {
+    res.status(200).json({
+      id: updatedUser.id,
+      clubsJoined: updatedUser.clubsJoined
+    })
+  } else {
+    res.status(400);
+    throw new Error("Something went wrong")
+  }
+
+})
+
 // @desc Delete User
 // @route DELETE /api/users/me/:id
 // @access Private
@@ -148,4 +185,5 @@ module.exports = {
   getUser,
   getUsers,
   deleteUser,
+  addClubToUser,
 };
