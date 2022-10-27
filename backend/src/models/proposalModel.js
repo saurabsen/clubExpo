@@ -10,7 +10,7 @@ const proposalSchema = mongoose.Schema(
       type: String,
       required: [true, "Please enter a description of your proposed club"],
     },
-    noOfEventsPerMonth: {
+    noOfEventsMonth: {
       type: Number,
       required: [true, "Please enter your estimate number of events per month"],
     },
