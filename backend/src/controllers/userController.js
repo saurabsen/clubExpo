@@ -279,6 +279,83 @@ const removeEventFromUser = asyncHandler(async (req, res) => {
 
 })
 
+// @desc Add badge to User
+// @route POST /api/users/:userid/attend/:eventid
+// @access Private
+const addBadgeToUser = asyncHandler(async (req, res) => {
+  const { userid, badgeid } = req.params;
+
+  // Check if user exist
+  const existUser = await User.findOne({ _id: userid });
+
+  if (!existUser) {
+    res.status(400);
+    throw new Error('User not found');
+  }
+
+  let badgeArray = existUser.badges;
+  const targetIndex = badgeArray.indexOf(badgeid);
+
+
+  if (targetIndex === -1) {
+    badgeArray.push(badgeid)
+  } else {
+    res.status(400);
+    throw new Error('User already has this badge');
+  }
+
+  const updatedUser = await User.findByIdAndUpdate(userid, {badges: badgeArray}) 
+
+  if (updatedUser) {
+    res.status(200).json({
+      id: updatedUser.id,
+      badges: badgeArray
+    })
+  } else {
+    res.status(400);
+    throw new Error("Something went wrong")
+  }
+
+})
+
+// @desc Remove event from User
+// @route POST /api/users/:userid/attend/:eventid
+// @access Private
+const removeBadgeFromUser = asyncHandler(async (req, res) => {
+  const { userid, badgeid } = req.params;
+
+  // Check if user exist
+  const existUser = await User.findOne({ _id: userid });
+
+  if (!existUser) {
+    res.status(400);
+    throw new Error('User not found');
+  }
+
+  let badgesArray = existUser.badges;
+  const targetIndex = badgesArray.indexOf(badgeid);
+
+  if (targetIndex === -1) {
+    res.status(400);
+    throw new Error('User is not part of this event');
+  } else {
+    badgesArray.splice(targetIndex, 1)
+  }
+
+  const updatedUser = await User.findByIdAndUpdate(userid, {badges: badgesArray}) 
+
+  if (updatedUser) {
+    res.status(200).json({
+      id: updatedUser.id,
+      badges: badgesArray
+    })
+  } else {
+    res.status(400);
+    throw new Error("Something went wrong")
+  }
+
+})
+
 // @desc Delete User
 // @route DELETE /api/users/me/:id
 // @access Private
@@ -305,4 +382,6 @@ module.exports = {
   removeClubFromUser,
   addEventToUser,
   removeEventFromUser,
+  addBadgeToUser,
+  removeBadgeFromUser,
 };
