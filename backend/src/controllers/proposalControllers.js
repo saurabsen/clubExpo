@@ -16,9 +16,10 @@ const submitProposal = asyncHandler(async (req, res) => {
     clubPurpose,
     clubInterest,
     clubActivities,
+    createdBy,
   } = req.body;
 
-  if (!clubName || !description || !noOfEventsMonth || !members) {
+  if (!clubName || !description || !noOfEventsMonth || !members || !createdBy) {
     res.status(400);
     throw new Error("Please enter all the required details");
   }
@@ -27,7 +28,7 @@ const submitProposal = asyncHandler(async (req, res) => {
     clubName,
     description,
     noOfEventsMonth,
-    createdBy: "63544dfee21900bbca2866c7",
+    createdBy,
     members,
     approvalStatus: "Pending",
     approvalStatusReason: "",
