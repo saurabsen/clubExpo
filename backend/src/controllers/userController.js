@@ -163,6 +163,122 @@ const addClubToUser = asyncHandler(async (req, res) => {
 
 })
 
+// @desc Remove club from User
+// @route POST /api/users/:userid/remove/:clubid
+// @access Private
+const removeClubFromUser = asyncHandler(async (req, res) => {
+  const { userid, clubid } = req.params;
+
+  // Check if user exist
+  const existUser = await User.findOne({ _id: userid });
+
+  if (!existUser) {
+    res.status(400);
+    throw new Error('User not found');
+  }
+
+  let clubArray = existUser.clubsJoined;
+  const targetIndex = clubArray.indexOf(clubid);
+
+
+  if (targetIndex === -1) {
+    res.status(400);
+    throw new Error('User is not part of this club');
+  } else {
+    clubArray.splice(targetIndex, 1)
+  }
+
+  const updatedUser = await User.findByIdAndUpdate(userid, {clubsJoined: clubArray}) 
+
+  if (updatedUser) {
+    res.status(200).json({
+      id: updatedUser.id,
+      clubsJoined: clubArray
+    })
+  } else {
+    res.status(400);
+    throw new Error("Something went wrong")
+  }
+
+})
+
+// @desc Add event to User
+// @route POST /api/users/:userid/attend/:eventid
+// @access Private
+const addEventToUser = asyncHandler(async (req, res) => {
+  const { userid, eventid } = req.params;
+
+  // Check if user exist
+  const existUser = await User.findOne({ _id: userid });
+
+  if (!existUser) {
+    res.status(400);
+    throw new Error('User not found');
+  }
+
+  let eventsArray = existUser.eventsAttended;
+  const targetIndex = eventsArray.indexOf(eventid);
+
+
+  if (targetIndex === -1) {
+    eventsArray.push(eventid)
+  } else {
+    res.status(400);
+    throw new Error('User is already part of event');
+  }
+
+  const updatedUser = await User.findByIdAndUpdate(userid, {eventsAttended: eventsArray}) 
+
+  if (updatedUser) {
+    res.status(200).json({
+      id: updatedUser.id,
+      eventsAttended: eventsArray
+    })
+  } else {
+    res.status(400);
+    throw new Error("Something went wrong")
+  }
+
+})
+
+// @desc Remove event from User
+// @route POST /api/users/:userid/attend/:eventid
+// @access Private
+const removeEventFromUser = asyncHandler(async (req, res) => {
+  const { userid, eventid } = req.params;
+
+  // Check if user exist
+  const existUser = await User.findOne({ _id: userid });
+
+  if (!existUser) {
+    res.status(400);
+    throw new Error('User not found');
+  }
+
+  let eventsArray = existUser.eventsAttended;
+  const targetIndex = eventsArray.indexOf(eventid);
+
+  if (targetIndex === -1) {
+    res.status(400);
+    throw new Error('User is not part of this event');
+  } else {
+    eventsArray.splice(targetIndex, 1)
+  }
+
+  const updatedUser = await User.findByIdAndUpdate(userid, {eventsAttended: eventsArray}) 
+
+  if (updatedUser) {
+    res.status(200).json({
+      id: updatedUser.id,
+      eventsAttended: eventsArray
+    })
+  } else {
+    res.status(400);
+    throw new Error("Something went wrong")
+  }
+
+})
+
 // @desc Delete User
 // @route DELETE /api/users/me/:id
 // @access Private
@@ -186,4 +302,7 @@ module.exports = {
   getUsers,
   deleteUser,
   addClubToUser,
+  removeClubFromUser,
+  addEventToUser,
+  removeEventFromUser,
 };
