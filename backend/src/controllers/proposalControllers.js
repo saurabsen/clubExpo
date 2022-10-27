@@ -6,10 +6,20 @@ const Club = require("../models/clubModel");
 // @route POST /api/proposals
 // @access Public
 const submitProposal = asyncHandler(async (req, res) => {
-  const { id } = req.user; // authenticated user who is calling this func
-  const { clubName, description, noOfEventsMonth, members } = req.body;
+  // const { id } = req.user; // authenticated user who is calling this func
+  const {
+    clubName,
+    description,
+    noOfEventsMonth,
+    members,
+    isManageClub,
+    clubPurpose,
+    clubInterest,
+    clubActivities,
+    createdBy,
+  } = req.body;
 
-  if (!clubName || !description || !noOfEventsMonth || !members) {
+  if (!clubName || !description || !noOfEventsMonth || !members || !createdBy) {
     res.status(400);
     throw new Error("Please enter all the required details");
   }
@@ -18,10 +28,14 @@ const submitProposal = asyncHandler(async (req, res) => {
     clubName,
     description,
     noOfEventsMonth,
-    createdBy: id,
+    createdBy,
     members,
-    approvalStatus: "",
+    approvalStatus: "Pending",
     approvalStatusReason: "",
+    isManageClub,
+    clubPurpose,
+    clubInterest,
+    clubActivities,
   });
 
   if (proposal) {
