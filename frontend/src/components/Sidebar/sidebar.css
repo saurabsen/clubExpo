@@ -1,0 +1,31 @@
+.sidebar {
+  font-weight: 500;
+}
+
+.sidebar ul {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  padding: 32px 14px 0 0;
+}
+
+.sidebar li {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 1rem;
+  border-radius: 8px;
+}
+
+.sidebar li img {
+  width: 22px;
+}
+
+.sidebar li:hover {
+  cursor: pointer;
+}
+
+.active-menu {
+  font-weight: 700;
+  background: #f3effb;
+}
