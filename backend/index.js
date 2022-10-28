@@ -5,12 +5,17 @@ const connectDB = require("./src/config/db");
 const dotenv = require("dotenv");
 dotenv.config();
 const { errorHandler } = require("./src/middleware/errorMiddleware");
+const swaggerUi = require("swagger-ui-express");
+const swaggerDocument = require("./swagger.json");
 
 connectDB();
 
 // App
 const app = express();
 const http = require("http").createServer(app);
+
+// Swagger
+app.use("/swagger", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 // Middleware
 app.use(express.json());
