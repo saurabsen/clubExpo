@@ -161,10 +161,91 @@ const deleteEvent = asyncHandler(async (req, res) => {
   )
 })
 
+
+// @desc Add user to Event
+// @route POST /api/events/:eventid/attendedby/:userid
+// @access Private
+const addUserToEvent = asyncHandler(async (req, res) => {
+  const { eventid, userid } = req.params;
+
+  // Check if user exist
+  const existEvent = await Event.findOne({ _id: eventid });
+
+  if (!existEvent) {
+    res.status(400);
+    throw new Error('Event not found');
+  }
+
+  let attendeesArray = existEvent.attendees;
+  const targetIndex = attendeesArray.indexOf(userid);
+
+
+  if (targetIndex === -1) {
+    attendeesArray.push(userid)
+  } else {
+    res.status(400);
+    throw new Error('User is already part of event');
+  }
+
+  const updatedEvent = await Event.findByIdAndUpdate(eventid, {attendees: attendeesArray}) 
+
+  if (updatedEvent) {
+    res.status(200).json({
+      id: updatedEvent.id,
+      attendees: attendeesArray
+    })
+  } else {
+    res.status(400);
+    throw new Error("Something went wrong")
+  }
+
+}) 
+
+// @desc Remove user from Event
+// @route POST /api/events/:eventid/unattendedby/:userid
+// @access Private
+const removeUserFromEvent = asyncHandler(async (req, res) => {
+  const { eventid, userid } = req.params;
+
+  // Check if user exist
+  const existEvent = await Event.findOne({ _id: eventid });
+
+  if (!existEvent) {
+    res.status(400);
+    throw new Error('Event not found');
+  }
+
+  let attendeesArray = existEvent.attendees;
+  const targetIndex = attendeesArray.indexOf(userid);
+
+  if (targetIndex === -1) {
+    res.status(400);
+    throw new Error('User is not part of this event');
+  } else {
+    attendeesArray.splice(targetIndex, 1)
+  }
+
+  const updatedEvent = await Event.findByIdAndUpdate(eventid, {attendees: attendeesArray}) 
+
+  if (updatedEvent) {
+    res.status(200).json({
+      id: updatedEvent.id,
+      attendees: attendeesArray
+    })
+  } else {
+    res.status(400);
+    throw new Error("Something went wrong")
+  }
+
+})
+
+
 module.exports = {
   createEvent,
   getEventDetails,
   getMultipleEventsFromClubs,
   updateEvent,
-  deleteEvent
+  deleteEvent,
+  addUserToEvent,
+  removeUserFromEvent,
 }
