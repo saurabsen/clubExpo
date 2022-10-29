@@ -1,11 +1,11 @@
 .eventscard {
   border: 1px solid hsla(120, 1%, 89%, 1);
   padding: 24px 24px;
-  border-radius: 3.7px;
+  border-radius: 8px;
   margin-bottom: 24px;
   box-shadow: 2px 2px 2px hsla(0, 0%, 0%, 0.08);
   box-sizing: border-box;
-  max-width: 783px;
+  /* max-width: 783px; */
 }
 
 .eventscard:first-child {
