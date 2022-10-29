@@ -6,8 +6,10 @@ import { Home, ClubsJoined, DiscoverClubs } from './views';
 import SideBar from './components/Sidebar/SideBar';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
+import ProposalManagement from './views/ProposalManagement/ProposalManagement';
 
 const App = () => {
+  const pathname = window.location.pathname;
   const [searchResults, setSearchResults] = useState([]);
 
   const handleSearch = (searchResults) => {
@@ -22,13 +24,18 @@ const App = () => {
             <Grid item xs={12}>
               <Header handleSearch={handleSearch} />
             </Grid>
-            <Grid item xs={2}>
-              <SideBar userRole="member" />
-            </Grid>
-            <Grid item xs={10}>
+            {pathname === '/proposal' ? (
+              ''
+            ) : (
+              <Grid item xs={2}>
+                <SideBar userRole="member" />
+              </Grid>
+            )}
+            <Grid item xs={pathname === '/proposal' ? 12 : 10}>
               <Routes>
                 <Route path="/" element={<Home />} />
                 <Route path="/proposal" element={<ClubProposal />} />
+                <Route path="/all-proposal" element={<ProposalManagement />} />
                 <Route path="/clubs-joined" element={<ClubsJoined />} />
                 <Route path="/discover-clubs" element={<DiscoverClubs />} />
               </Routes>

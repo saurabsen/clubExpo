@@ -8,13 +8,15 @@ import Typography from '@mui/material/Typography';
 import TextField from '@mui/material/TextField';
 import { useActions } from '../../hooks/useActions';
 import { useTypedSelector } from '../../hooks/useTypedSelector';
+import Radio from '@mui/material/Radio';
+import RadioGroup from '@mui/material/RadioGroup';
+import FormControlLabel from '@mui/material/FormControlLabel';
 import axios from 'axios';
 import './clubproposal.css';
 
 const steps = ['General info', 'Club info'];
 
 export default function ClubProposal() {
-  const { getAllProposalData } = useActions();
   const [activeStep, setActiveStep] = React.useState(0);
   const [skipped, setSkipped] = React.useState(new Set());
   const userID = '63544dfee21900bbca2866c7';
@@ -24,9 +26,9 @@ export default function ClubProposal() {
     noOfEventsMonth: '',
     createdBy: userID,
     members: '',
-    approvalStatus: 'Pending',
+    approvalStatus: '',
     approvalStatusReason: '',
-    isManageClub: '',
+    isManageClub: false,
     clubPurpose: '',
     clubInterest: '',
     clubActivities: ''
@@ -97,13 +99,6 @@ export default function ClubProposal() {
     statusArray: 'Pending'
   };
 
-  const getProposals = async (queryString) => {
-    const data = await axios.post(`http://localhost:3001/api/proposals/${queryString}`, status, {
-      headers: { Authorization: `Bearer ${tokenStr}` }
-    });
-    console.log(data, 'all proposl');
-  };
-
   const saveProposal = async (formValue) => {
     const data = await axios.post(`http://localhost:3001/api/proposals/`, formValue, {
       headers: { Authorization: `Bearer ${tokenStr}` }
@@ -148,15 +143,16 @@ export default function ClubProposal() {
               <div>
                 <div>
                   <p>Have you ever managed a club before?</p>
-                  <TextField
-                    fullWidth
+                  <RadioGroup
+                    row
+                    defaultValue="false"
                     name="isManageClub"
                     onChange={handleChange}
                     value={formValue.isManageClub}
-                    id="outlined-password-input"
-                    type="text"
-                    autoComplete="current-password"
-                  />
+                  >
+                    <FormControlLabel value={false} control={<Radio />} label="No" />
+                    <FormControlLabel value={true} control={<Radio />} label="Yes" />
+                  </RadioGroup>
                 </div>
                 <div>
                   <p>What is the purpose of this club?</p>
@@ -167,7 +163,6 @@ export default function ClubProposal() {
                     value={formValue.clubPurpose}
                     id="outlined-password-input"
                     type="text"
-                    autoComplete="current-password"
                   />
                 </div>
                 <div>
@@ -179,7 +174,6 @@ export default function ClubProposal() {
                     value={formValue.clubInterest}
                     id="outlined-password-input"
                     type="text"
-                    autoComplete="current-password"
                   />
                 </div>
                 <div>
@@ -191,7 +185,6 @@ export default function ClubProposal() {
                     value={formValue.clubActivities}
                     id="outlined-password-input"
                     type="text"
-                    autoComplete="current-password"
                   />
                 </div>
               </div>
@@ -209,7 +202,17 @@ export default function ClubProposal() {
                     value={formValue.clubName}
                     id="outlined-password-input"
                     type="text"
-                    autoComplete="current-password"
+                  />
+                </div>
+                <div>
+                  <p>Description of the club</p>
+                  <TextField
+                    fullWidth
+                    name="description"
+                    onChange={handleChange}
+                    value={formValue.description}
+                    id="outlined-password-input"
+                    type="text"
                   />
                 </div>
                 <div>
@@ -220,8 +223,7 @@ export default function ClubProposal() {
                     onChange={handleChange}
                     value={formValue.noOfEventsMonth}
                     id="outlined-password-input"
-                    type="text"
-                    autoComplete="current-password"
+                    type="number"
                   />
                 </div>
                 <div>
@@ -233,7 +235,6 @@ export default function ClubProposal() {
                     value={formValue.members}
                     id="outlined-password-input"
                     type="text"
-                    autoComplete="current-password"
                   />
                 </div>
                 <div>
