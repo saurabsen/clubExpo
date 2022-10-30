@@ -17,9 +17,17 @@ const submitProposal = asyncHandler(async (req, res) => {
     clubInterest,
     clubActivities,
     createdBy,
+    createrName,
   } = req.body;
 
-  if (!clubName || !description || !noOfEventsMonth || !members || !createdBy) {
+  if (
+    !clubName ||
+    !description ||
+    !noOfEventsMonth ||
+    !members ||
+    !createdBy ||
+    !createrName
+  ) {
     res.status(400);
     throw new Error("Please enter all the required details");
   }
@@ -36,13 +44,14 @@ const submitProposal = asyncHandler(async (req, res) => {
     clubPurpose,
     clubInterest,
     clubActivities,
+    createrName,
   });
 
   if (proposal) {
     res.status(201).json({
       id: proposal.id,
       clubName: proposal.clubName,
-      createdBy: proposal.createdBy,
+      createrName: proposal.createrName,
     });
   } else {
     res.status(400);
