@@ -1,10 +1,16 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import './proposalManagement.css';
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
+import Paper from '@mui/material/Paper';
 
 const ProposalManagement = () => {
   const [allProposals, setAllProposals] = useState([]);
-  let proposals = [];
   useEffect(() => {
     getProposals('getproposals');
   }, []);
@@ -24,12 +30,45 @@ const ProposalManagement = () => {
     setAllProposals(temp);
   };
 
+  const viewProposal = (e) => {
+    console.log(e);
+  };
+
   return (
     <div>
-      test
-      {allProposals.map((element) => {
-        return <div>{element.clubName}test</div>;
-      })}
+      <h2>All Clubs</h2>
+      <TableContainer component={Paper}>
+        <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
+          <TableHead className="table-head">
+            <TableRow>
+              <TableCell>Clubname</TableCell>
+              <TableCell>Admin</TableCell>
+              <TableCell align="center">No. of Members</TableCell>
+              <TableCell>Status</TableCell>
+              <TableCell></TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {allProposals.map((row) => (
+              <TableRow
+                className="table-row"
+                key={row._id}
+                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+              >
+                <TableCell component="th" scope="row">
+                  {row.clubName}
+                </TableCell>
+                <TableCell>{row.createrName}</TableCell>
+                <TableCell align="center">{row.members.length}</TableCell>
+                <TableCell>{row.approvalStatus}</TableCell>
+                <TableCell onClick={() => viewProposal(row._id)} align="right">
+                  View Detail
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
     </div>
   );
 };
