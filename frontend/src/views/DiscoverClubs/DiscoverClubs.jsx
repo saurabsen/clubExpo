@@ -14,8 +14,8 @@ const DiscoverClubs = () => {
 
   useEffect(() => {
     getAllClubsData('');
-    console.log(allDiscoverClubsData);
   },[]);
+
   return (
     <>
       <Box sx={{ flexGrow: 1 }}>
