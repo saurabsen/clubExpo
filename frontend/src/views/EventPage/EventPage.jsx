@@ -15,6 +15,8 @@ const EventPage = (props) => {
   const [event, setEvent] = useState({});
   const [clubInfo, setClubInfo] = useState();
   const [adminInfo, setAdminInfo] = useState();
+  const [userInfo, setUserInfo] = useState();
+  const [mainButton, setMainButton] = useState();
   // const event = useRef({});
   // const clubInfo = useRef({});
   // const clubInfo = useRef({});
@@ -75,7 +77,7 @@ const EventPage = (props) => {
   const addEventToUserModel = () => {
     const config = {
       method: 'post',
-      url: `http://localhost:3001/api/users/6359ac5abd38379ca3d35aac/attend/${event._id}`,
+      url: `http://localhost:3001/api/users/${userInfo._id}/attend/${event._id}`,
       headers: { },
     };
     axios(config);
@@ -84,7 +86,7 @@ const EventPage = (props) => {
   const addUserToEventModel = () => {
     const config = {
       method: 'post',
-      url: `http://localhost:3001/api/events/${event._id}/attendedby/6359ac2abd38379ca3d35aa4`,
+      url: `http://localhost:3001/api/events/${event._id}/attendedby/${userInfo._id}`,
       headers: { }
     };
     axios(config);
@@ -93,7 +95,7 @@ const EventPage = (props) => {
   const removeEventFromUserModel = () => {
     const config = {
       method: 'post',
-      url: 'http://localhost:3001/api/users/6359ac5abd38379ca3d35aac/unattend/63461ea1bb0903220f75154f',
+      url: `http://localhost:3001/api/users/${userInfo._id}/unattend/${event._id}`,
       headers: { }
     };
     axios(config);
@@ -102,7 +104,7 @@ const EventPage = (props) => {
   const removeUserFromEventModel = () => {
     const config = {
       method: 'post',
-      url: 'http://localhost:3001/api/events/63461ea1bb0903220f75154f/unattendedby/6359ac2abd38379ca3d35aa4',
+      url: `http://localhost:3001/api/events/${event._id}/unattendedby/${userInfo._id}`,
       headers: { }
     };
     axios(config);
@@ -130,6 +132,34 @@ const EventPage = (props) => {
     }
   };
 
+  const registerUser = () => {
+    addEventToUserModel();
+    addUserToEventModel();
+    let newEventsAttended = userInfo.eventsAttended;
+    newEventsAttended.push(event._id);
+    setUserInfo(
+      {
+        ...userInfo,
+        eventsAttended: newEventsAttended
+      }
+    );
+  };
+
+  const unregisterUser = () => {
+    removeEventFromUserModel();
+    removeUserFromEventModel();
+    let newEventsAttended = userInfo.eventsAttended;
+    const targetIndex = newEventsAttended.indexOf(event._id);
+    newEventsAttended.splice(targetIndex, 1);
+    setUserInfo(
+      {
+        ...userInfo,
+        eventsAttended: newEventsAttended
+      }
+    );
+  };
+
+
   let rawClubs;
   let rawAdminInfo;
   
@@ -140,10 +170,34 @@ const EventPage = (props) => {
       const rawEvent = await getEvent(eventId);
       setEvent(rawEvent);
       console.log('event', event);
-      const userInfo = await getUser('nhugnin2@studiopress.com');
-      console.log(userInfo);
+      // const userInfo = await getUser('nhugnin2@studiopress.com');
     } catch (error) {
       console.log("'", 'failed to load component Event Page:' + error.message);
+    }
+  };
+
+  const selectButton = () => {
+    const eventLoc = userInfo.eventsAttended.indexOf(event._id);
+    if (eventLoc !== -1) {
+      return (
+        <Button 
+          style={{ width: '100%' }} 
+          variant="outlined"
+          onClick={unregisterUser}
+        >
+          Unregister
+        </Button>
+      );
+    } else {
+      return (
+        <Button 
+          style={{ width: '100%' }} 
+          variant="contained"
+          onClick={registerUser}
+        >
+          Register
+        </Button>
+      );
     }
   };
   
@@ -151,10 +205,23 @@ const EventPage = (props) => {
     initEvent();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [props]);
-
+  
   useEffect(() => {
-
+    console.log(">>>event", event);
+    (async () => {
+      setUserInfo(await getUser("nhugnin2@studiopress.com"));
+    })();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [event]);
+  
+  useEffect(() => {
+    console.log(">>>userInfo", userInfo);
+    if (userInfo) {
+      setMainButton(selectButton());
+    };
+    console.log(">>>mainButton", mainButton);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [event, userInfo]);
   
   useEffect(() => {
     updateClubInfo();
@@ -172,26 +239,9 @@ const EventPage = (props) => {
         <Button variant="outlined">
           <ShareSvg />
         </Button>
-        <Button style={{ width: '100%' }} variant="contained">
-          Register
-        </Button>
+        {mainButton ? mainButton : null}
       </div>
     );
-  };
-
-  const onClickHandler = () => {
-    registerUser();
-    unregisterUser();
-  };
-
-  const registerUser = () => {
-    addEventToUserModel();
-    addUserToEventModel();
-  };
-
-  const unregisterUser = () => {
-    removeEventFromUserModel();
-    removeUserFromEventModel();
   };
 
   const renderEventDetails = () => {
