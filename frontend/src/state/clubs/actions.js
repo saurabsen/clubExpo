@@ -1,5 +1,5 @@
 //import { clubs } from '../../common/api';
-import axios from  'axios';
+import axios from 'axios';
 import { FETCH_CLUBS, GET_FETCH_CLUBS_DATA_SUCCESS, GET_FETCH_CLUBS_DATA_ERROR } from './types';
 
 export const getAllClubsData = (queryString) => {
@@ -10,12 +10,11 @@ export const getAllClubsData = (queryString) => {
 
     try {
       const data = await axios.get(`http://localhost:3001/api/clubs/${queryString}`);
-
       dispatch({
         type: GET_FETCH_CLUBS_DATA_SUCCESS,
-        payload: data
+        payload: data.data
       });
-      return data;
+      return data.data;
     } catch (error) {
       dispatch({
         type: GET_FETCH_CLUBS_DATA_ERROR,
