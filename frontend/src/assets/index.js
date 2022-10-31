@@ -42,6 +42,9 @@ import Up from './Icons/up.svg';
 // Logos
 import LogoRectangle from './Logo/logo-rectangle.svg';
 
+// Images
+import LoginGirl from './Images/LoginGirl.jpg';
+
 export {
   AddMember,
   Add,
@@ -82,5 +85,6 @@ export {
   Share,
   UpDisabled,
   Up,
-  LogoRectangle
+  LogoRectangle,
+  LoginGirl
 };

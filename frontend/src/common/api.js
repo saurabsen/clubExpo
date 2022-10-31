@@ -55,5 +55,3 @@ export const clubs = () => {
     return API.deleteAPI(`clubs`, params);
   };
 };
-
-
