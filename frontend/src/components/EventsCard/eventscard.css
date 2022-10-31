@@ -168,6 +168,7 @@
     }
     
     .eventscard-buttons {
+      width: 100%;
       display: flex;
       flex-flow: row;
       justify-content: space-between;
@@ -179,7 +180,7 @@
       border-radius: 8px;
       font-family: "Raleway", sans-serif;
       font-size: 16px;
-      font-weight: 600;
+      font-weight: 500;
     }
 
     .eventscard-btn-share {
