@@ -8,6 +8,7 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
+import Button from '../../components/Button/Button';
 
 const ProposalManagement = () => {
   const [allProposals, setAllProposals] = useState([]);
@@ -62,7 +63,9 @@ const ProposalManagement = () => {
                 <TableCell align="center">{row.members.length}</TableCell>
                 <TableCell>{row.approvalStatus}</TableCell>
                 <TableCell onClick={() => viewProposal(row._id)} align="right">
-                  View Detail
+                  <Button variant="contained" innerText="View Detail">
+                    View Detail
+                  </Button>
                 </TableCell>
               </TableRow>
             ))}
