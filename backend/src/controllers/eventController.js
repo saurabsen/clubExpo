@@ -48,11 +48,35 @@ const getEventDetails = asyncHandler(async (req, res) => {
   const { eventId } = req.params;
 
   const event = await Event.findOne({ _id: eventId })
+  const {
+    name,
+    featureImage,
+    description,
+    startDate,
+    endDate,
+    attendees,
+    type,
+    location,
+    contact,
+    clubId,
+    createdByAdmin,
+    availableSpots,
+    } = event;
 
   res.status(200).json({
     _id: event.id,
-    name: event.name,
-    description: event.description
+    name,
+    featureImage,
+    description,
+    startDate,
+    endDate,
+    attendees,
+    type,
+    location,
+    contact,
+    clubId,
+    createdByAdmin,
+    availableSpots
   })
 })
 

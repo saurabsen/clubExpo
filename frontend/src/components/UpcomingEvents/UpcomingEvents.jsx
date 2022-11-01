@@ -31,7 +31,20 @@ const UpcomingEvents = ({ upcomingEvents }) => {
     "December": "Dec"
   };
 
-  let sortedEvents = [...upcomingEvents].sort((a, b) => {
+  let formattedEvents = [];
+
+  upcomingEvents.forEach((event) => {
+    formattedEvents.push(
+      {
+        ...event,
+        eventDate: new Date(event.eventDate)
+      }
+    );
+  });
+
+  formattedEvents = formattedEvents.filter(event => (event.eventDate > (new Date())));
+
+  let sortedEvents = [...formattedEvents].sort((a, b) => {
     return a.eventDate - b.eventDate;
   });
 
