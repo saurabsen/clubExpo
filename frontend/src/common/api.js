@@ -1,5 +1,8 @@
 import axios from 'axios';
 
+const prodURL = 'https://clubspace.onrender.com/api';
+const localURL = 'http://localhost:3001/api';
+
 const API = () => {
   const get = (queryString, params) => {
     return axios.get(`http://localhost:3001/api/${queryString}`, params);
@@ -56,4 +59,20 @@ export const clubs = () => {
   };
 };
 
+export const proposal = () => {
+  const getProposals = (params) => {
+    return API.get(`${localURL}/proposals/getmultiple`, params);
+  };
 
+  const postProposals = (params) => {
+    return API.post(`${localURL}/proposals`, params);
+  };
+
+  const updateProposals = (params) => {
+    return API.delete(`proposals`, params);
+  };
+
+  const deleteProposals = (params) => {
+    return API.deleteAPI(`proposals`, params);
+  };
+};
