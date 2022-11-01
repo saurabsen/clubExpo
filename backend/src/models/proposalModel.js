@@ -1,8 +1,8 @@
-const mongoose = require("mongoose")
+const mongoose = require("mongoose");
 
 const proposalSchema = mongoose.Schema(
   {
-    club_name: {
+    clubName: {
       type: String,
       required: [true, "Please enter your proposed club name"],
     },
@@ -10,19 +10,48 @@ const proposalSchema = mongoose.Schema(
       type: String,
       required: [true, "Please enter a description of your proposed club"],
     },
-    no_of_events_month: {
+    noOfEventsMonth: {
       type: Number,
       required: [true, "Please enter your estimate number of events per month"],
     },
-    requested_by: {
+    createdBy: {
+      type: mongoose.Schema.Types.ObjectId,
+      required: [true, `Please enter proposal creator's user ID`],
+      ref: "User",
+    },
+    members: [
+      {
+        type: String,
+        required: [true, "Please enter member email IDs"],
+      },
+    ],
+    approvalStatus: {
       type: String,
-      required: [true, "Please enter primary key of user proposing this club"],
+      required: [true, "Please enter the approval status of the club"],
     },
-    members: {
-      type: Array,
-      required: [true, "Please enter an array of primary keys of users co-proposing the club"],
+    approvalStatusReason: {
+      type: String,
+      required: [
+        false,
+        "Please enter a reason for the decided approval status",
+      ],
     },
+    isManageClub: {
+      type: Boolean,
+    },
+    clubPurpose: {
+      type: String,
+    },
+    clubInterest: {
+      type: String,
+    },
+    clubActivities: {
+      type: String,
+    },
+  },
+  {
+    timestamps: true,
   }
-)
+);
 
 module.exports = mongoose.model("Proposal", proposalSchema);

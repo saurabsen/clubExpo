@@ -1,18 +1,9 @@
-const express = require("express");
+const express = require('express');
 const router = express.Router();
-const {
-  getClubs,
-  setClubs,
-  updateClubs,
-  deleteClubs,
-} = require("../controllers/clubControllers");
+const { createClub, getClub, getClubs, updateClub, deleteClub } = require('../controllers/clubControllers');
+const { protect } = require('../middleware/authMiddleware');
 
-// Short form for same routes
-router.route("/").get(getClubs).post(setClubs);
-
-// Long form of routes
-router.put("/:id", updateClubs);
-
-router.delete("/:id", deleteClubs);
+router.route('/').post(protect, createClub).get(protect, getClubs);
+router.route('/:id').get(protect, getClub).put(protect, updateClub).delete(protect, deleteClub);
 
 module.exports = router;
