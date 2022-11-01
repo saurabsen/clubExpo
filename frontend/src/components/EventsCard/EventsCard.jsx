@@ -3,7 +3,8 @@ import locationSvg from '../../assets/icons/location.svg';
 import calendarSvg from '../../assets/icons/calendar.svg';
 import moneySvg from '../../assets/icons/money.svg';
 import clockSvg from '../../assets/icons/clock.svg';
-import Button from '../Button/Button';
+import Button from '@mui/material/Button';
+import {ReactComponent as ShareSvg} from '../../assets/icons/share.svg';
 import ButtonDropMenu from '../ButtonDropMenu/ButtonDropMenu';
 
 const EventsCard = ({clubName,
@@ -32,11 +33,11 @@ const EventsCard = ({clubName,
   );
 
   const notRegisteredBtn = (
-    <Button type='filled' innerText='Register' />
+    <Button style={{width: '100%'}} variant='contained'>Register</Button>
   );
 
   const registeredBtn = (
-    <ButtonDropMenu />
+    <ButtonDropMenu style={{width: '100%'}} />
   );
 
   return (
@@ -49,7 +50,7 @@ const EventsCard = ({clubName,
         <div className="eventscard-main-image" style={{backgroundImage: `url(${eventImgUrl})`}}></div>
         <h4 className='mobileEventName'>{eventName}</h4>
         <div className="eventscard-buttons">
-          <Button type='outline' desaturate={true} isText={false} isIcon={true} iconType="share" iconAltText='Share' widthPx={68} />
+          <Button variant='outlined'><ShareSvg/></Button>
           {(registered) ? registeredBtn : notRegisteredBtn}
         </div>
 
