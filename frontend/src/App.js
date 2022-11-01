@@ -1,7 +1,12 @@
 import '@fontsource/raleway';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
+import { Header } from './components';
+import ClubProposal from './views/ClubProposal/ClubProposal';
+import { Home, ClubsJoined, DiscoverClubs } from './views';
+import SideBar from './components/Sidebar/SideBar';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
+import ProposalManagement from './views/ProposalManagement/ProposalManagement';
 
 import { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route, useParams } from 'react-router-dom';
@@ -11,6 +16,7 @@ import { Home, ClubsJoined, DiscoverClubs, EventPage } from './views';
 import SideBar from './components/Sidebar/SideBar';
 
 const App = () => {
+  const pathname = window.location.pathname;
   const [searchResults, setSearchResults] = useState([]);
 
   const handleSearch = (searchResults) => {
@@ -38,7 +44,7 @@ const App = () => {
 
   const UserEventsPage = () => {
     let { eventId } = useParams();
-    return <EventPage eventId={eventId}/>;
+    return <EventPage eventId={eventId} />;
   };
 
   return (
@@ -49,15 +55,21 @@ const App = () => {
             <Grid item xs={12}>
               <Header handleSearch={handleSearch} />
             </Grid>
-            <Grid className='app-sidebar' item xs={2}>
-              <SideBar userRole="member" />
-            </Grid>
-            <Grid item xs={10}>
+            {pathname === '/proposal' ? (
+              ''
+            ) : (
+              <Grid item xs={2}>
+                <SideBar userRole="member" />
+              </Grid>
+            )}
+            <Grid item xs={pathname === '/proposal' ? 12 : 10}>
               <Routes>
                 <Route path="/" element={<Home />} />
-                <Route path="events/:eventId" element={<UserEventsPage />} />
+                <Route path="/proposal" element={<ClubProposal />} />
+                <Route path="/all-proposal" element={<ProposalManagement />} />
                 <Route path="/clubs-joined" element={<ClubsJoined />} />
                 <Route path="/discover-clubs" element={<DiscoverClubs />} />
+                <Route path="/events/:eventId" element={<UserEventsPage />} />
               </Routes>
             </Grid>
           </Grid>

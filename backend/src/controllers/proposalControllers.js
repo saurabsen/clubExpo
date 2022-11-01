@@ -17,9 +17,17 @@ const submitProposal = asyncHandler(async (req, res) => {
     clubInterest,
     clubActivities,
     createdBy,
+    createrName,
   } = req.body;
 
-  if (!clubName || !description || !noOfEventsMonth || !members || !createdBy) {
+  if (
+    !clubName ||
+    !description ||
+    !noOfEventsMonth ||
+    !members ||
+    !createdBy ||
+    !createrName
+  ) {
     res.status(400);
     throw new Error("Please enter all the required details");
   }
@@ -36,13 +44,14 @@ const submitProposal = asyncHandler(async (req, res) => {
     clubPurpose,
     clubInterest,
     clubActivities,
+    createrName,
   });
 
   if (proposal) {
     res.status(201).json({
       id: proposal.id,
       clubName: proposal.clubName,
-      createdBy: proposal.createdBy,
+      createrName: proposal.createrName,
     });
   } else {
     res.status(400);
@@ -53,7 +62,7 @@ const submitProposal = asyncHandler(async (req, res) => {
 // @desc Get one proposal using id
 // @route GET /api/proposals/:proposalId
 // @access Public
-const getProposal = asyncHandler(async (req, res) => {
+const getOneProposal = asyncHandler(async (req, res) => {
   const { proposalId } = req.params;
 
   const targetProposal = await Proposal.findOne({ _id: proposalId });
@@ -75,7 +84,7 @@ Body should be structured as follows:
   "statusArray" : ["statusCode1", "statusCode2", ...]
 }
 */
-const getProposalsByStatus = asyncHandler(async (req, res) => {
+const getMultipleProposalsByStatus = asyncHandler(async (req, res) => {
   const { statusArray } = req.body;
 
   const proposals = await Proposal.find({});
@@ -165,8 +174,8 @@ const deleteProposal = asyncHandler(async (req, res) => {
 
 module.exports = {
   submitProposal,
-  getProposal,
-  getProposalsByStatus,
+  getOneProposal,
+  getMultipleProposalsByStatus,
   updateProposal,
   deleteProposal,
 };
