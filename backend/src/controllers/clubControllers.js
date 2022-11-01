@@ -1,63 +1,126 @@
-const asyncHandler = require("express-async-handler");
+const asyncHandler = require('express-async-handler');
 
-const Club = require("../models/clubModel");
+const Club = require('../models/clubModel');
 
-// @desc get clubs
+// @desc Create Club
+// @route GET /api/clubs
+// @access Private
+const createClub = asyncHandler(async (req, res) => {
+  const { id } = req.user; // authenticated user who is calling this func
+  const { name, logoImage, coverImage, description, admins, tags } = req.body;
+
+  if (!name || !logoImage || !coverImage || !description || !admins || !tags) {
+    res.status(400);
+    throw new Error('Please enter all the required details');
+  }
+
+  //create club
+  const club = await Club.create({
+    name,
+    logoImage,
+    coverImage: '',
+    description,
+    createdBy: id,
+    admins,
+    acceptedMembers: [],
+    pendingMembers: [],
+    events: [],
+    badges: [],
+    status: '',
+    tags,
+  });
+
+  if (club) {
+    res.status(201).json({
+      id: club.id,
+      name: club.name,
+      description: club.description,
+    });
+  } else {
+    res.status(400);
+    throw new Error('Invalid Club');
+  }
+});
+
+// @desc Get Clubs
 // @route GET /api/clubs
 // @access Private
 const getClubs = asyncHandler(async (req, res) => {
-  const clubs = await Club.find();
+  const clubs = await Club.find({});
   res.status(200).json(clubs);
 });
 
-// @desc set clubs
-// @route POST /api/clubs
+// @desc Get Club
+// @route GET /api/clubs/:id
 // @access Private
-const setClubs = asyncHandler(async (req, res) => {
-  if (!req.body.text) {
-    res.status(400).json({ message: "Please sent text" });
-    // throw new Error("Please add a text field");
-  }
+const getClub = asyncHandler(async (req, res) => {
+  const { id } = req.params;
 
-  const club = await Club.create({
-    text: req.body.text,
-  });
-  res.status(200).json(club);
+  const club = await Club.findById({ _id: id });
+
+  if (club) {
+    res.status(201).json({
+      id: club.id,
+      name: club.name,
+      description: club.description,
+    });
+  } else {
+    res.status(400);
+    throw new Error('Club not found');
+  }
 });
 
-// @desc get clubs
+// @desc Update Club
 // @route PUT /api/clubs/:id
 // @access Private
-const updateClubs = asyncHandler(async (req, res) => {
-  const club = await Club.findById(req.params.id);
+const updateClub = asyncHandler(async (req, res) => {
+  const { id } = req.params;
+
+  const club = await Club.findById({ _id: id });
+
   if (!club) {
     res.status(400);
-    throw new Error("Club not found");
+    throw new Error('Club not found');
   }
 
-  const updatedClub = await Club.findByIdAndUpdate(req.params.id, req.body, {
+  const updatedClub = await Club.findByIdAndUpdate(id, req.body, {
     new: true,
   });
-  res.status(200).json(updatedClub);
+
+  if (updatedClub) {
+    res.status(201).json({
+      id: updatedClub.id,
+      name: updatedClub.name,
+      description: updatedClub.description,
+    });
+  } else {
+    res.status(400);
+    throw new Error('Club not found');
+  }
 });
 
-// @desc get clubs
+// @desc Delete Club
 // @route Delete /api/clubs/:id
 // @access Private
-const deleteClubs = asyncHandler(async (req, res) => {
-  const club = await Club.findById(req.params.id);
+const deleteClub = asyncHandler(async (req, res) => {
+  const { id } = req.params;
+
+  const club = await Club.findById({ _id: id });
+
   if (!club) {
     res.status(400);
-    throw new Error("Club not found");
+    throw new Error('Club not found');
   }
 
   await club.remove();
-  res.status(200).json({ id: req.params.id });
+
+  res.status(200).json({ id });
 });
 
 module.exports = {
+  createClub,
   getClubs,
-  setClubs,
-  updateClubs,
-  deleteClubs,
+  getClub,
+  updateClub,
+  deleteClub,
 };

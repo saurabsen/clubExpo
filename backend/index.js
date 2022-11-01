@@ -5,12 +5,17 @@ const connectDB = require("./src/config/db");
 const dotenv = require("dotenv");
 dotenv.config();
 const { errorHandler } = require("./src/middleware/errorMiddleware");
+const swaggerUi = require("swagger-ui-express");
+const swaggerDocument = require("./swagger.json");
 
 connectDB();
 
 // App
 const app = express();
 const http = require("http").createServer(app);
+
+// Swagger
+app.use("/swagger", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 // Middleware
 app.use(express.json());
@@ -24,6 +29,8 @@ app.get("/", async (req, res) => {
 
 app.use("/api/clubs", require("./src/routes/clubRoutes"));
 app.use("/api/users", require("./src/routes/userRoutes"));
+app.use("/api/proposals", require("./src/routes/proposalRoutes"));
+app.use("/api/events", require("./src/routes/eventRoutes"));
 
 app.use(errorHandler);
 
