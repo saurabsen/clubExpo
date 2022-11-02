@@ -1,13 +1,9 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react';
-
 import './EventPage.css';
+import { Location, Calender, Money, Clock } from '../../assets';
 import { ReactComponent as DefaultBannerSvg } from '../../assets/banners/default.svg';
-import { ReactComponent as ShareSvg } from '../../assets/icons/share.svg';
-import locationSvg from '../../assets/icons/location.svg';
-import calendarSvg from '../../assets/icons/calendar.svg';
-import moneySvg from '../../assets/icons/money.svg';
-import clockSvg from '../../assets/icons/clock.svg';
+import { ReactComponent as Share } from '../../assets/Icons/share.svg';
 import { Button, TextField } from '@mui/material';
 
 const EventPage = (props) => {
@@ -57,27 +53,27 @@ const EventPage = (props) => {
 
   const getUser = async (userEmail) => {
     const data = JSON.stringify({
-      "email": userEmail
+      email: userEmail
     });
-    
+
     const config = {
       method: 'post',
       url: 'http://localhost:3001/api/users/allusers',
-      headers: { 
+      headers: {
         'Content-Type': 'application/json'
       },
-      data : data
+      data: data
     };
-    
+
     const res = await axios(config);
-    return (res.data)[0];
+    return res.data[0];
   };
 
   const addEventToUserModel = () => {
     const config = {
       method: 'post',
       url: `http://localhost:3001/api/users/${userInfo._id}/attend/${event._id}`,
-      headers: { },
+      headers: {}
     };
     axios(config);
   };
@@ -86,7 +82,7 @@ const EventPage = (props) => {
     const config = {
       method: 'post',
       url: `http://localhost:3001/api/events/${event._id}/attendedby/${userInfo._id}`,
-      headers: { }
+      headers: {}
     };
     axios(config);
   };
@@ -95,7 +91,7 @@ const EventPage = (props) => {
     const config = {
       method: 'post',
       url: `http://localhost:3001/api/users/${userInfo._id}/unattend/${event._id}`,
-      headers: { }
+      headers: {}
     };
     axios(config);
   };
@@ -104,30 +100,29 @@ const EventPage = (props) => {
     const config = {
       method: 'post',
       url: `http://localhost:3001/api/events/${event._id}/unattendedby/${userInfo._id}`,
-      headers: { }
+      headers: {}
     };
     axios(config);
   };
 
   const getMatchingClub = (clubObjs, clubId) => {
-    const matchingClubs = clubObjs.filter(
-      clubObj => (clubObj._id === clubId));
+    const matchingClubs = clubObjs.filter((clubObj) => clubObj._id === clubId);
     return matchingClubs[0];
   };
 
   const updateClubInfo = async () => {
-    console.log("updateClubInfo called");
+    console.log('updateClubInfo called');
     rawClubs = await getClubs();
     setClubInfo(getMatchingClub(rawClubs, event.clubId));
   };
-  
+
   const updateAdminInfo = async () => {
     if (clubInfo) {
-      console.log(">>>>clubinfo",clubInfo);
-      rawAdminInfo = (await getUser(clubInfo.admins[0]));
-      console.log(">>>>rawAdminInfo",rawAdminInfo);
+      console.log('>>>>clubinfo', clubInfo);
+      rawAdminInfo = await getUser(clubInfo.admins[0]);
+      console.log('>>>>rawAdminInfo', rawAdminInfo);
       await setAdminInfo(rawAdminInfo);
-      console.log(">>>>adminInfo",adminInfo);
+      console.log('>>>>adminInfo', adminInfo);
     }
   };
 
@@ -136,12 +131,10 @@ const EventPage = (props) => {
     addUserToEventModel();
     let newEventsAttended = userInfo.eventsAttended;
     newEventsAttended.push(event._id);
-    setUserInfo(
-      {
-        ...userInfo,
-        eventsAttended: newEventsAttended
-      }
-    );
+    setUserInfo({
+      ...userInfo,
+      eventsAttended: newEventsAttended
+    });
   };
 
   const unregisterUser = () => {
@@ -150,20 +143,17 @@ const EventPage = (props) => {
     let newEventsAttended = userInfo.eventsAttended;
     const targetIndex = newEventsAttended.indexOf(event._id);
     newEventsAttended.splice(targetIndex, 1);
-    setUserInfo(
-      {
-        ...userInfo,
-        eventsAttended: newEventsAttended
-      }
-    );
+    setUserInfo({
+      ...userInfo,
+      eventsAttended: newEventsAttended
+    });
   };
-
 
   let rawClubs;
   let rawAdminInfo;
-  
+
   const initEvent = async () => {
-    console.log("initEvent called");
+    console.log('initEvent called');
     try {
       const { eventId } = props;
       const rawEvent = await getEvent(eventId);
@@ -179,54 +169,46 @@ const EventPage = (props) => {
     const eventLoc = userInfo.eventsAttended.indexOf(event._id);
     if (eventLoc !== -1) {
       return (
-        <Button 
-          style={{ width: '100%' }} 
-          variant="outlined"
-          onClick={unregisterUser}
-        >
+        <Button style={{ width: '100%' }} variant="outlined" onClick={unregisterUser}>
           Unregister
         </Button>
       );
     } else {
       return (
-        <Button 
-          style={{ width: '100%' }} 
-          variant="contained"
-          onClick={registerUser}
-        >
+        <Button style={{ width: '100%' }} variant="contained" onClick={registerUser}>
           Register
         </Button>
       );
     }
   };
-  
+
   useEffect(() => {
     initEvent();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [props]);
-  
+
   useEffect(() => {
-    console.log(">>>event", event);
+    console.log('>>>event', event);
     (async () => {
-      setUserInfo(await getUser("nhugnin2@studiopress.com"));
+      setUserInfo(await getUser('nhugnin2@studiopress.com'));
     })();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [event]);
-  
+
   useEffect(() => {
-    console.log(">>>userInfo", userInfo);
+    console.log('>>>userInfo', userInfo);
     if (userInfo) {
       setMainButton(selectButton());
-    };
-    console.log(">>>mainButton", mainButton);
+    }
+    console.log('>>>mainButton', mainButton);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [event, userInfo]);
-  
+
   useEffect(() => {
     updateClubInfo();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [event]);
-  
+
   useEffect(() => {
     updateAdminInfo();
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -236,7 +218,7 @@ const EventPage = (props) => {
     return (
       <div className="eventscard-buttons">
         <Button variant="outlined">
-          <ShareSvg />
+          <Share />
         </Button>
         {mainButton ? mainButton : null}
       </div>
@@ -256,13 +238,13 @@ const EventPage = (props) => {
           <div className="eventscard-footer-line">
             <p>
               <span>
-                <img src={calendarSvg} alt="Date" className="cardicon" />
+                <img src={Calender} alt="Date" className="cardicon" />
               </span>{' '}
               {event.startDate ? new Date(event.startDate).toISOString().substring(0, 10) : ''}
             </p>
             <p>
               <span>
-                <img src={clockSvg} alt="Time" className="cardicon" />
+                <img src={Clock} alt="Time" className="cardicon" />
               </span>{' '}
               {event.time ?? '6:00PM'}
             </p>
@@ -270,13 +252,13 @@ const EventPage = (props) => {
           <div className="eventscard-footer-line">
             <p>
               <span>
-                <img src={locationSvg} alt="Location" className="cardicon" />
+                <img src={Location} alt="Location" className="cardicon" />
               </span>{' '}
               {event.location}
             </p>
             <p>
               <span>
-                <img src={moneySvg} alt="Price" className="cardicon" />
+                <img src={Money} alt="Price" className="cardicon" />
               </span>{' '}
               {event.price ?? 'FREE'}
             </p>
@@ -297,21 +279,21 @@ const EventPage = (props) => {
     };
 
     return (
-      <div className='event-club-info'>
+      <div className="event-club-info">
         <h1>Club Info</h1>
-        <div className='club-admin-img' style={styleClubAdminImg}></div>
+        <div className="club-admin-img" style={styleClubAdminImg}></div>
         <p>{clubInfo.name}</p>
-        <p>{adminInfo.firstName + " " + adminInfo.lastName}</p>
+        <p>{adminInfo.firstName + ' ' + adminInfo.lastName}</p>
       </div>
     );
   };
 
   const renderEventComments = () => {
     return (
-      <div className='event-comments'>
+      <div className="event-comments">
         <div>
           <h4 className="desktop-event-name">Write Comments</h4>
-          <textarea className='comment-textarea' placeholder='Write Comment'/>
+          <textarea className="comment-textarea" placeholder="Write Comment" />
           <Button variant="contained" color="secondary">
             Comment
           </Button>
@@ -331,7 +313,7 @@ const EventPage = (props) => {
           style={{ width: '70%', borderRight: '1px solid rgba(0, 0, 0, 0.1)' }}
         >
           {renderEventDetails()}
-          {adminInfo ? renderClubInfo() : "adminInfor is empty"}
+          {adminInfo ? renderClubInfo() : 'adminInfor is empty'}
           {renderEventComments()}
         </div>
         <div className="event-links">{renderEventLinks()}</div>
