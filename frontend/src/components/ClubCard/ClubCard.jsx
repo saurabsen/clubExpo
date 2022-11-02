@@ -9,7 +9,8 @@ import { Link } from 'react-router-dom';
 const ClubCard = ({
   clubImage="https://picsum.photos/id/237/200/300",
   clubName="Placeholder",
-  clubNumMembers=0
+  clubNumMembers=0,
+  clubId="635cc70ca5cc5e9114f2d03e"
 }) => {
   return (
     <Card sx={{ maxWidth: 345 }}>
@@ -20,7 +21,7 @@ const ClubCard = ({
         alt={`Feature image for club ${clubName}`}
       />
       <CardContent>
-        <Link>
+        <Link to={`/clubs/${clubId}`}>
           <Typography variant="h5" component="div">
             {clubName}
           </Typography>
