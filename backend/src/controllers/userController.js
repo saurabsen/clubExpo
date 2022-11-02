@@ -279,6 +279,7 @@ const removeEventFromUser = asyncHandler(async (req, res) => {
 
 })
 
+
 // @desc Add badge to User
 // @route POST /api/users/:userid/attend/:eventid
 // @access Private
