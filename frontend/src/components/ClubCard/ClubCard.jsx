@@ -4,6 +4,7 @@ import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
+import { Link } from 'react-router-dom';
 
 const ClubCard = ({
   clubImage="https://picsum.photos/id/237/200/300",
@@ -19,9 +20,11 @@ const ClubCard = ({
         alt={`Feature image for club ${clubName}`}
       />
       <CardContent>
-        <Typography variant="h5" component="div">
-          {clubName}
-        </Typography>
+        <Link>
+          <Typography variant="h5" component="div">
+            {clubName}
+          </Typography>
+        </Link>
       </CardContent>
       <CardActions>
         <Typography gutterBottom component="div" sx={{pl:1}}>
