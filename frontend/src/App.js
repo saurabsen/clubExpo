@@ -10,7 +10,7 @@ import ProposalManagement from './views/ProposalManagement/ProposalManagement';
 import { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route, useParams } from 'react-router-dom';
 
-import { Home, ClubsJoined, DiscoverClubs, EventPage } from './views';
+import { Home, ClubsJoined, DiscoverClubs, EventPage, ClubPage } from './views';
 
 const App = () => {
   const pathname = window.location.pathname;
@@ -44,6 +44,11 @@ const App = () => {
     return <EventPage eventId={eventId} />;
   };
 
+  const ClubSinglePage = () => {
+    let { clubId } = useParams();
+    return <ClubPage clubId={clubId} />;
+  };
+
   return (
     <ThemeProvider theme={theme}>
       <Router>
@@ -67,6 +72,7 @@ const App = () => {
                 <Route path="/clubs-joined" element={<ClubsJoined />} />
                 <Route path="/discover-clubs" element={<DiscoverClubs />} />
                 <Route path="/events/:eventId" element={<UserEventsPage />} />
+                <Route path="/clubs/:clubId" element={<ClubPage />} />
               </Routes>
             </Grid>
           </Grid>
