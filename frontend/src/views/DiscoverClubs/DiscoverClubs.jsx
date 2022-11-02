@@ -53,6 +53,7 @@ const DiscoverClubs = () => {
               clubImage={club.logoImage}
               clubName={club.name}
               clubNumMembers={club.acceptedMembers.length}
+              clubId={club._id}
             />
           </Grid>
     );});}
@@ -65,14 +66,6 @@ const DiscoverClubs = () => {
       <Box sx={{ flexGrow: 1 }}>
         <Grid container spacing={2} sx={{ p:2}}>
           {renderClubCards(clubList)}
-          {/* <Grid item xs={4}>
-          </Grid>
-          <Grid item xs={4}>
-            <ClubCard />
-          </Grid>
-          <Grid item xs={4}>
-            <ClubCard />
-          </Grid> */}
         </Grid>
       </Box>
     </>
