@@ -12,17 +12,6 @@ const EventPage = (props) => {
   const [adminInfo, setAdminInfo] = useState();
   const [userInfo, setUserInfo] = useState();
   const [mainButton, setMainButton] = useState();
-  // const event = useRef({});
-  // const clubInfo = useRef({});
-  // const clubInfo = useRef({});
-
-  // const userInfo = {
-  //   _id: '6359ac5abd38379ca3d35aa9',
-  //   eventsAttended: [],
-  //   clubsJoined: [
-  //     "63573f4a54aef5c865de7107"
-  //   ]
-  // };
 
   const getEvent = async (eventId) => {
     const config = {
