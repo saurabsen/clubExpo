@@ -72,7 +72,7 @@ const App = () => {
                 <Route path="/clubs-joined" element={<ClubsJoined />} />
                 <Route path="/discover-clubs" element={<DiscoverClubs />} />
                 <Route path="/events/:eventId" element={<UserEventsPage />} />
-                <Route path="/clubs/:clubId" element={<ClubPage />} />
+                <Route path="/clubs/:clubId" element={<ClubSinglePage />} />
               </Routes>
             </Grid>
           </Grid>
