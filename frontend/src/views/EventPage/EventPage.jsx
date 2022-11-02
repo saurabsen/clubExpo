@@ -9,7 +9,6 @@ import calendarSvg from '../../assets/icons/calendar.svg';
 import moneySvg from '../../assets/icons/money.svg';
 import clockSvg from '../../assets/icons/clock.svg';
 import { Button, TextField } from '@mui/material';
-import { useRef } from 'react';
 
 const EventPage = (props) => {
   const [event, setEvent] = useState({});
@@ -340,10 +339,17 @@ const EventPage = (props) => {
     );
   };
 
+  const renderBanner = () => {
+    return ({
+      backgroundImage: `url(${event.featureImage})`,
+      backgroundSize: 'cover',
+      height: 300
+    });
+  };
+
   return (
     <>
-      <div className="hero-container">
-        <DefaultBannerSvg className="hero-banner" />
+      <div className="hero-container" style={renderBanner()}>
       </div>
       {event ? renderEventContainer() : ''}
     </>
