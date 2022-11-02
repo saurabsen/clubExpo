@@ -100,6 +100,7 @@ const App = () => {
                   <Route path="/clubs/:clubId" element={<ClubSinglePage />} />
                 </Routes>
               </Grid>
+            </Grid>
           </Box>
         )}
       </Router>

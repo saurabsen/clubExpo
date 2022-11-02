@@ -9,6 +9,7 @@ import EventPage from './EventPage/EventPage';
 import EventsRegistered from './EventsRegistered/EventsRegistered';
 import ClubProposal from './ClubProposal/ClubProposal';
 import ProposalManagement from './ProposalManagement/ProposalManagement';
+import ClubPage from './ClubPage/ClubPage';
 
 export {
   Home,
