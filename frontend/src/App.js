@@ -2,7 +2,6 @@ import '@fontsource/raleway';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { Header } from './components';
 import ClubProposal from './views/ClubProposal/ClubProposal';
-import { Home, ClubsJoined, DiscoverClubs } from './views';
 import SideBar from './components/Sidebar/SideBar';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
@@ -11,9 +10,7 @@ import ProposalManagement from './views/ProposalManagement/ProposalManagement';
 import { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route, useParams } from 'react-router-dom';
 
-import { Header } from './components';
 import { Home, ClubsJoined, DiscoverClubs, EventPage } from './views';
-import SideBar from './components/Sidebar/SideBar';
 
 const App = () => {
   const pathname = window.location.pathname;
