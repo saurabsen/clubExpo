@@ -1,5 +1,5 @@
 //import { events } from '../../common/api';
-import axios from  'axios';
+import axios from 'axios';
 import { FETCH_EVENTS, GET_FETCH_EVENTS_DATA_SUCCESS, GET_FETCH_EVENTS_DATA_ERROR } from './types';
 
 export const getAllEventsData = (queryString) => {
