@@ -15,7 +15,8 @@ import {
   EventPage,
   ClubProposal,
   ProposalManagement,
-  EventsRegistered
+  EventsRegistered,
+  ClubPage
 } from './views';
 import { useActions } from './hooks/useActions';
 import { useTypedSelector } from './hooks/useTypedSelector';
@@ -61,6 +62,11 @@ const App = () => {
     return <EventPage eventId={eventId} />;
   };
 
+  const ClubSinglePage = () => {
+    let { clubId } = useParams();
+    return <ClubPage clubId={clubId} />;
+  };
+
   return (
     <ThemeProvider theme={theme}>
       <Router>
@@ -91,9 +97,9 @@ const App = () => {
                   <Route path="/discover-clubs" element={<DiscoverClubs />} />
                   <Route path="/events-registered" element={<EventsRegistered />} />
                   <Route path="/events/:eventId" element={<UserEventsPage />} />
+                  <Route path="/clubs/:clubId" element={<ClubSinglePage />} />
                 </Routes>
               </Grid>
-            </Grid>
           </Box>
         )}
       </Router>

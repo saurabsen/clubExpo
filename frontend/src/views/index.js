@@ -21,5 +21,6 @@ export {
   EventPage,
   EventsRegistered,
   ClubProposal,
-  ProposalManagement
+  ProposalManagement,
+  ClubPage
 };
