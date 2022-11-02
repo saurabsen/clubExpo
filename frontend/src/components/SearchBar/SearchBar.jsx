@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { TextField } from '@mui/material';
+import { Grid, TextField } from '@mui/material';
 import { Search } from '../../assets';
 import './searchbar.css';
 
@@ -23,26 +23,27 @@ const SearchBar = ({ handleSearch }) => {
   };
 
   return (
-    <div className="searchbar">
-      <div>
-        <img src={Search} alt="Search Icon" />
-      </div>
-
-      <div>
-        <TextField
-          id="standard-search"
-          label="Search"
-          type="search"
-          variant="standard"
-          fullWidth
-          InputProps={{
-            disableUnderline: true
-          }}
-          onChange={handleOnChange}
-          onKeyDown={handleKeyDown}
-        />
-      </div>
-    </div>
+    <>
+      <Grid container alignItems="end" gap="0.6rem">
+        <Grid item>
+          <img src={Search} alt="Search Icon" />
+        </Grid>
+        <Grid item xs={11}>
+          <TextField
+            id="standard-search"
+            label="Search"
+            type="search"
+            variant="standard"
+            fullWidth
+            InputProps={{
+              disableUnderline: true
+            }}
+            onChange={handleOnChange}
+            onKeyDown={handleKeyDown}
+          />
+        </Grid>
+      </Grid>
+    </>
   );
 };
 
