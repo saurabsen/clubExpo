@@ -68,8 +68,8 @@ const Home = () => {
           eventPrice: event.price,
           eventImgUrl: event.featureImage,
           numberOfAttendees: 100,
+          eventId: event._id,
           registerClickHandler: '',
-          cardClickHandler: '',
           shareClickHandler: '',
           attendeeImgUrlList: [
             'https://picsum.photos/200/300?random=1',
@@ -123,7 +123,7 @@ const Home = () => {
                 eventImgUrl={event.eventImgUrl}
                 numberOfAttendees={event.numberOfAttendees}
                 registerClickHandler={event.registerClickHandler}
-                cardClickHandler={event.cardClickHandler}
+                eventId={event.eventId}
                 shareClickHandler={event.shareClickHandler}
                 attendeeImgUrlList={event.attendeeImgUrlList}
                 withinClub={event.withinClub}
