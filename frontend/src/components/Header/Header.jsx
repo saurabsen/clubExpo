@@ -1,20 +1,13 @@
 import { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { Box, Avatar, Menu, MenuItem, Button } from '@mui/material';
 import SearchBar from '../SearchBar/SearchBar';
 import { LogoRectangle, NotificationsOff, NotificationsOn } from '../../assets';
-import Grid from '@mui/material/Grid';
 import './header.css';
-import { useActions } from '../../hooks/useActions';
-import { useTypedSelector } from '../../hooks/useTypedSelector';
 
-const Header = ({ userIsLoggedIn, handleSearch }) => {
+const Header = ({ userIsLoggedIn, handleSearch, handleLogoutUser }) => {
   const [newNotification, setNewNotification] = useState(false);
   const [showProfileModal, setShowProfileModal] = useState(null);
-  const { data } = useTypedSelector((state) => state.auth);
-  const navigate = useNavigate();
-
-  const { logoutUser } = useActions();
 
   const handleShowProfileModal = (e) => {
     setShowProfileModal(e.currentTarget);
@@ -24,10 +17,14 @@ const Header = ({ userIsLoggedIn, handleSearch }) => {
     setShowProfileModal(null);
   };
 
-  const logout = () => {
-    logoutUser();
-    navigate('/');
+  const handleLogout = () => {
+    setShowProfileModal(null);
+    handleLogoutUser();
   };
+
+  useEffect(() => {
+    console.log(showProfileModal);
+  });
 
   return (
     <>
@@ -43,9 +40,7 @@ const Header = ({ userIsLoggedIn, handleSearch }) => {
             backgroundColor: '#fff'
           }}
         >
-          <Link to="/">
-            <img src={LogoRectangle} style={{ width: '130px' }} alt="Clubspace Logo" />
-          </Link>
+          <img src={LogoRectangle} style={{ width: '130px' }} alt="Clubspace Logo" />
         </Box>
       ) : (
         <Box
@@ -62,9 +57,7 @@ const Header = ({ userIsLoggedIn, handleSearch }) => {
             gap: '6rem'
           }}
         >
-          <Link to="/">
-            <img src={LogoRectangle} style={{ width: '130px' }} alt="Clubspace Logo" />
-          </Link>
+          <img src={LogoRectangle} style={{ width: '130px' }} alt="Clubspace Logo" />
           <SearchBar />
           <Box
             sx={{
@@ -95,24 +88,22 @@ const Header = ({ userIsLoggedIn, handleSearch }) => {
                 src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=988&q=80"
                 sx={{ cursor: 'pointer' }}
                 onClick={handleShowProfileModal}
-              />
-              <div>
-                <Menu
-                  anchorEl={showProfileModal}
-                  open={Boolean(showProfileModal)}
-                  onClose={handleCloseProfileModal}
-                >
-                  <Link to="/profile">
-                    <MenuItem>Profile</MenuItem>
-                  </Link>
-                  <Link to="/proposal">
-                    <MenuItem>Club Proposal</MenuItem>
-                  </Link>
-                  <Link onClick={logout}>
-                    <MenuItem>Logout</MenuItem>
-                  </Link>
-                </Menu>
-              </div>
+              ></Avatar>
+              <Menu
+                anchorEl={showProfileModal}
+                open={Boolean(showProfileModal)}
+                onClose={handleCloseProfileModal}
+              >
+                <Link to="/profile">
+                  <MenuItem>Profile</MenuItem>
+                </Link>
+                <Link to="/proposal">
+                  <MenuItem>Club Proposal</MenuItem>
+                </Link>
+                <Link onClick={handleLogout}>
+                  <MenuItem>Logout</MenuItem>
+                </Link>
+              </Menu>
             </Box>
           </Box>
         </Box>
