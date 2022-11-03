@@ -5,15 +5,18 @@ import { Typography } from '@mui/material';
 import axios from 'axios';
 import { useState } from 'react';
 import { useEffect } from 'react';
+import { Link } from 'react-router-dom';
 
 const Home = () => {
   const [events, setEvents] = useState([]);
   const [upcomingEvs, setUpcomingEvs] = useState([]);
   const [clubList, setClubList] = useState([]);
+  const [userInfo, setUserInfo] = useState();
 
   const getEvents = async () => {
     const data = JSON.stringify({
-      clubIds: ['1234', '2345', '63573f4a54aef5c865de7107', '635cc70ca5cc5e9114f2d03e']
+      // clubIds: ['1234', '2345', '63573f4a54aef5c865de7107', '635cc70ca5cc5e9114f2d03e']
+      clubIds: userInfo.clubsJoined
     });
     const config = {
       method: 'post',
@@ -28,6 +31,25 @@ const Home = () => {
     const res = await axios(config);
     return res.data;
   };
+
+  const getUser = async (userEmail) => {
+    const data = JSON.stringify({
+      email: userEmail
+    });
+
+    const config = {
+      method: 'post',
+      url: 'http://localhost:3001/api/users/allusers',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      data: data
+    };
+
+    const res = await axios(config);
+    return res.data[0];
+  };
+
 
   const getClubs = async () => {
     const config = {
@@ -57,6 +79,9 @@ const Home = () => {
 
       rawEvents.forEach((event) => {
         const dayStart = new Date(event.startDate);
+        const registeredBoolean = (
+          userInfo.eventsAttended && userInfo.eventsAttended.indexOf(event._id) !== -1 ? true : false
+          );
         const eventObj = {
           clubName: clubDict[[event.clubId]],
           clubLogoUrl: 'https://picsum.photos/200/200',
@@ -79,7 +104,7 @@ const Home = () => {
             'https://picsum.photos/200/300?random=5'
           ],
           withinClub: false,
-          registered: false,
+          registered: registeredBoolean,
           clubAdminView: false
         };
         formattedEvents.push(eventObj);
@@ -90,11 +115,20 @@ const Home = () => {
       console.log('failed to initialize component Home');
     }
   };
+
+  useEffect(() => {
+    (async () => {
+      setUserInfo(await getUser(localStorage.user.email));
+    })();
+  }, []);
   
   useEffect(() => {
-    initComponent();
+    if (userInfo) {
+      localStorage.user = JSON.stringify(userInfo);
+      initComponent();
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [userInfo]);
 
   const styleLatestEvents = {
     fontFamily: 'Oswald',
