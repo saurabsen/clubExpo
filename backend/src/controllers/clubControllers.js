@@ -63,6 +63,16 @@ const getClub = asyncHandler(async (req, res) => {
       id: club.id,
       name: club.name,
       description: club.description,
+      logoImage: club.logoImage,
+      coverImage: club.coverImage,
+      createdBy: club.createdBy,
+      admins: club.admins,
+      acceptedMembers: club.acceptedMembers,
+      pendingMembers: club.pendingMembers,
+      events: club.events,
+      badges: club.badges,
+      status: club.status,
+      tags: club.tags,
     });
   } else {
     res.status(400);
