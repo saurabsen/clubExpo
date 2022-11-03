@@ -15,7 +15,8 @@ import {
   EventPage,
   ClubProposal,
   ProposalManagement,
-  EventsRegistered
+  EventsRegistered,
+  ClubDetail
 } from './views';
 import { useActions } from './hooks/useActions';
 import { useTypedSelector } from './hooks/useTypedSelector';
@@ -24,6 +25,7 @@ const App = () => {
   const pathname = window.location.pathname;
   const [searchResults, setSearchResults] = useState([]);
   const [userIsLoggedIn, setUserIsLoggedIn] = useState(false);
+  const noSidebar = ['/proposal', '/clubs'];
 
   const { data } = useTypedSelector((state) => state.auth);
 
@@ -71,7 +73,7 @@ const App = () => {
           </Routes>
         ) : (
           <Box sx={{ flexGrow: 1 }}>
-            <Grid container>
+            <Grid container spacing={2}>
               {pathname === '/proposal' ? (
                 ''
               ) : (
@@ -79,7 +81,7 @@ const App = () => {
                   <SideBar user={data} />
                 </Grid>
               )}
-              <Grid item xs={pathname === '/proposal' ? 12 : 10}>
+              <Grid item xs={noSidebar.includes(pathname) ? 12 : 10}>
                 <Routes>
                   <Route exact path="/" element={<Home />} />
                   <Route path="/admin-dashboard" element={<AdminDashboard />} />
@@ -88,6 +90,7 @@ const App = () => {
                   <Route path="/club-requests" element={<ClubRequests />} />
                   <Route path="/clubs-joined" element={<ClubsJoined />} />
                   <Route path="/clubs-managed" element={<ClubsManaged />} />
+                  <Route path="/clubs/:id" element={<ClubDetail />} />
                   <Route path="/discover-clubs" element={<DiscoverClubs />} />
                   <Route path="/events-registered" element={<EventsRegistered />} />
                   <Route path="/events/:eventId" element={<UserEventsPage />} />
