@@ -1,3 +1,4 @@
+import { Typography } from '@mui/material';
 import './upcomingevents.css';
 
 const UpcomingEvents = ({ upcomingEvents }) => {
@@ -59,11 +60,17 @@ const UpcomingEvents = ({ upcomingEvents }) => {
     }
   };
 
+  const renderNoEvents = () => {
+    return (
+      <Typography>No events to show</Typography>
+    );
+  };
+
 
   return (
     <div className="upcomingevents">
       <h4>Upcoming Events</h4>
-
+      {upcomingEvents !== [] ? renderNoEvents() : ''}
       {sortedEvents.map((event, i) => {
         const eventDate = event.eventDate;
 
