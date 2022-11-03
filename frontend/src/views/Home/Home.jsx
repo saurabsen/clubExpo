@@ -5,13 +5,14 @@ import { Typography } from '@mui/material';
 import axios from 'axios';
 import { useState } from 'react';
 import { useEffect } from 'react';
-import { Link } from 'react-router-dom';
 
 const Home = () => {
   const [events, setEvents] = useState([]);
   const [upcomingEvs, setUpcomingEvs] = useState([]);
   const [clubList, setClubList] = useState([]);
   const [userInfo, setUserInfo] = useState();
+
+  const sanitizedToken = localStorage.userToken.replaceAll('"','');
 
   const getEvents = async () => {
     const data = JSON.stringify({
@@ -24,7 +25,7 @@ const Home = () => {
       headers: {
         'Content-Type': 'application/json',
         Authorization:
-          'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MzUwMmRiMzRhMjcwYmY0ZDFhMjc5MWIiLCJpYXQiOjE2NjYxOTg5NjMsImV4cCI6MTY2ODc5MDk2M30.lPOmtB9fdmlIhDIj_R4yAvnt04ZWmuReNPNESVAak_8'
+          'Bearer ' + sanitizedToken
       },
       data: data
     };
@@ -32,24 +33,17 @@ const Home = () => {
     return res.data;
   };
 
-  const getUser = async (userEmail) => {
-    const data = JSON.stringify({
-      email: userEmail
-    });
-
+  const getUserByToken = async (token) => {
     const config = {
-      method: 'post',
-      url: 'http://localhost:3001/api/users/allusers',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      data: data
+      method: 'get',
+      url: 'http://localhost:3001/api/users/me',
+      headers: { 
+        'Authorization': `Bearer ${token}`
+      }
     };
-
     const res = await axios(config);
-    return res.data[0];
+    return res.data;
   };
-
 
   const getClubs = async () => {
     const config = {
@@ -57,7 +51,7 @@ const Home = () => {
       url: 'http://localhost:3001/api/clubs/',
       headers: {
         Authorization:
-          'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MzU5YWQ0MmJkMzgzNzljYTNkMzViZDAiLCJpYXQiOjE2NjY4MjE0NDIsImV4cCI6MTY2OTQxMzQ0Mn0._SaFCeAaa-BQVmC-tGPcczEcoad_3XOfONKzMFqeqRY'
+          'Bearer ' + sanitizedToken
       }
     };
 
@@ -118,8 +112,9 @@ const Home = () => {
 
   useEffect(() => {
     (async () => {
-      setUserInfo(await getUser(localStorage.user.email));
+      setUserInfo(await getUserByToken(sanitizedToken));
     })();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   
   useEffect(() => {
