@@ -97,10 +97,7 @@ const App = () => {
                 <SideBar />
               </Grid>
             )}
-            <Grid
-              item
-              xs={pathname === '/proposal' || pathname === '/proposals/:proposalId' ? 12 : 10}
-            >
+            <Grid item xs={pathname === '/proposal' ? 12 : 10}>
               <Routes>
                 <Route path="/home" element={<Home />} />
                 <Route path="/admin-dashboard" element={<AdminDashboard />} />
