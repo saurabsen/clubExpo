@@ -22,10 +22,6 @@ const Header = ({ userIsLoggedIn, handleSearch, handleLogoutUser }) => {
     handleLogoutUser();
   };
 
-  useEffect(() => {
-    console.log(showProfileModal);
-  });
-
   return (
     <>
       {!userIsLoggedIn ? (
@@ -97,7 +93,7 @@ const Header = ({ userIsLoggedIn, handleSearch, handleLogoutUser }) => {
                 <Link to="/profile">
                   <MenuItem>Profile</MenuItem>
                 </Link>
-                <Link to="/proposal">
+                <Link to="/submit-proposal">
                   <MenuItem>Club Proposal</MenuItem>
                 </Link>
                 <Link onClick={handleLogout}>

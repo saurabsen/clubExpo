@@ -1,6 +1,6 @@
 // import '@fontsource/raleway';
 import { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route, useParams, useNavigate } from 'react-router-dom';
+import { Routes, Route, useParams, useNavigate } from 'react-router-dom';
 import { Box, Grid } from '@mui/material';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { Header, SideBar } from './components';
@@ -15,7 +15,8 @@ import {
   EventPage,
   ClubProposal,
   ProposalManagement,
-  EventsRegistered
+  EventsRegistered,
+  Proposal
 } from './views';
 import { useActions } from './hooks/useActions';
 import { useTypedSelector } from './hooks/useTypedSelector';
@@ -96,11 +97,14 @@ const App = () => {
                 <SideBar />
               </Grid>
             )}
-            <Grid item xs={pathname === '/proposal' ? 12 : 10}>
+            <Grid
+              item
+              xs={pathname === '/proposal' || pathname === '/proposals/:proposalId' ? 12 : 10}
+            >
               <Routes>
                 <Route path="/home" element={<Home />} />
                 <Route path="/admin-dashboard" element={<AdminDashboard />} />
-                <Route path="/proposal" element={<ClubProposal />} />
+                <Route path="/submit-proposal" element={<ClubProposal />} />
                 <Route path="/all-proposal" element={<ProposalManagement />} />
                 <Route path="/club-requests" element={<ClubRequests />} />
                 <Route path="/clubs-joined" element={<ClubsJoined />} />
@@ -108,6 +112,7 @@ const App = () => {
                 <Route path="/discover-clubs" element={<DiscoverClubs />} />
                 <Route path="/events-registered" element={<EventsRegistered />} />
                 <Route path="/events/:eventId" element={<UserEventsPage />} />
+                <Route path="/proposals/:proposalId" element={<Proposal />} />
               </Routes>
             </Grid>
           </Grid>

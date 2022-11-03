@@ -1,6 +1,6 @@
-const asyncHandler = require("express-async-handler");
-const Proposal = require("../models/proposalModel");
-const Club = require("../models/clubModel");
+const asyncHandler = require('express-async-handler');
+const Proposal = require('../models/proposalModel');
+const Club = require('../models/clubModel');
 
 // @desc submit proposal
 // @route POST /api/proposals
@@ -17,19 +17,12 @@ const submitProposal = asyncHandler(async (req, res) => {
     clubInterest,
     clubActivities,
     createdBy,
-    createrName,
+    creatorName
   } = req.body;
 
-  if (
-    !clubName ||
-    !description ||
-    !noOfEventsMonth ||
-    !members ||
-    !createdBy ||
-    !createrName
-  ) {
+  if (!clubName || !description || !noOfEventsMonth || !members || !createdBy) {
     res.status(400);
-    throw new Error("Please enter all the required details");
+    throw new Error('Please enter all the required details');
   }
 
   const proposal = await Proposal.create({
@@ -38,24 +31,23 @@ const submitProposal = asyncHandler(async (req, res) => {
     noOfEventsMonth,
     createdBy,
     members,
-    approvalStatus: "Pending",
-    approvalStatusReason: "",
+    approvalStatus: 'Pending',
+    approvalStatusReason: '',
     isManageClub,
     clubPurpose,
     clubInterest,
     clubActivities,
-    createrName,
+    creatorName
   });
 
   if (proposal) {
     res.status(201).json({
       id: proposal.id,
       clubName: proposal.clubName,
-      createrName: proposal.createrName,
     });
   } else {
     res.status(400);
-    throw new Error("Invalid Proposal");
+    throw new Error('Invalid Proposal');
   }
 });
 
@@ -69,7 +61,7 @@ const getOneProposal = asyncHandler(async (req, res) => {
 
   if (!targetProposal) {
     res.status(404);
-    throw new Error("Proposal not found.");
+    throw new Error('Proposal not found.');
   }
 
   res.status(200).json(targetProposal);
@@ -114,29 +106,15 @@ const updateProposal = asyncHandler(async (req, res) => {
 
   if (!targetProposal) {
     res.status(404);
-    throw new Error("Proposal not found");
+    throw new Error('Proposal not found');
   }
 
-  const {
-    clubName,
-    description,
-    noOfEventsMonth,
-    requestedBy,
-    members,
-    approvalStatus,
-    approvalStatusReason,
-  } = req.body;
+  const { clubName, description, noOfEventsMonth, requestedBy, members, approvalStatus, approvalStatusReason } =
+    req.body;
 
-  if (
-    !clubName ||
-    !description ||
-    !noOfEventsMonth ||
-    !requestedBy ||
-    !members ||
-    !approvalStatus
-  ) {
+  if (!clubName || !description || !noOfEventsMonth || !requestedBy || !members || !approvalStatus) {
     res.status(400);
-    throw new Error("Please enter all the required details");
+    throw new Error('Please enter all the required details');
   }
 
   targetProposal.clubName = clubName;
@@ -161,14 +139,14 @@ const deleteProposal = asyncHandler(async (req, res) => {
   const targetProposal = await Proposal.findOne({ _id: proposalId });
 
   if (!targetProposal) {
-    res.status(404).json({ message: "Proposal not found" });
+    res.status(404).json({ message: 'Proposal not found' });
   }
 
   await Proposal.deleteOne({ _id: proposalId }).then((err) => {
     if (err) {
       console.log(err);
     }
-    res.status(200).json({ message: "Successfully deleted" });
+    res.status(200).json({ message: 'Successfully deleted' });
   });
 });
 
