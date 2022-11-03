@@ -27,6 +27,9 @@ const Header = ({ userIsLoggedIn, handleSearch }) => {
   const logout = () => {
     logoutUser();
     navigate('/');
+    if (window.location.pathname === '/') {
+      window.location.reload();
+    }
   };
 
   return (
