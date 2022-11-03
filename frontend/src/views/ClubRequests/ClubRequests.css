@@ -1,0 +1,9 @@
+.table-head {
+  background: #f3effb;
+  border-radius: 8px;
+}
+
+.table-row {
+  border: 0;
+  /* border-bottom: 1px solid #e0e2e0; */
+}
