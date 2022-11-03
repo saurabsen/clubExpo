@@ -13,6 +13,7 @@ const EventPage = (props) => {
   const [userInfo, setUserInfo] = useState();
   const [mainButton, setMainButton] = useState();
 
+
   const getEvent = async (eventId) => {
     const config = {
       method: 'get',
@@ -115,7 +116,11 @@ const EventPage = (props) => {
     addEventToUserModel();
     addUserToEventModel();
     let newEventsAttended = userInfo.eventsAttended;
-    newEventsAttended.push(event._id);
+    if (newEventsAttended) {
+      newEventsAttended.push(event._id);
+    } else {
+      newEventsAttended = [event._id];
+    }
     setUserInfo({
       ...userInfo,
       eventsAttended: newEventsAttended
@@ -148,7 +153,14 @@ const EventPage = (props) => {
   };
 
   const selectButton = () => {
-    const eventLoc = userInfo.eventsAttended.indexOf(event._id);
+    let eventLoc;
+    eventLoc = userInfo.eventsAttended.indexOf(event._id);
+    console.log(eventLoc);
+    console.log(userInfo.eventsAttended);
+    // if (userInfo.eventsAttended) {
+    // } else {
+    //   eventLoc = -1;
+    // }
     if (eventLoc !== -1) {
       return (
         <Button style={{ width: '100%' }} variant="outlined" onClick={unregisterUser}>
@@ -171,13 +183,14 @@ const EventPage = (props) => {
 
   useEffect(() => {
     (async () => {
-      setUserInfo(await getUser('nhugnin2@studiopress.com'));
+      setUserInfo(JSON.parse(localStorage.user));
     })();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [event]);
 
   useEffect(() => {
     if (userInfo) {
+      localStorage.user = JSON.stringify(userInfo);
       setMainButton(selectButton());
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
