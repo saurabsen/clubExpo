@@ -155,8 +155,6 @@ const EventPage = (props) => {
   const selectButton = () => {
     let eventLoc;
     eventLoc = userInfo.eventsAttended.indexOf(event._id);
-    console.log(eventLoc);
-    console.log(userInfo.eventsAttended);
     // if (userInfo.eventsAttended) {
     // } else {
     //   eventLoc = -1;
