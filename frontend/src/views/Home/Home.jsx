@@ -1,10 +1,11 @@
 import EventsCard from '../../components/EventsCard/EventsCard';
 import UpcomingEvents from '../../components/UpcomingEvents/UpcomingEvents';
 import Grid from '@mui/material/Grid';
-import { Typography } from '@mui/material';
+import { Typography, Button } from '@mui/material';
 import axios from 'axios';
 import { useState } from 'react';
 import { useEffect } from 'react';
+import { Link } from 'react-router-dom';
 
 const Home = () => {
   const [events, setEvents] = useState([]);
@@ -110,6 +111,15 @@ const Home = () => {
     }
   };
 
+  const renderNoEvents = () => {
+    return (
+      <>
+      <Typography sx={{fontSize: 16, color: '#808780', mb: '24px'}}>Looks like you haven’t joined any clubs. Try joining clubs to see events happening.</Typography>
+      <Link to='/discover-clubs'><Button variant='contained' sx={{fontSize: 16, px: '39.5px', py: '16px'}}>Discover Clubs</Button></Link>
+      </>
+    );
+  };
+
   useEffect(() => {
     (async () => {
       setUserInfo(await getUserByToken(sanitizedToken));
@@ -138,6 +148,7 @@ const Home = () => {
       <Grid container xs={12} columnSpacing={{ xs: 3 }}>
         <Grid item xs={9}>
           <Typography sx={styleLatestEvents}>Latest Events</Typography>
+          {events !== [] ? renderNoEvents() : ''}
           {events.map((event) => {
             return (
               <EventsCard
