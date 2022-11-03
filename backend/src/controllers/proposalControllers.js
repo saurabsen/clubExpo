@@ -6,10 +6,28 @@ const Club = require("../models/clubModel");
 // @route POST /api/proposals
 // @access Public
 const submitProposal = asyncHandler(async (req, res) => {
-  const { id } = req.user; // authenticated user who is calling this func
-  const { clubName, description, noOfEventsMonth, members } = req.body;
+  // const { id } = req.user; // authenticated user who is calling this func
+  const {
+    clubName,
+    description,
+    noOfEventsMonth,
+    members,
+    isManageClub,
+    clubPurpose,
+    clubInterest,
+    clubActivities,
+    createdBy,
+    createrName,
+  } = req.body;
 
-  if (!clubName || !description || !noOfEventsMonth || !members) {
+  if (
+    !clubName ||
+    !description ||
+    !noOfEventsMonth ||
+    !members ||
+    !createdBy ||
+    !createrName
+  ) {
     res.status(400);
     throw new Error("Please enter all the required details");
   }
@@ -18,17 +36,22 @@ const submitProposal = asyncHandler(async (req, res) => {
     clubName,
     description,
     noOfEventsMonth,
-    createdBy: id,
+    createdBy,
     members,
-    approvalStatus: "",
+    approvalStatus: "Pending",
     approvalStatusReason: "",
+    isManageClub,
+    clubPurpose,
+    clubInterest,
+    clubActivities,
+    createrName,
   });
 
   if (proposal) {
     res.status(201).json({
       id: proposal.id,
       clubName: proposal.clubName,
-      createdBy: proposal.createdBy,
+      createrName: proposal.createrName,
     });
   } else {
     res.status(400);
@@ -39,7 +62,7 @@ const submitProposal = asyncHandler(async (req, res) => {
 // @desc Get one proposal using id
 // @route GET /api/proposals/:proposalId
 // @access Public
-const getProposal = asyncHandler(async (req, res) => {
+const getOneProposal = asyncHandler(async (req, res) => {
   const { proposalId } = req.params;
 
   const targetProposal = await Proposal.findOne({ _id: proposalId });
@@ -61,7 +84,7 @@ Body should be structured as follows:
   "statusArray" : ["statusCode1", "statusCode2", ...]
 }
 */
-const getProposalsByStatus = asyncHandler(async (req, res) => {
+const getMultipleProposalsByStatus = asyncHandler(async (req, res) => {
   const { statusArray } = req.body;
 
   const proposals = await Proposal.find({});
@@ -151,8 +174,8 @@ const deleteProposal = asyncHandler(async (req, res) => {
 
 module.exports = {
   submitProposal,
-  getProposal,
-  getProposalsByStatus,
+  getOneProposal,
+  getMultipleProposalsByStatus,
   updateProposal,
   deleteProposal,
 };

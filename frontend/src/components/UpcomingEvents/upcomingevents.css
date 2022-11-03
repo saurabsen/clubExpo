@@ -1,0 +1,61 @@
+.upcomingevents p {
+  margin: 0;
+}
+
+.upcomingevents h4 {
+  margin-bottom: 24px;
+}
+
+.upcomingevents .monthname {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 16px;
+}
+
+.upcomingevents .monthname:not(:first-of-type) {
+  margin-top: 16px;
+}
+
+.upcomingevents .event-container {
+  display: grid;
+  grid-template-columns: 64px 1fr;
+  column-gap: 12px;
+  margin-bottom: 22px;
+}
+
+.upcomingevents .event-date {
+  grid-column: 1;
+  grid-row: 1 / 3;
+  border-radius: 8px;
+  height: 64px;
+  width: 64px;
+  background-color: hsla(260, 60%, 96%, 1);
+  display: grid;
+  place-items: center;
+  text-align: center;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 18.78px;
+}
+
+.upcomingevents .event-title {
+  grid-column: 2;
+  grid-row: 1;
+  align-self: center;
+}
+
+.upcomingevents .event-title p {
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.upcomingevents .clubname {
+  grid-column: 2;
+  grid-row: 2;
+  color: rgba(0, 0, 0, 0.5);
+}
+
+.upcomingevents .clubname p {
+  font-size: 12px;
+  font-weight: 600;
+}

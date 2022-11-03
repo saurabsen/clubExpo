@@ -1,0 +1,207 @@
+.eventscard {
+  border: 1px solid hsla(120, 1%, 89%, 1);
+  padding: 24px 24px;
+  border-radius: 8px;
+  margin-bottom: 24px;
+  box-shadow: 2px 2px 2px hsla(0, 0%, 0%, 0.08);
+  box-sizing: border-box;
+  /* max-width: 783px; */
+}
+
+.eventscard:first-child {
+  margin-top: 16px;
+}
+
+.eventscard p {
+  margin: 0;
+}
+
+.eventscard img {
+  width: 1.4rem;
+}
+
+.eventscard-clubbrand {
+  display: flex;
+  flex-flow: row;
+  align-items: center;
+  font-size: 16px;
+  height: 1.2rem;
+  gap: 8px;
+}
+
+.eventscard-clubbrand p {
+  margin: 0.15rem 0 0 0;
+  color: hsla(113, 8%, 44%, 1);
+  font-weight: 600;
+}
+
+.eventscard-clubbrand-logo {
+  background-size: cover;
+  border-radius: 50%;
+  height: 24px;
+  width: 24px;
+}
+
+.eventscard h4 {
+  margin: 12px 0 8px 0;
+  font-size: 20px;
+}
+
+.eventscard .desktopEventName {
+  display: none;
+}
+
+.eventscard-main {
+  margin-bottom: 16px;
+  color: hsla(120, 5%, 53%, 1);
+  line-height: 25.6px;
+}
+
+.eventscard-main-image {
+  background-position: center;
+  background-size: cover;
+  height: 182px;
+  width: 100%;
+  margin-top: 22px;
+  margin-bottom: 5px;
+  border-radius: 8px;
+  box-sizing: 'border-box';
+}
+
+.eventscard-footer {
+  font-weight: 500;
+}
+
+.eventscard-footer-line {
+  display: flex;
+  flex-flow: row;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+.eventscard-footer-line:last-child {
+  margin-bottom: 0;
+}
+
+.eventscard-footer-line .cardicon {
+  margin-bottom: -7px;
+  filter: brightness(0) saturate(100%) invert(58%) sepia(1%) saturate(2021%) hue-rotate(67deg)
+    brightness(119%) contrast(66%);
+}
+
+.attendees-section {
+  display: flex;
+  flex-flow: row;
+  align-items: center;
+  gap: 5px;
+  color: hsla(267, 77%, 26%, 1);
+}
+
+.attendee-photos {
+  display: flex;
+  flex-flow: row;
+}
+
+.eventscard-attendee {
+  height: 24px;
+  width: 24px;
+  border-radius: 50%;
+  border: 1px solid white;
+}
+
+.eventscard-attendee:not(:first-child) {
+  margin-left: -10px;
+}
+
+.eventscard-footer .attendee1 {
+  z-index: 5;
+}
+
+.eventscard-footer .attendee2 {
+  z-index: 4;
+}
+
+.eventscard-footer .attendee3 {
+  z-index: 3;
+}
+
+.eventscard-footer .attendee4 {
+  z-index: 2;
+}
+
+.eventscard-footer .attendee5 {
+  z-index: 1;
+}
+
+.eventscard-buttons {
+  display: none;
+}
+
+@media screen and (min-width: 481px) {
+  .eventscard {
+    display: grid;
+    grid-template-columns: 1fr 278px;
+    column-gap: 24px;
+    padding: 24px 16px 19px 16px;
+  }
+
+  .eventscard > * {
+    grid-column: 1;
+  }
+
+  .eventscard-img-btn-wrapper {
+    grid-column: 2;
+    grid-row: 1 / 4;
+    display: flex;
+    flex-flow: row wrap;
+    row-gap: 16px;
+  }
+
+  .eventscard .mobileEventName {
+    display: none;
+  }
+
+  .eventscard .desktopEventName {
+    display: inline-block;
+  }
+
+  .eventscard-main-image {
+    margin: 0;
+    flex: 1 1 200px;
+    height: 182px;
+    margin-top: 0;
+  }
+
+  .eventscard-buttons {
+    width: 100%;
+    display: flex;
+    flex-flow: row;
+    justify-content: space-between;
+    column-gap: 16px;
+  }
+
+  .eventscard-buttons button {
+    height: 51px;
+    border-radius: 8px;
+    font-family: 'Raleway', sans-serif;
+    font-size: 16px;
+    font-weight: 500;
+  }
+
+  .eventscard-btn-share {
+    width: 72px;
+    border: 1px solid hsla(112, 100%, 6%, 1);
+    background-color: white;
+  }
+
+  .eventscard-btn-register {
+    width: 190px;
+    border: none;
+    background-color: hsla(263, 73%, 43%, 1);
+    color: white;
+  }
+
+  .eventscard-footer-line {
+    justify-content: start;
+    gap: 37px;
+  }
+}
