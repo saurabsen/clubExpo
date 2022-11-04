@@ -148,7 +148,7 @@ const Home = () => {
       <Grid container xs={12} columnSpacing={{ xs: 3 }}>
         <Grid item xs={9}>
           <Typography sx={styleLatestEvents}>Latest Events</Typography>
-          {events !== [] ? renderNoEvents() : ''}
+          {events.length ? '' : renderNoEvents()}
           {events.map((event) => {
             return (
               <EventsCard
