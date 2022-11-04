@@ -3,6 +3,7 @@ import { Location, Calender, Money, Clock } from '../../assets';
 import { ReactComponent as Share } from '../../assets/Icons/share.svg';
 import Button from '@mui/material/Button';
 import ButtonDropMenu from '../ButtonDropMenu/ButtonDropMenu';
+import { Link } from 'react-router-dom';
 
 const EventsCard = ({
   clubName,
@@ -16,7 +17,7 @@ const EventsCard = ({
   eventImgUrl,
   numberOfAttendees,
   registerClickHandler,
-  cardClickHandler,
+  eventId,
   shareClickHandler,
   attendeeImgUrlList,
   withinClub = false,
@@ -45,7 +46,9 @@ const EventsCard = ({
     <div className="eventscard">
       <div className="eventscard-header">
         {withinClub === false ? clubBrand : ''}
-        <h4 className="desktopEventName">{eventName}</h4>
+        <h4 className="desktopEventName">
+          <Link to={`/events/${eventId}`}>{eventName}</Link>
+        </h4>
       </div>
       <div className="eventscard-img-btn-wrapper">
         <div
@@ -71,7 +74,12 @@ const EventsCard = ({
             </span>{' '}
             {eventDate}
           </p>
-          <p><span><img src={Clock} alt="Time" className='cardicon'/></span> {eventTime}</p>
+          <p>
+            <span>
+              <img src={Clock} alt="Time" className="cardicon" />
+            </span>{' '}
+            {eventTime}
+          </p>
         </div>
         <div className="eventscard-footer-line">
           <p>
