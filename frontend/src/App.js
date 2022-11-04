@@ -18,8 +18,7 @@ import {
   EventsRegistered,
   Proposal,
   Profile,
-  ClubPage,
-  CreateEvent
+  ClubPage
 } from './views';
 import { useActions } from './hooks/useActions';
 import { useTypedSelector } from './hooks/useTypedSelector';
@@ -86,7 +85,6 @@ const App = () => {
 
   return (
     <ThemeProvider theme={theme}>
-      <Router>
       <Header
         userIsLoggedIn={userIsLoggedIn}
         handleSearch={handleSearch}
@@ -121,13 +119,11 @@ const App = () => {
                 <Route path="/proposals/:proposalId" element={<Proposal />} />
                 <Route path="/profile" element={<Profile />} />
                 <Route path="/clubs/:clubId" element={<ClubSinglePage />} />
-                <Route path='/createevent' element={<CreateEvent />} />
               </Routes>
             </Grid>
           </Grid>
         </Box>
       )}
-      </Router>
     </ThemeProvider>
   );
 };
