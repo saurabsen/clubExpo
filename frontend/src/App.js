@@ -80,14 +80,13 @@ const App = () => {
         ) : (
           <Box sx={{ flexGrow: 1 }}>
             <Grid container spacing={2}>
-              {pathname === '/proposal' ? (
-                ''
-              ) : (
-                <Grid item xs={2}>
+              {
+                pathname === '/proposal' ? '' : ''
+                /* <Grid item xs={2}>
                   <SideBar user={data} />
-                </Grid>
-              )}
-              <Grid item xs={noSidebar.includes(pathname) ? 12 : 10}>
+                </Grid> */
+              }
+              <Grid item xs={12}>
                 <Routes>
                   <Route exact path="/" element={<Home />} />
                   <Route path="/admin-dashboard" element={<AdminDashboard />} />
