@@ -1,8 +1,8 @@
 import './button.css';
 import { cloneElement } from 'react';
-import { ReactComponent as ShareSvg } from '../../assets/icons/share.svg';
-import { ReactComponent as RightArrowSvg } from '../../assets/icons/right.svg';
-import { ReactComponent as DownArrowSvg } from '../../assets/icons/down.svg';
+import { ReactComponent as ShareSvg } from '../../assets/Icons/share.svg';
+import { ReactComponent as RightArrowSvg } from '../../assets/Icons/right.svg';
+import { ReactComponent as DownArrowSvg } from '../../assets/Icons/down.svg';
 
 const Button = ({
   type = 'filled',
