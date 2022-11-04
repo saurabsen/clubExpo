@@ -18,13 +18,13 @@ export const loginUser = (credentials) => {
     });
 
     try {
-      const data = await axios.post(`http://localhost:3001/api/users/login`, credentials);
+      const data = await axios.post(`users/login`, credentials);
 
       // store JWT in localStorage
       localStorage.setItem('userToken', JSON.stringify(data.data.token));
-
+      axios.defaults.headers.common['Authorization'] = `Bearer ${data.data.token}}`;
       // store user data object in localStorage
-      const user = await axios.get(`http://localhost:3001/api/users/me`, {
+      const user = await axios.get(`users/me`, {
         headers: { Authorization: `Bearer ${data.data.token}` }
       });
 
@@ -34,7 +34,7 @@ export const loginUser = (credentials) => {
 
       dispatch({
         type: GET_LOGIN_DATA_SUCCESS,
-        payload: data
+        payload: user.data
       });
       return data;
     } catch (error) {
@@ -55,13 +55,13 @@ export const getUser = () => {
     try {
       const token = JSON.parse(localStorage.getItem('userToken'));
 
-      const data = await axios.get(`http://localhost:3001/api/users/me`, {
+      const data = await axios.get(`users/me`, {
         headers: { Authorization: `Bearer ${token}` }
       });
 
       dispatch({
         type: GET_FETCH_USER_DATA_SUCCESS,
-        payload: data
+        payload: data.data
       });
       return data;
     } catch (error) {
@@ -90,7 +90,7 @@ export const logoutUser = () => {
 
       dispatch({
         type: GET_LOGOUT_DATA_SUCCESS,
-        payload: data
+        payload: null
       });
       return data;
     } catch (error) {

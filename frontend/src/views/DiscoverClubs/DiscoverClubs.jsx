@@ -18,7 +18,7 @@ const DiscoverClubs = () => {
   const getClubs = async () => {
     const config = {
       method: 'get',
-      url: 'http://localhost:3001/api/clubs/',
+      url: 'clubs/',
       headers: {
         Authorization:
           'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MzU5YWQ0MmJkMzgzNzljYTNkMzViZDAiLCJpYXQiOjE2NjY4MjE0NDIsImV4cCI6MTY2OTQxMzQ0Mn0._SaFCeAaa-BQVmC-tGPcczEcoad_3XOfONKzMFqeqRY'
