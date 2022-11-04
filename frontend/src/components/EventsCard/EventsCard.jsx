@@ -1,6 +1,6 @@
 import './eventscard.css';
 import { Location, Calender, Money, Clock } from '../../assets';
-import { ReactComponent as Share } from '../../assets/Icons/share.svg';
+import { ReactComponent as Share } from '../../assets/icons/share.svg';
 import Button from '@mui/material/Button';
 import ButtonDropMenu from '../ButtonDropMenu/ButtonDropMenu';
 import { Link } from 'react-router-dom';
