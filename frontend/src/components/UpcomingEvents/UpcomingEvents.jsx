@@ -70,7 +70,7 @@ const UpcomingEvents = ({ upcomingEvents }) => {
   return (
     <div className="upcomingevents">
       <h4>Upcoming Events</h4>
-      {upcomingEvents !== [] ? renderNoEvents() : ''}
+      {upcomingEvents.length ? '' : renderNoEvents()}
       {sortedEvents.map((event, i) => {
         const eventDate = event.eventDate;
 
