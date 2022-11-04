@@ -16,7 +16,8 @@ import {
   ClubProposal,
   ProposalManagement,
   EventsRegistered,
-  Proposal
+  Proposal,
+  Profile
 } from './views';
 import { useActions } from './hooks/useActions';
 import { useTypedSelector } from './hooks/useTypedSelector';
@@ -110,6 +111,7 @@ const App = () => {
                 <Route path="/events-registered" element={<EventsRegistered />} />
                 <Route path="/events/:eventId" element={<UserEventsPage />} />
                 <Route path="/proposals/:proposalId" element={<Proposal />} />
+                <Route path="/profile" element={<Profile />} />
               </Routes>
             </Grid>
           </Grid>
