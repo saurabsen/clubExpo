@@ -1,6 +1,6 @@
 // import '@fontsource/raleway';
 import { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route, useParams } from 'react-router-dom';
+import { Routes, Route, useParams, useNavigate } from 'react-router-dom';
 import { Box, Grid } from '@mui/material';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { Header, SideBar } from './components';
@@ -16,6 +16,8 @@ import {
   ClubProposal,
   ProposalManagement,
   EventsRegistered,
+  Proposal,
+  Profile,
   ClubPage,
   CreateEvent
 } from './views';
@@ -27,6 +29,9 @@ const App = () => {
   const [searchResults, setSearchResults] = useState([]);
   const [userIsLoggedIn, setUserIsLoggedIn] = useState(false);
 
+  const navigate = useNavigate();
+
+  const { logoutUser } = useActions();
   const { data } = useTypedSelector((state) => state.auth);
 
   const handleSearch = (searchResults) => {
@@ -36,6 +41,15 @@ const App = () => {
   useEffect(() => {
     if (data) {
       setUserIsLoggedIn(true);
+
+      if (data.userRole === 'member' || data.userRole === 'clubAdmin') {
+        navigate('/home');
+      } else if (data.userRole === 'hubAdmin') {
+        navigate('/admin-dashboard');
+      }
+    } else {
+      setUserIsLoggedIn(false);
+      navigate('/login');
     }
   }, [data]);
 
@@ -68,44 +82,50 @@ const App = () => {
     return <ClubPage clubId={clubId} />;
   };
 
+  const handleLogoutUser = () => logoutUser();
+
   return (
     <ThemeProvider theme={theme}>
-      <Router>
-        <Header userIsLoggedIn={userIsLoggedIn} handleSearch={handleSearch} />
-        {!userIsLoggedIn ? (
-          <Routes>
-            <Route path="/" element={<Login />} />
-          </Routes>
-        ) : (
-          <Box sx={{ flexGrow: 1 }}>
-            <Grid container>
-              {pathname === '/proposal' ? (
-                ''
-              ) : (
-                <Grid item xs={2}>
-                  <SideBar user={data} />
-                </Grid>
-              )}
-              <Grid item xs={pathname === '/proposal' ? 12 : 10}>
-                <Routes>
-                  <Route exact path="/" element={<Home />} />
-                  <Route path="/admin-dashboard" element={<AdminDashboard />} />
-                  <Route path="/proposal" element={<ClubProposal />} />
-                  <Route path="/all-proposal" element={<ProposalManagement />} />
-                  <Route path="/club-requests" element={<ClubRequests />} />
-                  <Route path="/clubs-joined" element={<ClubsJoined />} />
-                  <Route path="/clubs-managed" element={<ClubsManaged />} />
-                  <Route path="/discover-clubs" element={<DiscoverClubs />} />
-                  <Route path="/events-registered" element={<EventsRegistered />} />
-                  <Route path="/events/:eventId" element={<UserEventsPage />} />
-                  <Route path="/clubs/:clubId" element={<ClubSinglePage />} />
-                  <Route path='/createevent' element={<CreateEvent />} />
-                </Routes>
+      <Header
+        userIsLoggedIn={userIsLoggedIn}
+        handleSearch={handleSearch}
+        handleLogoutUser={handleLogoutUser}
+      />
+      {!userIsLoggedIn ? (
+        <Routes>
+          <Route path="/login" element={<Login />} />
+        </Routes>
+      ) : (
+        <Box sx={{ flexGrow: 1 }}>
+          <Grid container>
+            {pathname === '/proposal' ? (
+              ''
+            ) : (
+              <Grid item xs={2}>
+                <SideBar />
               </Grid>
+            )}
+            <Grid item xs={pathname === '/proposal' ? 12 : 10}>
+              <Routes>
+                <Route path="/home" element={<Home />} />
+                <Route path="/admin-dashboard" element={<AdminDashboard />} />
+                <Route path="/submit-proposal" element={<ClubProposal />} />
+                <Route path="/all-proposal" element={<ProposalManagement />} />
+                <Route path="/club-requests" element={<ClubRequests />} />
+                <Route path="/clubs-joined" element={<ClubsJoined />} />
+                <Route path="/clubs-managed" element={<ClubsManaged />} />
+                <Route path="/discover-clubs" element={<DiscoverClubs />} />
+                <Route path="/events-registered" element={<EventsRegistered />} />
+                <Route path="/events/:eventId" element={<UserEventsPage />} />
+                <Route path="/proposals/:proposalId" element={<Proposal />} />
+                <Route path="/profile" element={<Profile />} />
+                <Route path="/clubs/:clubId" element={<ClubSinglePage />} />
+                <Route path='/createevent' element={<CreateEvent />} />
+              </Routes>
             </Grid>
-          </Box>
-        )}
-      </Router>
+          </Grid>
+        </Box>
+      )}
     </ThemeProvider>
   );
 };
