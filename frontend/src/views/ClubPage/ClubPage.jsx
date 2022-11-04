@@ -3,7 +3,7 @@ import { Button, Typography, Box, Avatar, Card, CardMedia } from '@mui/material'
 import { useEffect } from 'react';
 import { useState } from 'react';
 import axios from 'axios';
-import { ReactComponent as ShareSvg } from '../../assets/icons/share.svg';
+import { ReactComponent as ShareSvg } from '../../assets/Icons/share.svg';
 
 
 const ClubPage = (props) => {

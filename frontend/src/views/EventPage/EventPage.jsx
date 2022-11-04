@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import './EventPage.css';
 import { Location, Calender, Money, Clock } from '../../assets';
 import { ReactComponent as DefaultBannerSvg } from '../../assets/banners/default.svg';
-import { ReactComponent as Share } from '../../assets/icons/share.svg';
+import { ReactComponent as Share } from '../../assets/Icons/share.svg';
 import { Button, TextField } from '@mui/material';
 
 const EventPage = (props) => {
