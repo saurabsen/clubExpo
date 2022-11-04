@@ -65,7 +65,21 @@ const ClubRequests = () => {
                   {row.clubName}
                 </TableCell>
                 <TableCell align="center">{row.creatorName}</TableCell>
-                <TableCell align="center">{row.approvalStatus}</TableCell>
+                <TableCell
+                  align="center"
+                  sx={{
+                    color:
+                      row.approvalStatus === 'Pending'
+                        ? 'blue'
+                        : row.approvalStatus === 'Rejected'
+                        ? 'red'
+                        : row.approvalStatus === 'Approved'
+                        ? 'green'
+                        : ''
+                  }}
+                >
+                  {row.approvalStatus}
+                </TableCell>
                 <TableCell align="center">
                   {row.description.length > 80 ? (
                     <>

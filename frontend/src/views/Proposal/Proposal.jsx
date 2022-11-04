@@ -1,7 +1,9 @@
 import { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
+import axios from 'axios';
 import { ProposalDetailCard } from '../../components';
-import { Button, Modal, Box, Typography } from '@mui/material';
+import { Button, Modal, Box } from '@mui/material';
+import { useActions } from '../../hooks/useActions';
 import { useTypedSelector } from '../../hooks/useTypedSelector';
 
 const Proposal = () => {
@@ -10,6 +12,7 @@ const Proposal = () => {
   const [approveModalOpen, setApproveModalOpen] = useState(false);
   const [rejectionReason, setRejectionReason] = useState('');
   const { proposalId } = useParams();
+  const navigate = useNavigate();
 
   const { data } = useTypedSelector((state) => state.proposals);
 
@@ -24,8 +27,31 @@ const Proposal = () => {
     }
   }, [data]);
 
-  const handleReject = () => {
-    setRejectModalOpen(false);
+  // Making API call here, this should be included in redux proposals actions
+  const handleReject = async () => {
+    if (proposal) {
+      let newProposal = proposal;
+      newProposal.approvalStatus = 'Rejected';
+      newProposal.approvalStatusReason = rejectionReason;
+
+      const token = JSON.parse(localStorage.getItem('userToken'));
+
+      const data = await axios.put(
+        `http://localhost:3001/api/proposals/${newProposal._id}`,
+        newProposal,
+        {
+          headers: { Authorization: `Bearer ${token}` }
+        }
+      );
+
+      if (data) {
+        setRejectModalOpen(false);
+        navigate('/admin-dashboard');
+        window.location.reload();
+      } else {
+        alert('Error');
+      }
+    }
   };
 
   const openRejectModal = () => {
@@ -91,21 +117,40 @@ const Proposal = () => {
               padding: '2rem 0'
             }}
           >
-            <Button
-              sx={{
-                backgroundColor: '#fff',
-                padding: '12px 36px 12px 36px',
-                color: '#000',
-                '&:hover': {
-                  backgroundColor: '#fff'
-                }
-              }}
-              variant="contained"
-              type="submit"
-              onClick={openRejectModal}
-            >
-              Reject
-            </Button>
+            {proposal.approvalStatus === 'Rejected' || proposal.approvalStatus === 'Approved' ? (
+              <Button
+                sx={{
+                  backgroundColor: '#fff',
+                  padding: '12px 36px 12px 36px',
+                  color: '#000',
+                  '&:hover': {
+                    backgroundColor: '#fff'
+                  }
+                }}
+                disabled
+                variant="contained"
+                type="submit"
+                onClick={openRejectModal}
+              >
+                Reject
+              </Button>
+            ) : (
+              <Button
+                sx={{
+                  backgroundColor: '#fff',
+                  padding: '12px 36px 12px 36px',
+                  color: '#000',
+                  '&:hover': {
+                    backgroundColor: '#fff'
+                  }
+                }}
+                variant="contained"
+                type="submit"
+                onClick={openRejectModal}
+              >
+                Reject
+              </Button>
+            )}
             <Modal
               open={rejectModalOpen}
               onClose={closeRejectModal}
@@ -171,20 +216,38 @@ const Proposal = () => {
                 </div>
               </Box>
             </Modal>
-            <Button
-              sx={{
-                backgroundColor: '#5D1EBF',
-                padding: '12px 36px 12px 36px',
-                '&:hover': {
-                  backgroundColor: '#5D1EBF'
-                }
-              }}
-              variant="contained"
-              type="submit"
-              onClick={handleApprove}
-            >
-              Approve
-            </Button>
+            {proposal.approvalStatus === 'Rejected' || proposal.approvalStatus === 'Approved' ? (
+              <Button
+                sx={{
+                  backgroundColor: '#5D1EBF',
+                  padding: '12px 36px 12px 36px',
+                  '&:hover': {
+                    backgroundColor: '#5D1EBF'
+                  }
+                }}
+                variant="contained"
+                disabled
+                onClick={handleApprove}
+              >
+                Approve
+              </Button>
+            ) : (
+              <Button
+                sx={{
+                  backgroundColor: '#5D1EBF',
+                  padding: '12px 36px 12px 36px',
+                  '&:hover': {
+                    backgroundColor: '#5D1EBF'
+                  }
+                }}
+                variant="contained"
+                type="submit"
+                onClick={handleApprove}
+              >
+                Approve
+              </Button>
+            )}
+
             <Modal
               open={approveModalOpen}
               onClose={closeApproveModal}

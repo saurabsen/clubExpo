@@ -17,7 +17,7 @@ const submitProposal = asyncHandler(async (req, res) => {
     clubInterest,
     clubActivities,
     createdBy,
-    creatorName
+    creatorName,
   } = req.body;
 
   if (!clubName || !description || !noOfEventsMonth || !members || !createdBy) {
@@ -37,7 +37,7 @@ const submitProposal = asyncHandler(async (req, res) => {
     clubPurpose,
     clubInterest,
     clubActivities,
-    creatorName
+    creatorName,
   });
 
   if (proposal) {
@@ -73,19 +73,29 @@ const getOneProposal = asyncHandler(async (req, res) => {
 /*
 Body should be structured as follows:
 {
-  "statusArray" : ["statusCode1", "statusCode2", ...]
+  "statusValue" : ["statusCode1", "statusCode2", ...]
 }
 */
 const getMultipleProposalsByStatus = asyncHandler(async (req, res) => {
-  const { statusArray } = req.body;
+  const { statusValue } = req.body;
 
   const proposals = await Proposal.find({});
 
   let filterArray = [];
 
   proposals.forEach((status) => {
-    if (status.approvalStatus === statusArray) {
-      filterArray.push(status);
+    if (statusValue === '') {
+      if (
+        status.approvalStatus === 'Pending' ||
+        status.approvalStatus === 'Rejected' ||
+        status.approvalStatus === 'Approved'
+      ) {
+        filterArray.push(status);
+      }
+    } else {
+      if (status.approvalStatus === statusValue) {
+        filterArray.push(status);
+      }
     }
   });
 
@@ -109,10 +119,9 @@ const updateProposal = asyncHandler(async (req, res) => {
     throw new Error('Proposal not found');
   }
 
-  const { clubName, description, noOfEventsMonth, requestedBy, members, approvalStatus, approvalStatusReason } =
-    req.body;
+  const { clubName, description, noOfEventsMonth, createdBy, members, approvalStatus, approvalStatusReason } = req.body;
 
-  if (!clubName || !description || !noOfEventsMonth || !requestedBy || !members || !approvalStatus) {
+  if (!clubName || !description || !noOfEventsMonth || !createdBy || !members || !approvalStatus) {
     res.status(400);
     throw new Error('Please enter all the required details');
   }
@@ -120,7 +129,7 @@ const updateProposal = asyncHandler(async (req, res) => {
   targetProposal.clubName = clubName;
   targetProposal.description = description;
   targetProposal.noOfEventsMonth = noOfEventsMonth;
-  targetProposal.requestedBy = requestedBy;
+  targetProposal.createdBy = createdBy;
   targetProposal.members = members;
   targetProposal.approvalStatus = approvalStatus;
   targetProposal.approvalStatusReason = approvalStatusReason;

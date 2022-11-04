@@ -1,6 +1,4 @@
-//import { clubs } from '../../common/api';
 import axios from 'axios';
-import proposal from '../../common/api';
 import {
   FETCH_PROPOSALS_BY_STATUS,
   FETCH_PROPOSALS_BY_STATUS_DATA_SUCCESS,
@@ -10,9 +8,9 @@ import {
   SUBMIT_PROPOSAL_DATA_ERROR
 } from './types';
 
-export const getProposalByStatus = () => {
+export const getProposalByStatus = (statusValue = '') => {
   const status = {
-    statusArray: 'Pending'
+    statusValue: statusValue
   };
 
   return async (dispatch) => {
