@@ -6,10 +6,9 @@ const Club = require('../models/clubModel');
 // @route GET /api/clubs
 // @access Private
 const createClub = asyncHandler(async (req, res) => {
-  const { id } = req.user; // authenticated user who is calling this func
-  const { name, logoImage, coverImage, description, admins, tags } = req.body;
+  const { name, description, createdBy, admins } = req.body;
 
-  if (!name || !logoImage || !coverImage || !description || !admins || !tags) {
+  if (!name || !description || !createdBy || !admins) {
     res.status(400);
     throw new Error('Please enter all the required details');
   }
@@ -17,17 +16,17 @@ const createClub = asyncHandler(async (req, res) => {
   //create club
   const club = await Club.create({
     name,
-    logoImage,
+    logoImage: '',
     coverImage: '',
     description,
-    createdBy: id,
+    createdBy,
     admins,
     acceptedMembers: [],
     pendingMembers: [],
     events: [],
     badges: [],
     status: '',
-    tags,
+    tags: '',
   });
 
   if (club) {

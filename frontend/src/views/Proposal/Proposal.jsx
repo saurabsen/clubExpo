@@ -36,6 +36,7 @@ const Proposal = () => {
 
       const token = JSON.parse(localStorage.getItem('userToken'));
 
+      // update approval status to Rejected
       const data = await axios.put(
         `http://localhost:3001/api/proposals/${newProposal._id}`,
         newProposal,
@@ -62,12 +63,45 @@ const Proposal = () => {
     setRejectModalOpen(false);
   };
 
-  const handleApprove = () => {
-    setApproveModalOpen(true);
+  const handleApprove = async () => {
+    if (proposal) {
+      let newProposal = proposal;
+      newProposal.approvalStatus = 'Approved';
+
+      const token = JSON.parse(localStorage.getItem('userToken'));
+
+      // update approval status to Approved
+      const data1 = await axios.put(
+        `http://localhost:3001/api/proposals/${newProposal._id}`,
+        newProposal,
+        {
+          headers: { Authorization: `Bearer ${token}` }
+        }
+      );
+
+      const club = {
+        name: proposal.clubName,
+        description: proposal.description,
+        createdBy: proposal.createdBy,
+        admins: [`${proposal.creatorName}`]
+      };
+
+      // create a new club
+      const data2 = await axios.post(`http://localhost:3001/api/clubs`, club, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+
+      if (data1 && data2) {
+        setApproveModalOpen(true);
+      } else {
+        alert('Error');
+      }
+    }
   };
 
   const closeApproveModal = () => {
     setApproveModalOpen(false);
+    window.location.reload();
   };
 
   const handleRejectionMessageOnChange = (e) => {
