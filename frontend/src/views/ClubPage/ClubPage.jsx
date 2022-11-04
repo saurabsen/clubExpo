@@ -5,7 +5,6 @@ import { useState } from 'react';
 import axios from 'axios';
 import { ReactComponent as ShareSvg } from '../../assets/Icons/share.svg';
 
-
 const ClubPage = (props) => {
   const { clubId } = props;
   const [clubInfo, setClubInfo] = useState();
@@ -14,11 +13,7 @@ const ClubPage = (props) => {
   const getClub = async (id) => {
     const config = {
       method: 'get',
-      url: `http://localhost:3001/api/clubs/${id}`,
-      headers: {
-        Authorization:
-          'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MzU5YWQ0MmJkMzgzNzljYTNkMzViZDAiLCJpYXQiOjE2NjY4MjE0NDIsImV4cCI6MTY2OTQxMzQ0Mn0._SaFCeAaa-BQVmC-tGPcczEcoad_3XOfONKzMFqeqRY'
-      }
+      url: `clubs/${id}`
     };
     const res = await axios(config);
     return res.data;
@@ -26,24 +21,24 @@ const ClubPage = (props) => {
 
   const getUser = async (userEmail) => {
     const data = JSON.stringify({
-      "email": userEmail
+      email: userEmail
     });
-    
+
     const config = {
       method: 'post',
-      url: 'http://localhost:3001/api/users/allusers',
-      headers: { 
+      url: 'users/allusers',
+      headers: {
         'Content-Type': 'application/json'
       },
-      data : data
+      data: data
     };
-    
+
     const res = await axios(config);
-    return (res.data)[0];
+    return res.data[0];
   };
 
   const initThisPage = async () => {
-    console.log("initThisPage called");
+    console.log('initThisPage called');
     setClubInfo(await getClub(clubId));
   };
 
@@ -66,95 +61,94 @@ const ClubPage = (props) => {
   const renderClubHeader = () => {
     if (clubInfo) {
       return (
-        <Card
-          raised={false}
-          sx={{borderRadius: 'unset', boxShadow: 'unset'}}
-        >
-          <CardMedia 
+        <Card raised={false} sx={{ borderRadius: 'unset', boxShadow: 'unset' }}>
+          <CardMedia
             component="img"
-            height={"194px"}
-            alt={`Cover image for ${clubInfo.name}`} 
+            height={'194px'}
+            alt={`Cover image for ${clubInfo.name}`}
             image={clubInfo.coverImage}
           />
-          <Avatar 
-            alt={`Club image for ${clubInfo.name}`} 
+          <Avatar
+            alt={`Club image for ${clubInfo.name}`}
             src={clubInfo.logoImage}
-            variant='rounded'
-            sx={{height: 140, width: 140}}
+            variant="rounded"
+            sx={{ height: 140, width: 140 }}
           />
           <Typography>{clubInfo.name}</Typography>
-          <Box sx={{display: 'flex', flexFlow: 'row', gap: 2}}>
-            <Button variant='outlined'>
+          <Box sx={{ display: 'flex', flexFlow: 'row', gap: 2 }}>
+            <Button variant="outlined">
               <ShareSvg />
             </Button>
-            <Button 
-              style={{ width: '100%' }} 
-              variant="contained"
-            >
+            <Button style={{ width: '100%' }} variant="contained">
               Join
             </Button>
-
           </Box>
         </Card>
-  );}};
+      );
+    }
+  };
 
   const renderClubMain = () => {
     if (clubInfo && adminInfo) {
       return (
-      <>
-      <Box>
-        <Typography>About club</Typography>
-        <Typography>{clubInfo.description}</Typography>
-      </Box>
-      <Box>
-        <Typography>Admin</Typography>
-        <Card
-          sx={{p: 2, 
-            display: 'flex', 
-            flexFlow: 'row', 
-            alignItems: 'center',
-            gap: 1,
-            boxShadow: 'unset',
-            backgroundColor: '#F3EFFB'
-          }}
-        >
-          <Avatar
-            alt={`Admin's profile image}`} 
-            src={adminInfo.profileImage}
-            variant='rounded'
-            sx={{height: 40, width: 40}}
-          />
-          <Typography>{`${adminInfo.firstName} ${adminInfo.lastName}`}</Typography>
-        </Card>
-      </Box>
-      <Box>
-        <Typography>Members</Typography>
-        <Card
-          sx={{p: 2, 
-            display: 'flex', 
-            flexFlow: 'row', 
-            alignItems: 'center',
-            gap: 1,
-            boxShadow: 'unset',
-            backgroundColor: '#F3EFFB'
-          }}
-        >
-          <Avatar
-            alt={`Admin's profile image}`} 
-            src={adminInfo.profileImage}
-            variant='rounded'
-            sx={{height: 40, width: 40}}
-          />
-          <Typography>{`${adminInfo.firstName} ${adminInfo.lastName}`}</Typography>
-        </Card>
-      </Box>
-      </>
-    );}};
+        <>
+          <Box>
+            <Typography>About club</Typography>
+            <Typography>{clubInfo.description}</Typography>
+          </Box>
+          <Box>
+            <Typography>Admin</Typography>
+            <Card
+              sx={{
+                p: 2,
+                display: 'flex',
+                flexFlow: 'row',
+                alignItems: 'center',
+                gap: 1,
+                boxShadow: 'unset',
+                backgroundColor: '#F3EFFB'
+              }}
+            >
+              <Avatar
+                alt={`Admin's profile image}`}
+                src={adminInfo.profileImage}
+                variant="rounded"
+                sx={{ height: 40, width: 40 }}
+              />
+              <Typography>{`${adminInfo.firstName} ${adminInfo.lastName}`}</Typography>
+            </Card>
+          </Box>
+          <Box>
+            <Typography>Members</Typography>
+            <Card
+              sx={{
+                p: 2,
+                display: 'flex',
+                flexFlow: 'row',
+                alignItems: 'center',
+                gap: 1,
+                boxShadow: 'unset',
+                backgroundColor: '#F3EFFB'
+              }}
+            >
+              <Avatar
+                alt={`Admin's profile image}`}
+                src={adminInfo.profileImage}
+                variant="rounded"
+                sx={{ height: 40, width: 40 }}
+              />
+              <Typography>{`${adminInfo.firstName} ${adminInfo.lastName}`}</Typography>
+            </Card>
+          </Box>
+        </>
+      );
+    }
+  };
 
   return (
     <>
-    {renderClubHeader()}
-    {renderClubMain()}
+      {renderClubHeader()}
+      {renderClubMain()}
     </>
   );
 };
