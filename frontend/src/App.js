@@ -86,7 +86,6 @@ const App = () => {
 
   return (
     <ThemeProvider theme={theme}>
-      <Router>
       <Header
         userIsLoggedIn={userIsLoggedIn}
         handleSearch={handleSearch}
@@ -127,7 +126,6 @@ const App = () => {
           </Grid>
         </Box>
       )}
-      </Router>
     </ThemeProvider>
   );
 };
