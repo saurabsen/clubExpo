@@ -12,17 +12,7 @@ const EventPage = (props) => {
   const [adminInfo, setAdminInfo] = useState();
   const [userInfo, setUserInfo] = useState();
   const [mainButton, setMainButton] = useState();
-  // const event = useRef({});
-  // const clubInfo = useRef({});
-  // const clubInfo = useRef({});
 
-  // const userInfo = {
-  //   _id: '6359ac5abd38379ca3d35aa9',
-  //   eventsAttended: [],
-  //   clubsJoined: [
-  //     "63573f4a54aef5c865de7107"
-  //   ]
-  // };
 
   const getEvent = async (eventId) => {
     const config = {
@@ -111,18 +101,14 @@ const EventPage = (props) => {
   };
 
   const updateClubInfo = async () => {
-    console.log('updateClubInfo called');
     rawClubs = await getClubs();
     setClubInfo(getMatchingClub(rawClubs, event.clubId));
   };
 
   const updateAdminInfo = async () => {
     if (clubInfo) {
-      console.log('>>>>clubinfo', clubInfo);
       rawAdminInfo = await getUser(clubInfo.admins[0]);
-      console.log('>>>>rawAdminInfo', rawAdminInfo);
       await setAdminInfo(rawAdminInfo);
-      console.log('>>>>adminInfo', adminInfo);
     }
   };
 
@@ -130,7 +116,11 @@ const EventPage = (props) => {
     addEventToUserModel();
     addUserToEventModel();
     let newEventsAttended = userInfo.eventsAttended;
-    newEventsAttended.push(event._id);
+    if (newEventsAttended) {
+      newEventsAttended.push(event._id);
+    } else {
+      newEventsAttended = [event._id];
+    }
     setUserInfo({
       ...userInfo,
       eventsAttended: newEventsAttended
@@ -153,20 +143,22 @@ const EventPage = (props) => {
   let rawAdminInfo;
 
   const initEvent = async () => {
-    console.log('initEvent called');
     try {
       const { eventId } = props;
       const rawEvent = await getEvent(eventId);
       setEvent(rawEvent);
-      console.log('event', event);
       // const userInfo = await getUser('nhugnin2@studiopress.com');
     } catch (error) {
-      console.log("'", 'failed to load component Event Page:' + error.message);
     }
   };
 
   const selectButton = () => {
-    const eventLoc = userInfo.eventsAttended.indexOf(event._id);
+    let eventLoc;
+    eventLoc = userInfo.eventsAttended.indexOf(event._id);
+    // if (userInfo.eventsAttended) {
+    // } else {
+    //   eventLoc = -1;
+    // }
     if (eventLoc !== -1) {
       return (
         <Button style={{ width: '100%' }} variant="outlined" onClick={unregisterUser}>
@@ -188,19 +180,17 @@ const EventPage = (props) => {
   }, [props]);
 
   useEffect(() => {
-    console.log('>>>event', event);
     (async () => {
-      setUserInfo(await getUser('nhugnin2@studiopress.com'));
+      setUserInfo(JSON.parse(localStorage.user));
     })();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [event]);
 
   useEffect(() => {
-    console.log('>>>userInfo', userInfo);
     if (userInfo) {
+      localStorage.user = JSON.stringify(userInfo);
       setMainButton(selectButton());
     }
-    console.log('>>>mainButton', mainButton);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [event, userInfo]);
 
