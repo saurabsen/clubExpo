@@ -12,7 +12,6 @@ import ProposalManagement from './ClubRequests/ClubRequests';
 import Proposal from './Proposal/Proposal';
 import Profile from './Profile/Profile';
 import ClubPage from './ClubPage/ClubPage';
-import CreateEvent from './CreateEvent/CreateEvent';
 
 export {
   Home,
@@ -28,6 +27,5 @@ export {
   ProposalManagement,
   Proposal,
   Profile,
-  ClubPage,
-  CreateEvent
+  ClubPage
 };
