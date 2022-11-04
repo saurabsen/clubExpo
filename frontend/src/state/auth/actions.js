@@ -34,7 +34,7 @@ export const loginUser = (credentials) => {
 
       dispatch({
         type: GET_LOGIN_DATA_SUCCESS,
-        payload: data
+        payload: user.data
       });
       return data;
     } catch (error) {
@@ -61,7 +61,7 @@ export const getUser = () => {
 
       dispatch({
         type: GET_FETCH_USER_DATA_SUCCESS,
-        payload: data
+        payload: data.data
       });
       return data;
     } catch (error) {
@@ -90,7 +90,7 @@ export const logoutUser = () => {
 
       dispatch({
         type: GET_LOGOUT_DATA_SUCCESS,
-        payload: data
+        payload: null
       });
       return data;
     } catch (error) {
