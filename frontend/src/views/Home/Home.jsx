@@ -1,19 +1,24 @@
 import EventsCard from '../../components/EventsCard/EventsCard';
 import UpcomingEvents from '../../components/UpcomingEvents/UpcomingEvents';
 import Grid from '@mui/material/Grid';
-import { Typography } from '@mui/material';
+import { Typography, Button } from '@mui/material';
 import axios from 'axios';
 import { useState } from 'react';
 import { useEffect } from 'react';
+import { Link } from 'react-router-dom';
 
 const Home = () => {
   const [events, setEvents] = useState([]);
   const [upcomingEvs, setUpcomingEvs] = useState([]);
   const [clubList, setClubList] = useState([]);
+  const [userInfo, setUserInfo] = useState();
+
+  const sanitizedToken = localStorage.userToken.replaceAll('"','');
 
   const getEvents = async () => {
     const data = JSON.stringify({
-      clubIds: ['1234', '2345', '63573f4a54aef5c865de7107', '635cc70ca5cc5e9114f2d03e']
+      // clubIds: ['1234', '2345', '63573f4a54aef5c865de7107', '635cc70ca5cc5e9114f2d03e']
+      clubIds: userInfo.clubsJoined
     });
     const config = {
       method: 'post',
@@ -21,9 +26,21 @@ const Home = () => {
       headers: {
         'Content-Type': 'application/json',
         Authorization:
-          'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MzUwMmRiMzRhMjcwYmY0ZDFhMjc5MWIiLCJpYXQiOjE2NjYxOTg5NjMsImV4cCI6MTY2ODc5MDk2M30.lPOmtB9fdmlIhDIj_R4yAvnt04ZWmuReNPNESVAak_8'
+          'Bearer ' + sanitizedToken
       },
       data: data
+    };
+    const res = await axios(config);
+    return res.data;
+  };
+
+  const getUserByToken = async (token) => {
+    const config = {
+      method: 'get',
+      url: 'http://localhost:3001/api/users/me',
+      headers: { 
+        'Authorization': `Bearer ${token}`
+      }
     };
     const res = await axios(config);
     return res.data;
@@ -35,7 +52,7 @@ const Home = () => {
       url: 'http://localhost:3001/api/clubs/',
       headers: {
         Authorization:
-          'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MzU5YWQ0MmJkMzgzNzljYTNkMzViZDAiLCJpYXQiOjE2NjY4MjE0NDIsImV4cCI6MTY2OTQxMzQ0Mn0._SaFCeAaa-BQVmC-tGPcczEcoad_3XOfONKzMFqeqRY'
+          'Bearer ' + sanitizedToken
       }
     };
 
@@ -57,6 +74,9 @@ const Home = () => {
 
       rawEvents.forEach((event) => {
         const dayStart = new Date(event.startDate);
+        const registeredBoolean = (
+          userInfo.eventsAttended && userInfo.eventsAttended.indexOf(event._id) !== -1 ? true : false
+          );
         const eventObj = {
           clubName: clubDict[[event.clubId]],
           clubLogoUrl: 'https://picsum.photos/200/200',
@@ -79,7 +99,7 @@ const Home = () => {
             'https://picsum.photos/200/300?random=5'
           ],
           withinClub: false,
-          registered: false,
+          registered: registeredBoolean,
           clubAdminView: false
         };
         formattedEvents.push(eventObj);
@@ -90,11 +110,30 @@ const Home = () => {
       console.log('failed to initialize component Home');
     }
   };
-  
+
+  const renderNoEvents = () => {
+    return (
+      <>
+      <Typography sx={{fontSize: 16, color: '#808780', mb: '24px'}}>Looks like you haven’t joined any clubs. Try joining clubs to see events happening.</Typography>
+      <Link to='/discover-clubs'><Button variant='contained' sx={{fontSize: 16, px: '39.5px', py: '16px'}}>Discover Clubs</Button></Link>
+      </>
+    );
+  };
+
   useEffect(() => {
-    initComponent();
+    (async () => {
+      setUserInfo(await getUserByToken(sanitizedToken));
+    })();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+  
+  useEffect(() => {
+    if (userInfo) {
+      localStorage.user = JSON.stringify(userInfo);
+      initComponent();
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [userInfo]);
 
   const styleLatestEvents = {
     fontFamily: 'Oswald',
@@ -109,6 +148,7 @@ const Home = () => {
       <Grid container xs={12} columnSpacing={{ xs: 3 }}>
         <Grid item xs={9}>
           <Typography sx={styleLatestEvents}>Latest Events</Typography>
+          {events.length ? '' : renderNoEvents()}
           {events.map((event) => {
             return (
               <EventsCard
