@@ -10,6 +10,7 @@ import EventsRegistered from './EventsRegistered/EventsRegistered';
 import ClubProposal from './ClubProposal/ClubProposal';
 import ProposalManagement from './ProposalManagement/ProposalManagement';
 import ClubPage from './ClubPage/ClubPage';
+import CreateEvent from './CreateEvent/CreateEvent';
 
 export {
   Home,
@@ -23,5 +24,6 @@ export {
   EventsRegistered,
   ClubProposal,
   ProposalManagement,
-  ClubPage
+  ClubPage,
+  CreateEvent
 };
