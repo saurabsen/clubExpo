@@ -11,18 +11,25 @@ import { useState, useEffect } from 'react';
 import { Box } from '@mui/material';
 import { NavLink } from 'react-router-dom';
 import './sidebar.css';
-import { useActions } from '../../hooks/useActions';
 import { useTypedSelector } from '../../hooks/useTypedSelector';
 
-const SideBar = ({ user }) => {
-  const { userRole } = user;
+const SideBar = () => {
+  const [userRole, setUserRole] = useState('');
+
+  const { data } = useTypedSelector((state) => state.auth);
+
+  useEffect(() => {
+    if (data) {
+      setUserRole(data.userRole);
+    }
+  }, [data]);
 
   return (
     <Box className="sidebar">
       <ul>
         {userRole === 'clubAdmin' || userRole === 'member' ? (
           <>
-            <NavLink to="/" end className={({ isActive }) => (isActive ? 'active-menu' : '')}>
+            <NavLink to="/home" end className={({ isActive }) => (isActive ? 'active-menu' : '')}>
               <li>
                 <img src={HomeIcon} alt="Home Icon" /> Home
               </li>
