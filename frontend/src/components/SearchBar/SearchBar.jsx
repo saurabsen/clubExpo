@@ -1,10 +1,14 @@
 import { useState } from 'react';
 import { Grid, TextField } from '@mui/material';
 import { Search } from '../../assets';
+import { useActions } from '../../hooks/useActions';
+import { useTypedSelector } from '../../hooks/useTypedSelector';
 import './searchbar.css';
 
 const SearchBar = ({ handleSearch }) => {
   const [searchString, setSearchString] = useState('');
+  const { getSearchByClubs } = useActions();
+  const { data } = useTypedSelector((state) => state.auth);
 
   const handleOnChange = (e) => {
     setSearchString(e.target.value);
@@ -14,11 +18,12 @@ const SearchBar = ({ handleSearch }) => {
   const handleKeyDown = async (e) => {
     if (e.key === 'Enter') {
       // API call to get search results
-      // const searchResult = await getSearchResults(searchString);
-      const searchResult = ['Club 1', 'Club 2', 'Club 3'];
+      const searchResult = await getSearchByClubs(searchString);
+      // const searchResult = ['Club 1', 'Club 2', 'Club 3'];
 
       // send search results back to parent component
-      handleSearch(searchResult);
+      // handleSearch(searchResult);
+      console.log(searchResult, 'search data');
     }
   };
 
