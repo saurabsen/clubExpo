@@ -79,14 +79,15 @@ const App = () => {
           </Routes>
         ) : (
           <Box sx={{ flexGrow: 1 }}>
-            <Grid container spacing={2}>
-              {
-                pathname === '/proposal' ? '' : ''
-                /* <Grid item xs={2}>
+            <Grid container spacing={3}>
+              {pathname === '/proposal' ? (
+                ''
+              ) : (
+                <Grid item xs={2}>
                   <SideBar user={data} />
-                </Grid> */
-              }
-              <Grid item xs={12}>
+                </Grid>
+              )}
+              <Grid item xs={10}>
                 <Routes>
                   <Route exact path="/" element={<Home />} />
                   <Route path="/admin-dashboard" element={<AdminDashboard />} />
