@@ -17,7 +17,8 @@ import {
   ProposalManagement,
   EventsRegistered,
   Proposal,
-  Profile
+  Profile,
+  ClubPage
 } from './views';
 import { useActions } from './hooks/useActions';
 import { useTypedSelector } from './hooks/useTypedSelector';
@@ -75,6 +76,11 @@ const App = () => {
     return <EventPage eventId={eventId} />;
   };
 
+  const ClubSinglePage = () => {
+    let { clubId } = useParams();
+    return <ClubPage clubId={clubId} />;
+  };
+
   const handleLogoutUser = () => logoutUser();
 
   return (
@@ -112,6 +118,7 @@ const App = () => {
                 <Route path="/events/:eventId" element={<UserEventsPage />} />
                 <Route path="/proposals/:proposalId" element={<Proposal />} />
                 <Route path="/profile" element={<Profile />} />
+                <Route path="/clubs/:clubId" element={<ClubSinglePage />} />
               </Routes>
             </Grid>
           </Grid>
