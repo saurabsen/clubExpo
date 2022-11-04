@@ -7,12 +7,14 @@ const SearchBar = ({ handleSearch }) => {
   const [searchString, setSearchString] = useState('');
 
   const handleOnChange = (e) => {
+    e.preventDefault();
     setSearchString(e.target.value);
   };
 
   // user presses enter key - make the search
   const handleKeyDown = async (e) => {
     if (e.key === 'Enter') {
+      console.log(searchString);
       // API call to get search results
       // const searchResult = await getSearchResults(searchString);
       const searchResult = ['Club 1', 'Club 2', 'Club 3'];
