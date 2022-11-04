@@ -22,11 +22,13 @@ import {
 } from './views';
 import { useActions } from './hooks/useActions';
 import { useTypedSelector } from './hooks/useTypedSelector';
+import SearchResults from './views/SearchResults/SearchResults';
 
 const App = () => {
   const pathname = window.location.pathname;
   const [searchResults, setSearchResults] = useState([]);
   const [userIsLoggedIn, setUserIsLoggedIn] = useState(false);
+  const { data: searchData } = useTypedSelector((state) => state.search);
 
   const navigate = useNavigate();
 
@@ -50,7 +52,8 @@ const App = () => {
       setUserIsLoggedIn(false);
       navigate('/login');
     }
-  }, [data]);
+    console.log(searchData, 'App');
+  }, [data, searchData]);
 
   const theme = createTheme({
     palette: {
@@ -119,6 +122,7 @@ const App = () => {
                 <Route path="/proposals/:proposalId" element={<Proposal />} />
                 <Route path="/profile" element={<Profile />} />
                 <Route path="/clubs/:clubId" element={<ClubSinglePage />} />
+                <Route path="/search" element={<SearchResults />} />
               </Routes>
             </Grid>
           </Grid>

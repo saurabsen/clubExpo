@@ -54,7 +54,7 @@ const Header = ({ userIsLoggedIn, handleSearch, handleLogoutUser }) => {
           }}
         >
           <img src={LogoRectangle} style={{ width: '130px' }} alt="Clubspace Logo" />
-          <SearchBar />
+          <SearchBar handleSearch={handleSearch} />
           <Box
             sx={{
               display: 'flex',
