@@ -9,7 +9,7 @@ const {
   deleteProposal,
 } = require("../controllers/proposalControllers");
 
-router.post("/getproposals", getMultipleProposalsByStatus);
+router.post("/getProposalsByStatus", protect, getMultipleProposalsByStatus);
 router.get("/:proposalId", protect, getOneProposal);
 router.put("/:proposalId", protect, updateProposal);
 router.delete("/:proposalId", protect, deleteProposal);

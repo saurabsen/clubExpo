@@ -8,7 +8,10 @@ import DiscoverClubs from './DiscoverClubs/DiscoverClubs';
 import EventPage from './EventPage/EventPage';
 import EventsRegistered from './EventsRegistered/EventsRegistered';
 import ClubProposal from './ClubProposal/ClubProposal';
-import ProposalManagement from './ProposalManagement/ProposalManagement';
+import ProposalManagement from './ClubRequests/ClubRequests';
+import Proposal from './Proposal/Proposal';
+import Profile from './Profile/Profile';
+import ClubPage from './ClubPage/ClubPage';
 
 export {
   Home,
@@ -21,5 +24,8 @@ export {
   EventPage,
   EventsRegistered,
   ClubProposal,
-  ProposalManagement
+  ProposalManagement,
+  Proposal,
+  Profile,
+  ClubPage
 };
