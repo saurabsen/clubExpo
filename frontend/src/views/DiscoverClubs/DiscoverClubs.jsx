@@ -14,6 +14,7 @@ const DiscoverClubs = () => {
   const { getAllClubsData } = useActions();
   const allDiscoverClubsData = useTypedSelector((state) => state.clubs);
   const [clubList, setClubList] = useState();
+  const sanitizedToken = localStorage.userToken.replaceAll('"', '');
 
   const getClubs = async () => {
     const config = {
@@ -21,7 +22,7 @@ const DiscoverClubs = () => {
       url: 'http://localhost:3001/api/clubs/',
       headers: {
         Authorization:
-          'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MzU5YWQ0MmJkMzgzNzljYTNkMzViZDAiLCJpYXQiOjE2NjY4MjE0NDIsImV4cCI6MTY2OTQxMzQ0Mn0._SaFCeAaa-BQVmC-tGPcczEcoad_3XOfONKzMFqeqRY'
+          `Bearer ${sanitizedToken}`
       }
     };
     const res = await axios(config);
@@ -65,7 +66,7 @@ const DiscoverClubs = () => {
     <>
       <Box sx={{ flexGrow: 1 }}>
         <Grid container spacing={2} sx={{ p:2}}>
-          {renderClubCards(clubList)}
+        {(clubList) ? renderClubCards(clubList) : 'No clubs'}
         </Grid>
       </Box>
     </>
