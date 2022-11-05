@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import './ClubRequests.css';
+import './clubrequests.css';
 import {
   Table,
   TableBody,
