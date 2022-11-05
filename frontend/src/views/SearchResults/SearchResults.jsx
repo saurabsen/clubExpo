@@ -56,11 +56,7 @@ const SearchResults = () => {
   const getClubs = async () => {
     const config = {
       method: 'get',
-      url: 'http://localhost:3001/api/clubs/',
-      headers: {
-        Authorization:
-          'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MzU5YWQ0MmJkMzgzNzljYTNkMzViZDAiLCJpYXQiOjE2NjY4MjE0NDIsImV4cCI6MTY2OTQxMzQ0Mn0._SaFCeAaa-BQVmC-tGPcczEcoad_3XOfONKzMFqeqRY'
-      }
+      url: 'http://localhost:3001/api/clubs/'
     };
 
     const res = await axios(config);
@@ -84,7 +80,7 @@ const SearchResults = () => {
     try {
       const formattedEvents = [];
       const rawClubs = await getClubs();
-      setClubList(rawClubs);
+      // setClubList(rawClubs);
 
       const clubDict = [];
       rawClubs.forEach((club) => {

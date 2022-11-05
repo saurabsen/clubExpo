@@ -16,6 +16,7 @@ const initialState = {
 };
 
 const searchReducer = (state = initialState, action) => {
+  console.log(state, action, 'reducere');
   switch (action.type) {
     case FETCH_SEARCH_BY_CLUBS:
       return { loading: true, error: null, clubs: [], events: [], searchBy: action.searchBy };
@@ -24,7 +25,7 @@ const searchReducer = (state = initialState, action) => {
         loading: false,
         error: null,
         clubs: action.payload,
-        events: [],
+        events: state.events,
         searchBy: action.searchBy
       };
     case FETCH_SEARCH_BY_CLUBS__DATA_ERROR:
@@ -42,7 +43,7 @@ const searchReducer = (state = initialState, action) => {
         loading: false,
         error: null,
         events: action.payload,
-        clubs: [],
+        clubs: state.clubs,
         searchBy: action.searchBy
       };
     case FETCH_SEARCH_BY_EVENTS__DATA_ERROR:
