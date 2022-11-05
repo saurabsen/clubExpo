@@ -10,6 +10,7 @@ export const getAllClubsData = (queryString) => {
 
     try {
       const data = await axios.get(`clubs/${queryString}`);
+
       dispatch({
         type: GET_FETCH_CLUBS_DATA_SUCCESS,
         payload: data.data
