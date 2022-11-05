@@ -1,38 +1,62 @@
-//import { clubs } from '../../common/api';
 import axios from 'axios';
-import proposal from '../../common/api';
 import {
-  FETCH_PROPOSALS,
-  GET_FETCH_PROPOSALS_DATA_SUCCESS,
-  GET_FETCH_PROPOSALS_DATA_ERROR
+  FETCH_PROPOSALS_BY_STATUS,
+  FETCH_PROPOSALS_BY_STATUS_DATA_SUCCESS,
+  FETCH_PROPOSALS_BY_STATUS__DATA_ERROR,
+  SUBMIT_PROPOSAL,
+  SUBMIT_PROPOSAL_DATA_SUCCESS,
+  SUBMIT_PROPOSAL_DATA_ERROR
 } from './types';
 
-export const getAllProposalData = (queryString) => {
-  const tokenStr =
-    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MzUwMmRiMzRhMjcwYmY0ZDFhMjc5MWIiLCJpYXQiOjE2NjYxOTg5NjMsImV4cCI6MTY2ODc5MDk2M30.lPOmtB9fdmlIhDIj_R4yAvnt04ZWmuReNPNESVAak_8';
-
+export const getProposalByStatus = (statusValue = '') => {
   const status = {
-    statusArray: 'Pending'
+    statusValue: statusValue
   };
 
   return async (dispatch) => {
     dispatch({
-      type: FETCH_PROPOSALS
+      type: FETCH_PROPOSALS_BY_STATUS
     });
 
     try {
-      const data = await axios.post(`http://localhost:3001/api/proposals/${queryString}`, status, {
-        headers: { Authorization: `Bearer ${tokenStr}` }
+      const token = JSON.parse(localStorage.getItem('userToken'));
+
+      const data = await axios.post(`proposals/getProposalsByStatus`, status, {
+        headers: { Authorization: `Bearer ${token}` }
       });
 
       dispatch({
-        type: GET_FETCH_PROPOSALS_DATA_SUCCESS,
-        payload: data
+        type: FETCH_PROPOSALS_BY_STATUS_DATA_SUCCESS,
+        payload: data.data
       });
       return data;
     } catch (error) {
       dispatch({
-        type: GET_FETCH_PROPOSALS_DATA_ERROR,
+        type: FETCH_PROPOSALS_BY_STATUS__DATA_ERROR,
+        payload: error.message
+      });
+    }
+  };
+};
+
+export const submitProposal = (propsalData) => {
+  return async (dispatch) => {
+    dispatch({
+      type: SUBMIT_PROPOSAL
+    });
+
+    try {
+      const data = await axios.post(`proposals/`, propsalData);
+
+      dispatch({
+        type: SUBMIT_PROPOSAL_DATA_SUCCESS,
+        payload: data.data
+      });
+
+      return data;
+    } catch (error) {
+      dispatch({
+        type: SUBMIT_PROPOSAL_DATA_ERROR,
         payload: error.message
       });
     }
