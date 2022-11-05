@@ -122,7 +122,7 @@ const App = () => {
                 <Route path="/proposals/:proposalId" element={<Proposal />} />
                 <Route path="/profile" element={<Profile />} />
                 <Route path="/clubs/:clubId" element={<ClubSinglePage />} />
-                <Route path="/search" element={<SearchResults />} />
+                <Route path="/search/:query" element={<SearchResults />} />
               </Routes>
             </Grid>
           </Grid>
