@@ -28,7 +28,6 @@ const App = () => {
   const pathname = window.location.pathname;
   const [searchResults, setSearchResults] = useState([]);
   const [userIsLoggedIn, setUserIsLoggedIn] = useState(false);
-  const { data: searchData } = useTypedSelector((state) => state.search);
 
   const navigate = useNavigate();
 
@@ -52,8 +51,7 @@ const App = () => {
       setUserIsLoggedIn(false);
       navigate('/login');
     }
-    console.log(searchData, 'App');
-  }, [data, searchData]);
+  }, [data]);
 
   const theme = createTheme({
     palette: {
@@ -122,7 +120,7 @@ const App = () => {
                 <Route path="/proposals/:proposalId" element={<Proposal />} />
                 <Route path="/profile" element={<Profile />} />
                 <Route path="/clubs/:clubId" element={<ClubSinglePage />} />
-                <Route path="/search/:query" element={<SearchResults />} />
+                <Route path="/search" element={<SearchResults />} />
               </Routes>
             </Grid>
           </Grid>
