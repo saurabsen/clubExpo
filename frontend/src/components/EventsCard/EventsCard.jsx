@@ -19,7 +19,7 @@ const EventsCard = ({
   registerClickHandler,
   eventId,
   shareClickHandler,
-  attendeeImgUrlList,
+  attendeeImgUrlList = [],
   withinClub = false,
   registered = false,
   clubAdminView = false

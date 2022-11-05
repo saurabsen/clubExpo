@@ -103,7 +103,6 @@ export default function ClubProposal() {
     <Box className="proposal-container" sx={{ width: '70%' }}>
       {!proposalCreationComplete ? (
         <>
-          {/* <button onClick={getProposals('getproposals')}>get proposal</button> */}
           <Stepper activeStep={activeStep} sx={{ padding: '0 0 1rem' }}>
             {steps.map((label, index) => {
               const stepProps = {};

@@ -1,11 +1,11 @@
 import { useDispatch } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { eventsActions, clubsActions, proposalActions, authActions } from '../state';
+import { eventsActions, clubsActions, proposalActions, authActions, searchActions } from '../state';
 
 export const useActions = () => {
   const dispatch = useDispatch();
   return bindActionCreators(
-    Object.assign({}, eventsActions, clubsActions, proposalActions, authActions),
+    Object.assign({}, eventsActions, clubsActions, proposalActions, authActions, searchActions),
     dispatch
   );
 };
