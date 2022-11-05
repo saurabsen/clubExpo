@@ -12,22 +12,26 @@ const ClubsJoined = () => {
   const userData = JSON.parse(localStorage.getItem('user'));
   useEffect(() => {
     getAllClubsData('');
-  },[]);
+  }, []);
   return (
     <>
       <Box sx={{ flexGrow: 1 }}>
         <Grid container spacing={2} sx={{ p: 2 }}>
-        { clubsJoinedData.data.filter(clubData => clubData.acceptedMembers.find( membersData => membersData.id === userData._id )).map(clubData => (
-          <Grid key={clubData.createdAt} item xs={4}>
-            <ClubCard
-              key={clubData._id}
-              clubImage={clubData.logoImage}
-              clubName={clubData.name}
-              clubNumMembers={clubData?.acceptedMembers?.length}
-              clubId={clubData._id}
-            />
-        </Grid>
-        ))}
+          {clubsJoinedData.data
+            .filter((clubData) =>
+              clubData.acceptedMembers.find((membersData) => membersData.id === userData._id)
+            )
+            .map((clubData) => (
+              <Grid key={clubData.createdAt} item xs={4}>
+                <ClubCard
+                  key={clubData._id}
+                  clubImage={clubData.logoImage}
+                  clubName={clubData.name}
+                  clubNumMembers={clubData?.acceptedMembers?.length}
+                  clubId={clubData._id}
+                />
+              </Grid>
+            ))}
         </Grid>
       </Box>
     </>
