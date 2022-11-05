@@ -19,6 +19,11 @@ const proposalSchema = mongoose.Schema(
       required: [true, `Please enter proposal creator's user ID`],
       ref: "User",
     },
+    createrName: {
+      type: String,
+      required: [true, `Please enter proposal creator's Name`],
+      ref: "Username",
+    },
     members: [
       {
         type: String,
