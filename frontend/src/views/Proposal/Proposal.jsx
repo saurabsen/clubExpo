@@ -38,11 +38,8 @@ const Proposal = () => {
 
       // update approval status to Rejected
       const data = await axios.put(
-        `http://localhost:3001/api/proposals/${newProposal._id}`,
-        newProposal,
-        {
-          headers: { Authorization: `Bearer ${token}` }
-        }
+        `proposals/${newProposal._id}`,
+        newProposal
       );
 
       if (data) {
@@ -72,12 +69,7 @@ const Proposal = () => {
 
       // update approval status to Approved
       const data1 = await axios.put(
-        `http://localhost:3001/api/proposals/${newProposal._id}`,
-        newProposal,
-        {
-          headers: { Authorization: `Bearer ${token}` }
-        }
-      );
+        `proposals/${newProposal._id}`,newProposal);
 
       const club = {
         name: proposal.clubName,
@@ -87,9 +79,7 @@ const Proposal = () => {
       };
 
       // create a new club
-      const data2 = await axios.post(`http://localhost:3001/api/clubs`, club, {
-        headers: { Authorization: `Bearer ${token}` }
-      });
+      const data2 = await axios.post(`clubs`, club);
 
       if (data1 && data2) {
         setApproveModalOpen(true);
