@@ -34,7 +34,7 @@ const SearchBar = ({ handleSearch }) => {
         <Grid item xs={11}>
           <TextField
             id="standard-search"
-            label="Search"
+            placeholder="Search"
             type="search"
             variant="standard"
             fullWidth
