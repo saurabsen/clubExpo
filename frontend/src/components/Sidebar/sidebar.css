@@ -11,13 +11,13 @@
   margin-top: 70px;
 }
 
-/*
+
 .sidebar ul {
   display: flex;
   flex-direction: column;
   gap: 0.6rem;
-  padding: 2rem 1.8rem;
-} */
+  padding: 2rem 1rem;
+}
 
 .sidebar li {
   display: flex;

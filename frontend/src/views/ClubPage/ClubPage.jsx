@@ -1,9 +1,9 @@
 import React from 'react';
 import { Button, Typography, Box, Avatar, Card, CardMedia } from '@mui/material';
-import { useEffect } from 'react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { ReactComponent as ShareSvg } from '../../assets/Icons/share.svg';
+import { Link } from 'react-router-dom';
 
 const ClubPage = (props) => {
   const { clubId } = props;
@@ -148,6 +148,7 @@ const ClubPage = (props) => {
   return (
     <>
       {renderClubHeader()}
+      <Link to='./createevent' relative='path'><Button variant='contained'>Create Event</Button></Link>
       {renderClubMain()}
     </>
   );
