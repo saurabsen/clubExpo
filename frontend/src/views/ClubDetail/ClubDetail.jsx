@@ -25,7 +25,7 @@ import ImageListItem from '@mui/material/ImageListItem';
 import CardMedia from '@mui/material/CardMedia';
 import Button from '@mui/material/Button';
 import Divider from '@mui/material/Divider';
-import { useParams } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import axios from 'axios';
 import IconButton from '@mui/material/IconButton';
 import { styled } from '@mui/material/styles';
@@ -192,7 +192,7 @@ const ClubDetail = () => {
           { (userData !== null && userData.userRole !== undefined && userData.userRole === 'member' && userData.id !== clubsDetailData.data.admins  ? ( 
           <Button style={{ width: '100%' }} variant="contained" onClick={joinClub}>
             { (clubStatus.status && !clubStatus.request ? 'Joined' : (!clubStatus.status && clubStatus.request ? 'Requested' : 'Join' ) )}
-          </Button>) : <Button style={{ width: '100%' }} variant="contained">Create event</Button> ) }
+          </Button>) :<Link to='./createevent' relative='path'><Button style={{ width: '100%' }} variant="contained">Create event</Button></Link> ) }
 
         </Grid>
       </Grid>
