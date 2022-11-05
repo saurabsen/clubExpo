@@ -17,7 +17,7 @@ const Home = () => {
     });
     const config = {
       method: 'post',
-      url: 'http://localhost:3001/api/events/latestfromclubs',
+      url: 'events/latestfromclubs',
       headers: {
         'Content-Type': 'application/json',
         Authorization:
@@ -32,7 +32,7 @@ const Home = () => {
   const getClubs = async () => {
     const config = {
       method: 'get',
-      url: 'http://localhost:3001/api/clubs/',
+      url: 'clubs/',
       headers: {
         Authorization:
           'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MzU5YWQ0MmJkMzgzNzljYTNkMzViZDAiLCJpYXQiOjE2NjY4MjE0NDIsImV4cCI6MTY2OTQxMzQ0Mn0._SaFCeAaa-BQVmC-tGPcczEcoad_3XOfONKzMFqeqRY'
@@ -68,8 +68,8 @@ const Home = () => {
           eventPrice: event.price,
           eventImgUrl: event.featureImage,
           numberOfAttendees: 100,
+          eventId: event._id,
           registerClickHandler: '',
-          cardClickHandler: '',
           shareClickHandler: '',
           attendeeImgUrlList: [
             'https://picsum.photos/200/300?random=1',
@@ -90,7 +90,7 @@ const Home = () => {
       console.log('failed to initialize component Home');
     }
   };
-  
+
   useEffect(() => {
     initComponent();
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -107,7 +107,7 @@ const Home = () => {
   return (
     <>
       <Grid container xs={12} columnSpacing={{ xs: 3 }}>
-        <Grid item xs={9}>
+        <Grid item xs={9} sx={{ mt: 4 }}>
           <Typography sx={styleLatestEvents}>Latest Events</Typography>
           {events.map((event) => {
             return (
@@ -123,7 +123,7 @@ const Home = () => {
                 eventImgUrl={event.eventImgUrl}
                 numberOfAttendees={event.numberOfAttendees}
                 registerClickHandler={event.registerClickHandler}
-                cardClickHandler={event.cardClickHandler}
+                eventId={event.eventId}
                 shareClickHandler={event.shareClickHandler}
                 attendeeImgUrlList={event.attendeeImgUrlList}
                 withinClub={event.withinClub}
@@ -133,7 +133,7 @@ const Home = () => {
             );
           })}
         </Grid>
-        <Grid item xs={3}>
+        <Grid item xs={3} sx={{ mt: 4 }}>
           <UpcomingEvents upcomingEvents={upcomingEvs} />
         </Grid>
       </Grid>
