@@ -43,6 +43,8 @@ const App = () => {
   useEffect(() => {
     if (data) {
       setUserIsLoggedIn(true);
+      const token = JSON.parse(localStorage.getItem('userToken'));
+      axios.defaults.headers['Authorization'] = `Bearer ${token}`;
       if (data.userRole === 'member' || data.userRole === 'clubAdmin') {
         //navigate('/home');
       } else if (data.userRole === 'hubAdmin') {
@@ -99,14 +101,14 @@ const App = () => {
       ) : (
         <Box sx={{ flexGrow: 1 }}>
           <Grid container>
-            {pathname === '/proposal' ? (
-              ''
-            ) : (
-              <Grid item xs={2}>
+            {pathname === '/proposal'
+              ? ''
+              : ''
+                /*<Grid item xs={2}>
                 <SideBar />
-              </Grid>
-            )}
-            <Grid item xs={pathname === '/proposal' ? 12 : 10}>
+              </Grid> */
+            }
+            <Grid item xs={pathname === '/proposal' ? 12 : 12}>
               <Routes>
                 <Route path="/home" element={<Home />} />
                 <Route path="/admin-dashboard" element={<AdminDashboard />} />
