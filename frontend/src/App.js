@@ -82,6 +82,11 @@ const App = () => {
     return <ClubPage clubId={clubId} />;
   };
 
+  const CreateEventPage = () => {
+    let { clubId } = useParams();
+    return <CreateEvent clubId={clubId} />;
+  };
+
   const handleLogoutUser = () => logoutUser();
 
   return (
@@ -120,7 +125,7 @@ const App = () => {
                 <Route path="/proposals/:proposalId" element={<Proposal />} />
                 <Route path="/profile" element={<Profile />} />
                 <Route path="/clubs/:clubId" element={<ClubSinglePage />} />
-                <Route path='/createevent' element={<CreateEvent />} />
+                <Route path="/clubs/:clubId/createevent" element={<CreateEventPage />} />
               </Routes>
             </Grid>
           </Grid>
