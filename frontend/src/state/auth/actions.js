@@ -22,11 +22,9 @@ export const loginUser = (credentials) => {
 
       // store JWT in localStorage
       localStorage.setItem('userToken', JSON.stringify(data.data.token));
-      axios.defaults.headers.common['Authorization'] = `Bearer ${data.data.token}}`;
+      axios.defaults.headers['Authorization'] = `Bearer ${data.data.token}`;
       // store user data object in localStorage
-      const user = await axios.get(`users/me`, {
-        headers: { Authorization: `Bearer ${data.data.token}` }
-      });
+      const user = await axios.get(`users/me`);
 
       if (user) {
         localStorage.setItem('user', JSON.stringify(user.data));
@@ -55,9 +53,7 @@ export const getUser = () => {
     try {
       const token = JSON.parse(localStorage.getItem('userToken'));
 
-      const data = await axios.get(`users/me`, {
-        headers: { Authorization: `Bearer ${token}` }
-      });
+      const data = await axios.get(`users/me`);
 
       dispatch({
         type: GET_FETCH_USER_DATA_SUCCESS,

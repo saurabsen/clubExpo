@@ -9,13 +9,12 @@ export const getAllClubsData = (queryString) => {
     });
 
     try {
-      const data = await axios.get(`http://localhost:3001/api/clubs/${queryString}`);
-
+      const data = await axios.get(`clubs/${queryString}`);
       dispatch({
         type: GET_FETCH_CLUBS_DATA_SUCCESS,
-        payload: data
+        payload: data.data
       });
-      return data;
+      return data.data;
     } catch (error) {
       dispatch({
         type: GET_FETCH_CLUBS_DATA_ERROR,
