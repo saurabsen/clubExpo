@@ -5,8 +5,9 @@ import './searchresult.css';
 import { Box, Tabs, Tab, Typography } from '@mui/material';
 import EventsCard from '../../components/EventsCard/EventsCard';
 import { useState, useEffect } from 'react';
-import { useActions } from '../../hooks/useActions';
 import { useTypedSelector } from '../../hooks/useTypedSelector';
+import ClubCard from '../../components/ClubCard/ClubCard';
+import { useActions } from '../../hooks/useActions';
 
 const TabPanel = (props) => {
   const { children, value, index, ...other } = props;
@@ -42,62 +43,71 @@ function a11yProps(index) {
 }
 
 const SearchResults = () => {
-  const { getSearchByClubs } = useActions();
-  const pathname = window.location.pathname;
-  console.log(pathname);
   const [value, setValue] = useState(0);
-  const [events, setEvents] = useState([]);
-  // const eventsData = useTypedSelector((state) => state.events);
-  const { data: eventsData } = useTypedSelector((state) => state.search);
+  const [searchEvents, setSearchevents] = useState([]);
+  const [searchClubs, setSearchclubs] = useState([]);
+  const [searchValue, setSearchValue] = useState('');
+  const { clubs: clubsData } = useTypedSelector((state) => state.search);
+  const { events: eventsData } = useTypedSelector((state) => state.search);
+  const { searchBy } = useTypedSelector((state) => state.search);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
-
-  const initComponent = async (r) => {
-    // const rawEvents = await getSearchByClubs(r);
-    // console.log(rawEvents, 'raw data');
-    // setEvents(rawEvents);
-    getSearchByClubs(r).then((res) => {
-      console.log(res, 'res');
-      setEvents([...res]);
-      console.log(setEvents, 'events');
-    });
-    console.log(eventsData, 'temp2');
-  };
+  useEffect(() => {
+    setSearchValue(searchBy);
+    console.log(searchBy);
+  }, [searchBy]);
 
   useEffect(() => {
-    // debugger;
-    // setEvents(eventsData);
-    // console.log(eventsData, 'temp');
-    initComponent('r');
-  }, []);
+    setSearchclubs([...clubsData]);
+    console.log(clubsData, 'clubdata');
+  }, [clubsData]);
 
   useEffect(() => {
-    console.log(events, 'events use');
-  }, [events]);
+    setSearchevents([...eventsData]);
+    console.log(clubsData, 'eventdata');
+  }, [eventsData]);
 
   return (
     <>
       <Grid className="search-container" container spacing={2}>
         <Grid item xs={12}>
-          <h1>Search Results: Cheese</h1>
+          <h1>Search Results: {searchBy}</h1>
         </Grid>
         <Box sx={{ width: '1400px', padding: '2rem 0' }}>
           <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
             <Tabs value={value} onChange={handleChange} aria-label="profile tabs">
-              <Tab label="About" {...a11yProps(0)} />
+              <Tab label="Events" {...a11yProps(0)} />
               <Tab label="Clubs" {...a11yProps(1)} />
             </Tabs>
           </Box>
           <TabPanel value={value} index={0}>
-            tet
-            {/* {eventsData.map((event) => {
-              return <div>{event._id}</div>;
-            })} */}
+            {eventsData.length === 0
+              ? 'No Events'
+              : eventsData.map((event) => {
+                  return <div>{event._id}</div>;
+                })}
           </TabPanel>
           <TabPanel value={value} index={1}>
-            test
+            <Box sx={{ flexGrow: 1 }}>
+              <Grid container spacing={2} sx={{ p: 2 }}>
+                {clubsData.length === 0
+                  ? 'No Clubs'
+                  : clubsData.map((club) => {
+                      return (
+                        <Grid item xs={4}>
+                          <ClubCard
+                            clubImage={club.logoImage}
+                            clubName={club.name}
+                            clubNumMembers="2"
+                            clubId={club._id}
+                          />
+                        </Grid>
+                      );
+                    })}
+              </Grid>
+            </Box>
           </TabPanel>
         </Box>
       </Grid>

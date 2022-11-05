@@ -2,11 +2,12 @@ import { useState } from 'react';
 import { Grid, TextField } from '@mui/material';
 import { Search } from '../../assets';
 import { useNavigate } from 'react-router-dom';
-import { useTypedSelector } from '../../hooks/useTypedSelector';
+import { useActions } from '../../hooks/useActions';
 import './searchbar.css';
 
 const SearchBar = ({ handleSearch }) => {
   const [searchString, setSearchString] = useState('');
+  const { getSearchByClubs, getSearchByEvents } = useActions();
 
   const navigate = useNavigate();
 
@@ -17,15 +18,10 @@ const SearchBar = ({ handleSearch }) => {
 
   // user presses enter key - make the search
   const handleKeyDown = async (e) => {
-    e.preventDefault();
     if (e.key === 'Enter') {
-      console.log(searchString);
-      // API call to get search results
-      // const searchResult = ['Club 1', 'Club 2', 'Club 3'];
-
-      // send search results back to parent component
-      // handleSearch(searchResult);
-      navigate(`/search/${searchString}`);
+      getSearchByClubs(e.target.value);
+      getSearchByEvents(e.target.value);
+      navigate(`/search/`);
     }
   };
 
