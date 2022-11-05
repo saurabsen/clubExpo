@@ -18,17 +18,19 @@ const DiscoverClubs = () => {
     <>
       <Box sx={{ flexGrow: 1 }}>
         <Grid container spacing={2} sx={{ p:2}}>
-        { allDiscoverClubsData.data.map(clubData => (
-          <Grid key={clubData.createdAt} item xs={4}>
-          <ClubCard
-            key={clubData._id}
-            clubImage={clubData.logoImage}
-            clubName={clubData.name}
-            clubNumMembers={clubData.acceptedMembers.length}
-            clubId={clubData._id}
-          />
-        </Grid>
-        ))}
+          {
+            allDiscoverClubsData.data.map(clubData => (
+              <Grid key={clubData.createdAt} item xs={4}>
+              <ClubCard
+                key={clubData._id}
+                clubImage={clubData.logoImage}
+                clubName={clubData.name}
+                clubNumMembers={clubData?.acceptedMembers?.length}
+                clubId={clubData._id}
+              />
+            </Grid>
+            ))
+          }
         </Grid>
       </Box>
     </>

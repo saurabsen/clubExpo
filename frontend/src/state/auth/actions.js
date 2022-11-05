@@ -51,9 +51,11 @@ export const getUser = () => {
     });
 
     try {
-      const token = JSON.parse(localStorage.getItem('userToken'));
-
       const data = await axios.get(`users/me`);
+
+      if (data) {
+        localStorage.setItem('user', JSON.stringify(data.data));
+      }
 
       dispatch({
         type: GET_FETCH_USER_DATA_SUCCESS,

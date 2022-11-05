@@ -12,7 +12,7 @@ export const getAllEventsData = (queryString, params) => {
       const data = await axios.post(`events/${queryString}`, params);
       dispatch({
         type: GET_FETCH_EVENTS_DATA_SUCCESS,
-        payload: data.data
+        payload: [...data.data]
       });
       return data.data;
     } catch (error) {

@@ -13,7 +13,7 @@ const EventsRegistered = () => {
   const userData = JSON.parse(localStorage.getItem('user'));
 
   useEffect(() => {
-    getAllEventsData('latestfromclubs',{  clubIds: userData.clubsJoined })
+    getAllEventsData('latestfromclubs',{  clubIds: userData.clubsJoined });
   },[]);
 
   return (
