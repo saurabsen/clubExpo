@@ -90,7 +90,7 @@ const Home = () => {
       console.log('failed to initialize component Home');
     }
   };
-  
+
   useEffect(() => {
     initComponent();
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -107,7 +107,7 @@ const Home = () => {
   return (
     <>
       <Grid container xs={12} columnSpacing={{ xs: 3 }}>
-        <Grid item xs={9}>
+        <Grid item xs={9} sx={{ mt: 4 }}>
           <Typography sx={styleLatestEvents}>Latest Events</Typography>
           {events.map((event) => {
             return (
@@ -133,7 +133,7 @@ const Home = () => {
             );
           })}
         </Grid>
-        <Grid item xs={3}>
+        <Grid item xs={3} sx={{ mt: 4 }}>
           <UpcomingEvents upcomingEvents={upcomingEvs} />
         </Grid>
       </Grid>

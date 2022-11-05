@@ -5,7 +5,8 @@ import {
   clubsActions,
   proposalActions,
   authActions,
-  clubMembersActions
+  clubMembersActions,
+  searchActions
 } from '../state';
 
 export const useActions = () => {
@@ -17,7 +18,8 @@ export const useActions = () => {
       clubsActions,
       proposalActions,
       authActions,
-      clubMembersActions
+      clubMembersActions,
+      searchActions
     ),
     dispatch
   );

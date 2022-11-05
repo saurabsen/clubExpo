@@ -19,11 +19,13 @@ import {
   ClubDetail,
   Proposal,
   Profile,
-  ClubPage
+  ClubPage,
+  CreateEvent
 } from './views';
 import { useActions } from './hooks/useActions';
 import { useTypedSelector } from './hooks/useTypedSelector';
 import axios from 'axios';
+import SearchResults from './views/SearchResults/SearchResults';
 
 const App = () => {
   const pathname = window.location.pathname;
@@ -46,7 +48,7 @@ const App = () => {
       const token = JSON.parse(localStorage.getItem('userToken'));
       axios.defaults.headers['Authorization'] = `Bearer ${token}`;
       if (data.userRole === 'member' || data.userRole === 'clubAdmin') {
-        //navigate('/home');
+        navigate('/home');
       } else if (data.userRole === 'hubAdmin') {
         navigate('/admin-dashboard');
       }
@@ -83,6 +85,11 @@ const App = () => {
   const ClubSinglePage = () => {
     let { clubId } = useParams();
     return <ClubPage clubId={clubId} />;
+  };
+
+  const CreateEventPage = () => {
+    let { clubId } = useParams();
+    return <CreateEvent clubId={clubId} />;
   };
 
   const handleLogoutUser = () => logoutUser();
@@ -123,6 +130,9 @@ const App = () => {
                 <Route path="/proposals/:proposalId" element={<Proposal />} />
                 <Route path="/profile" element={<Profile />} />
                 <Route path="/clubs/:id" element={<ClubDetail />} />
+                <Route path="/clubs/:clubId" element={<ClubSinglePage />} />
+                <Route path="/clubs/:clubId/createevent" element={<CreateEventPage />} />
+                <Route path="/search" element={<SearchResults />} />
               </Routes>
             </Grid>
           </Grid>

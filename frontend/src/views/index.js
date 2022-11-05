@@ -13,6 +13,7 @@ import Proposal from './Proposal/Proposal';
 import Profile from './Profile/Profile';
 import ClubPage from './ClubPage/ClubPage';
 import ClubDetail from './ClubDetail/ClubDetail';
+import CreateEvent from './CreateEvent/CreateEvent';
 
 export {
   Home,
@@ -29,5 +30,6 @@ export {
   ClubDetail,
   Proposal,
   Profile,
-  ClubPage
+  ClubPage,
+  CreateEvent
 };
