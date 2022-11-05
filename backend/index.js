@@ -31,6 +31,7 @@ app.use("/api/clubs", require("./src/routes/clubRoutes"));
 app.use("/api/users", require("./src/routes/userRoutes"));
 app.use("/api/proposals", require("./src/routes/proposalRoutes"));
 app.use("/api/events", require("./src/routes/eventRoutes"));
+app.use("/api/search", require("./src/routes/searchRoutes"));
 
 app.use(errorHandler);
 
