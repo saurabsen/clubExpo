@@ -29,8 +29,9 @@ const clubSchema = mongoose.Schema(
     ],
     acceptedMembers: [
       {
-        type: String,
-        required: [true, 'Please enter accepted member email IDs'],
+        id: {
+          type: String,
+        },
       },
     ],
     pendingMembers: [
