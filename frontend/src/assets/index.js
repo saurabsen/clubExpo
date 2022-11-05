@@ -38,9 +38,13 @@ import Search from './Icons/search.svg';
 import Share from './Icons/share.svg';
 import UpDisabled from './Icons/up-disabled.svg';
 import Up from './Icons/up.svg';
+import Clock from './Icons/clock.svg'
 
 // Logos
 import LogoRectangle from './Logo/logo-rectangle.svg';
+
+// Images
+import LoginGirl from './Images/LoginGirl.jpg';
 
 export {
   AddMember,
@@ -82,5 +86,7 @@ export {
   Share,
   UpDisabled,
   Up,
-  LogoRectangle
+  LogoRectangle,
+  LoginGirl,
+  Clock
 };
