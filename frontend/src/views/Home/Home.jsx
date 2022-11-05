@@ -90,7 +90,7 @@ const Home = () => {
       console.log('failed to initialize component Home');
     }
   };
-  
+
   useEffect(() => {
     initComponent();
     // eslint-disable-next-line react-hooks/exhaustive-deps

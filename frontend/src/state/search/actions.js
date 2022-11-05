@@ -22,7 +22,7 @@ export const getSearchByClubs = (statusValue = '') => {
         type: FETCH_SEARCH_BY_CLUBS_DATA_SUCCESS,
         payload: data.data
       });
-      return data;
+      return data.data;
     } catch (error) {
       dispatch({
         type: FETCH_SEARCH_BY_CLUBS__DATA_ERROR,
