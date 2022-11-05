@@ -21,13 +21,9 @@ export const getProposalByStatus = (statusValue = '') => {
     try {
       const token = JSON.parse(localStorage.getItem('userToken'));
 
-      const data = await axios.post(
-        `http://localhost:3001/api/proposals/getProposalsByStatus`,
-        status,
-        {
-          headers: { Authorization: `Bearer ${token}` }
-        }
-      );
+      const data = await axios.post(`proposals/getProposalsByStatus`, status, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
 
       dispatch({
         type: FETCH_PROPOSALS_BY_STATUS_DATA_SUCCESS,
@@ -50,11 +46,7 @@ export const submitProposal = (propsalData) => {
     });
 
     try {
-      const token = JSON.parse(localStorage.getItem('userToken'));
-
-      const data = await axios.post(`http://localhost:3001/api/proposals/`, propsalData, {
-        headers: { Authorization: `Bearer ${token}` }
-      });
+      const data = await axios.post(`proposals/`, propsalData);
 
       dispatch({
         type: SUBMIT_PROPOSAL_DATA_SUCCESS,

@@ -5,3 +5,4 @@ export * as clubsActions from './clubs/actions';
 export * as proposalActions from './proposals/actions';
 export * as authActions from './auth/actions';
 export * as searchActions from './search/actions';
+export * as clubMembersActions from './clubsMembers/actions';

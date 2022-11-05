@@ -5,7 +5,7 @@ const localURL = 'http://localhost:3001/api';
 
 const API = () => {
   const get = (queryString, params) => {
-    return axios.get(`http://localhost:3001/api/${queryString}`, params);
+    return axios.get(`${queryString}`, params);
   };
 
   const post = (queryString, params) => {

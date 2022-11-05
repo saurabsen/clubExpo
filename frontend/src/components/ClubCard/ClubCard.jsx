@@ -6,12 +6,8 @@ import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
 import { Link } from 'react-router-dom';
 
-const ClubCard = ({
-  clubImage="https://picsum.photos/id/237/200/300",
-  clubName="Placeholder",
-  clubNumMembers=0,
-  clubId="635cc70ca5cc5e9114f2d03e"
-}) => {
+const ClubCard = (props) => {
+  let {clubImage, clubName, clubNumMembers, clubId} = props;
   return (
     <Card sx={{ maxWidth: 345 }}>
       <CardMedia

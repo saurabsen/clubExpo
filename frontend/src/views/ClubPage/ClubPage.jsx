@@ -13,11 +13,7 @@ const ClubPage = (props) => {
   const getClub = async (id) => {
     const config = {
       method: 'get',
-      url: `http://localhost:3001/api/clubs/${id}`,
-      headers: {
-        Authorization:
-          'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MzU5YWQ0MmJkMzgzNzljYTNkMzViZDAiLCJpYXQiOjE2NjY4MjE0NDIsImV4cCI6MTY2OTQxMzQ0Mn0._SaFCeAaa-BQVmC-tGPcczEcoad_3XOfONKzMFqeqRY'
-      }
+      url: `clubs/${id}`
     };
     const res = await axios(config);
     return res.data;
@@ -30,7 +26,7 @@ const ClubPage = (props) => {
 
     const config = {
       method: 'post',
-      url: 'http://localhost:3001/api/users/allusers',
+      url: 'users/allusers',
       headers: {
         'Content-Type': 'application/json'
       },

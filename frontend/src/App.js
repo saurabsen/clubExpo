@@ -16,6 +16,7 @@ import {
   ClubProposal,
   ProposalManagement,
   EventsRegistered,
+  ClubDetail,
   Proposal,
   Profile,
   ClubPage,
@@ -23,12 +24,14 @@ import {
 } from './views';
 import { useActions } from './hooks/useActions';
 import { useTypedSelector } from './hooks/useTypedSelector';
+import axios from 'axios';
 import SearchResults from './views/SearchResults/SearchResults';
 
 const App = () => {
   const pathname = window.location.pathname;
   const [searchResults, setSearchResults] = useState([]);
   const [userIsLoggedIn, setUserIsLoggedIn] = useState(false);
+  const noSidebar = ['/proposal', '/clubs'];
 
   const navigate = useNavigate();
 
@@ -42,7 +45,8 @@ const App = () => {
   useEffect(() => {
     if (data) {
       setUserIsLoggedIn(true);
-
+      const token = JSON.parse(localStorage.getItem('userToken'));
+      axios.defaults.headers['Authorization'] = `Bearer ${token}`;
       if (data.userRole === 'member' || data.userRole === 'clubAdmin') {
         navigate('/home');
       } else if (data.userRole === 'hubAdmin') {
@@ -104,14 +108,14 @@ const App = () => {
       ) : (
         <Box sx={{ flexGrow: 1 }}>
           <Grid container>
-            {pathname === '/proposal' ? (
+            {pathname === '/proposal' || pathname.includes('/clubs') ? (
               ''
             ) : (
               <Grid item xs={2}>
                 <SideBar />
               </Grid>
             )}
-            <Grid item xs={pathname === '/proposal' ? 12 : 10}>
+            <Grid item xs={pathname.includes('/proposal') || pathname.includes('/clubs') ? 12 : 10}>
               <Routes>
                 <Route path="/home" element={<Home />} />
                 <Route path="/admin-dashboard" element={<AdminDashboard />} />
@@ -125,6 +129,7 @@ const App = () => {
                 <Route path="/events/:eventId" element={<UserEventsPage />} />
                 <Route path="/proposals/:proposalId" element={<Proposal />} />
                 <Route path="/profile" element={<Profile />} />
+                <Route path="/clubs/:id" element={<ClubDetail />} />
                 <Route path="/clubs/:clubId" element={<ClubSinglePage />} />
                 <Route path="/clubs/:clubId/createevent" element={<CreateEventPage />} />
                 <Route path="/search" element={<SearchResults />} />
