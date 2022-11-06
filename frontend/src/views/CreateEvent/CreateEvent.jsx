@@ -55,7 +55,7 @@ const CreateEvent = (props) => {
     setFormData({ ...formData, availableSpots: parseInt(formData.availableSpots) });
     const config = {
       method: 'post',
-      url: 'http://localhost:3001/api/events/',
+      url: 'events/',
       headers: {
         'Content-Type': 'application/json',
         Authorization: 'Bearer ' + sanitizedToken
