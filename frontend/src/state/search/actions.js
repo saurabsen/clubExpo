@@ -17,7 +17,7 @@ export const getSearchByClubs = (statusValue) => {
     try {
       const token = JSON.parse(localStorage.getItem('userToken'));
 
-      const data = await axios.get(`http://localhost:3001/api/search/clubs/${statusValue}`, {
+      const data = await axios.get(`/search/clubs/${statusValue}`, {
         headers: { Authorization: `Bearer ${token}` }
       });
 
@@ -46,7 +46,7 @@ export const getSearchByEvents = (statusValue) => {
     try {
       const token = JSON.parse(localStorage.getItem('userToken'));
 
-      const data = await axios.get(`http://localhost:3001/api/search/events/${statusValue}`, {
+      const data = await axios.get(`search/events/${statusValue}`, {
         headers: { Authorization: `Bearer ${token}` }
       });
 
