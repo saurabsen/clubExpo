@@ -3,7 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { ProposalDetailCard } from '../../components';
 import { Button, Modal, Box } from '@mui/material';
-import { useActions } from '../../hooks/useActions';
+// import { useActions } from '../../hooks/useActions';
 import { useTypedSelector } from '../../hooks/useTypedSelector';
 
 const Proposal = () => {
@@ -25,6 +25,7 @@ const Proposal = () => {
         setProposal(proposal[0]);
       }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data]);
 
   // Making API call here, this should be included in redux proposals actions
@@ -34,13 +35,10 @@ const Proposal = () => {
       newProposal.approvalStatus = 'Rejected';
       newProposal.approvalStatusReason = rejectionReason;
 
-      const token = JSON.parse(localStorage.getItem('userToken'));
+      // const token = JSON.parse(localStorage.getItem('userToken'));
 
       // update approval status to Rejected
-      const data = await axios.put(
-        `proposals/${newProposal._id}`,
-        newProposal
-      );
+      const data = await axios.put(`proposals/${newProposal._id}`, newProposal);
 
       if (data) {
         setRejectModalOpen(false);
@@ -65,11 +63,10 @@ const Proposal = () => {
       let newProposal = proposal;
       newProposal.approvalStatus = 'Approved';
 
-      const token = JSON.parse(localStorage.getItem('userToken'));
+      // const token = JSON.parse(localStorage.getItem('userToken'));
 
       // update approval status to Approved
-      const data1 = await axios.put(
-        `proposals/${newProposal._id}`,newProposal);
+      const data1 = await axios.put(`proposals/${newProposal._id}`, newProposal);
 
       const club = {
         name: proposal.clubName,

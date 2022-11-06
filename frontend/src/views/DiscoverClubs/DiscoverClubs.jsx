@@ -12,15 +12,15 @@ const DiscoverClubs = () => {
 
   useEffect(() => {
     getAllClubsData('');
-  },[]);
-  
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   return (
     <>
       <Box sx={{ flexGrow: 1 }}>
-        <Grid container spacing={2} sx={{ p:2}}>
-          {
-            allDiscoverClubsData.data.map(clubData => (
-              <Grid key={clubData.createdAt} item xs={4}>
+        <Grid container spacing={2} sx={{ p: 2 }}>
+          {allDiscoverClubsData.data.map((clubData) => (
+            <Grid key={clubData.createdAt} item xs={4}>
               <ClubCard
                 key={clubData._id}
                 clubImage={clubData.logoImage}
@@ -29,8 +29,7 @@ const DiscoverClubs = () => {
                 clubId={clubData._id}
               />
             </Grid>
-            ))
-          }
+          ))}
         </Grid>
       </Box>
     </>

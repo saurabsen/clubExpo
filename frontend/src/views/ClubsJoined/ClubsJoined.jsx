@@ -12,6 +12,7 @@ const ClubsJoined = () => {
   const userData = JSON.parse(localStorage.getItem('user'));
   useEffect(() => {
     getAllClubsData('');
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   return (
     <>

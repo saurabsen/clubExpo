@@ -29,18 +29,12 @@ import SearchResults from './views/SearchResults/SearchResults';
 
 const App = () => {
   const pathname = window.location.pathname;
-  const [searchResults, setSearchResults] = useState([]);
   const [userIsLoggedIn, setUserIsLoggedIn] = useState(false);
-  const noSidebar = ['/proposal', '/clubs'];
 
   const navigate = useNavigate();
 
   const { logoutUser } = useActions();
   const { data } = useTypedSelector((state) => state.auth);
-
-  const handleSearch = (searchResults) => {
-    setSearchResults(searchResults);
-  };
 
   useEffect(() => {
     if (data) {
@@ -56,6 +50,7 @@ const App = () => {
       setUserIsLoggedIn(false);
       navigate('/login');
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data]);
 
   const theme = createTheme({
@@ -96,11 +91,7 @@ const App = () => {
 
   return (
     <ThemeProvider theme={theme}>
-      <Header
-        userIsLoggedIn={userIsLoggedIn}
-        handleSearch={handleSearch}
-        handleLogoutUser={handleLogoutUser}
-      />
+      <Header userIsLoggedIn={userIsLoggedIn} handleLogoutUser={handleLogoutUser} />
       {!userIsLoggedIn ? (
         <Routes>
           <Route path="/login" element={<Login />} />

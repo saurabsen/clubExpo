@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Box, Avatar, Menu, MenuItem, Button } from '@mui/material';
+import { Box, Avatar, Menu, MenuItem } from '@mui/material';
 import SearchBar from '../SearchBar/SearchBar';
 import { LogoRectangle, NotificationsOff, NotificationsOn } from '../../assets';
 import './header.css';
@@ -21,6 +21,11 @@ const Header = ({ userIsLoggedIn, handleSearch, handleLogoutUser }) => {
     setShowProfileModal(null);
     handleLogoutUser();
   };
+
+  useEffect(() => {
+    setNewNotification(newNotification);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <>
