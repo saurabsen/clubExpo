@@ -56,7 +56,7 @@ const SearchResults = () => {
   const getClubs = async () => {
     const config = {
       method: 'get',
-      url: 'http://localhost:3001/api/clubs/'
+      url: 'clubs/'
     };
 
     const res = await axios(config);
