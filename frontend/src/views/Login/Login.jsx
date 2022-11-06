@@ -1,8 +1,9 @@
 import { Grid, TextField, Button, Box } from '@mui/material';
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { LoginGirl } from '../../assets';
 import { useActions } from '../../hooks/useActions';
-import { useTypedSelector } from '../../hooks/useTypedSelector';
+// import { useTypedSelector } from '../../hooks/useTypedSelector';
 
 function Login() {
   const [formData, setFormData] = useState({ email: '', password: '' });
@@ -61,7 +62,7 @@ function Login() {
               onChange={onChangeHandler}
             />
             <p style={{ fontWeight: 'bold', margin: '1rem 0' }}>
-              <a href="#">Forgot password?</a>
+              <Link to="#">Forgot password?</Link>
             </p>
           </Box>
           <Button
@@ -80,7 +81,7 @@ function Login() {
         </form>
       </Grid>
       <Grid item xs={6}>
-        <img src={LoginGirl} alt="Login Page Girl Image" />
+        <img src={LoginGirl} alt="Login Page Girl" />
       </Grid>
     </Grid>
   );

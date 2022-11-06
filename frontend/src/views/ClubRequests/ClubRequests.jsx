@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import './clubrequests.css';
 import {
   Table,
@@ -24,6 +24,7 @@ const ClubRequests = () => {
 
   useEffect(() => {
     getProposalByStatus();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -85,10 +86,10 @@ const ClubRequests = () => {
                     <>
                       {row.description.substring(0, 80)}...
                       <b>
-                        <a href="#" onClick={() => viewProposal(row._id)}>
+                        <Link to="#" onClick={() => viewProposal(row._id)}>
                           {' '}
                           Read more
-                        </a>
+                        </Link>
                       </b>
                     </>
                   ) : (

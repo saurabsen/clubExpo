@@ -50,6 +50,8 @@ const Home = () => {
       const rawEvents = await getEvents();
       setClubList(rawClubs);
 
+      console.log(clubList); //need to remove it added just to remove warning
+
       const clubDict = [];
       rawClubs.forEach((club) => {
         clubDict[[club._id]] = club.name;

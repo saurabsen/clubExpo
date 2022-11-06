@@ -2,9 +2,9 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 import './EventPage.css';
 import { Location, Calender, Money, Clock } from '../../assets';
-import { ReactComponent as DefaultBannerSvg } from '../../assets/banners/default.svg';
+// import { ReactComponent as DefaultBannerSvg } from '../../assets/banners/default.svg';
 import { ReactComponent as Share } from '../../assets/Icons/share.svg';
-import { Button, TextField } from '@mui/material';
+import { Button } from '@mui/material';
 
 const EventPage = (props) => {
   const [event, setEvent] = useState({});
@@ -322,17 +322,16 @@ const EventPage = (props) => {
   };
 
   const renderBanner = () => {
-    return ({
+    return {
       backgroundImage: `url(${event.featureImage})`,
       backgroundSize: 'cover',
       height: 300
-    });
+    };
   };
 
   return (
     <>
-      <div className="hero-container" style={renderBanner()}>
-      </div>
+      <div className="hero-container" style={renderBanner()}></div>
       {event ? renderEventContainer() : ''}
     </>
   );
