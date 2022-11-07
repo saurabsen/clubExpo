@@ -8,8 +8,8 @@ import { store } from './state';
 import axios from 'axios';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
-// axios.defaults.baseURL = 'http://localhost:3001/api/';
-axios.defaults.baseURL = 'https://clubspace.onrender.com/api/';
+axios.defaults.baseURL = 'http://localhost:3001/api/';
+// axios.defaults.baseURL = 'https://clubspace.onrender.com/api/';
 axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
 
 root.render(

@@ -81,12 +81,13 @@ const Home = () => {
             'https://picsum.photos/200/300?random=5'
           ],
           withinClub: false,
-          registered: false,
+          registered: event.registered,
           clubAdminView: false
         };
         formattedEvents.push(eventObj);
       });
       setEvents(formattedEvents);
+      console.log(events, 'events');
       setUpcomingEvs(formattedEvents);
     } catch (error) {
       console.log('failed to initialize component Home');
