@@ -18,15 +18,13 @@ export const loginUser = (credentials) => {
     });
 
     try {
-      const data = await axios.post(`http://localhost:3001/api/users/login`, credentials);
+      const data = await axios.post(`users/login`, credentials);
 
       // store JWT in localStorage
       localStorage.setItem('userToken', JSON.stringify(data.data.token));
-
+      axios.defaults.headers['Authorization'] = `Bearer ${data.data.token}`;
       // store user data object in localStorage
-      const user = await axios.get(`http://localhost:3001/api/users/me`, {
-        headers: { Authorization: `Bearer ${data.data.token}` }
-      });
+      const user = await axios.get(`users/me`);
 
       if (user) {
         localStorage.setItem('user', JSON.stringify(user.data));
@@ -53,11 +51,11 @@ export const getUser = () => {
     });
 
     try {
-      const token = JSON.parse(localStorage.getItem('userToken'));
+      const data = await axios.get(`users/me`);
 
-      const data = await axios.get(`http://localhost:3001/api/users/me`, {
-        headers: { Authorization: `Bearer ${token}` }
-      });
+      if (data) {
+        localStorage.setItem('user', JSON.stringify(data.data));
+      }
 
       dispatch({
         type: GET_FETCH_USER_DATA_SUCCESS,

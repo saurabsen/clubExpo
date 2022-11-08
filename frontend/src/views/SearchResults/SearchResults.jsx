@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React from 'react';
 import axios from 'axios';
 import Grid from '@mui/material/Grid';
@@ -48,7 +49,6 @@ const SearchResults = () => {
   const [searchEvents, setSearchevents] = useState([]);
   const [searchClubs, setSearchclubs] = useState([]);
   const [searchValue, setSearchValue] = useState('');
-  const [clubList, setClubList] = useState([]);
   const { clubs: clubsData } = useTypedSelector((state) => state.search);
   const { events: eventsData } = useTypedSelector((state) => state.search);
   const { searchBy } = useTypedSelector((state) => state.search);
@@ -56,11 +56,7 @@ const SearchResults = () => {
   const getClubs = async () => {
     const config = {
       method: 'get',
-      url: 'http://localhost:3001/api/clubs/',
-      headers: {
-        Authorization:
-          'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MzU5YWQ0MmJkMzgzNzljYTNkMzViZDAiLCJpYXQiOjE2NjY4MjE0NDIsImV4cCI6MTY2OTQxMzQ0Mn0._SaFCeAaa-BQVmC-tGPcczEcoad_3XOfONKzMFqeqRY'
-      }
+      url: 'clubs/'
     };
 
     const res = await axios(config);
@@ -84,7 +80,7 @@ const SearchResults = () => {
     try {
       const formattedEvents = [];
       const rawClubs = await getClubs();
-      setClubList(rawClubs);
+      // setClubList(rawClubs);
 
       const clubDict = [];
       rawClubs.forEach((club) => {
@@ -129,6 +125,7 @@ const SearchResults = () => {
   useEffect(() => {
     eventInit();
     console.log(clubsData, 'eventdata');
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [eventsData]);
 
   return (

@@ -17,7 +17,7 @@ const Home = () => {
     });
     const config = {
       method: 'post',
-      url: 'http://localhost:3001/api/events/latestfromclubs',
+      url: 'events/latestfromclubs',
       headers: {
         'Content-Type': 'application/json',
         Authorization:
@@ -32,7 +32,7 @@ const Home = () => {
   const getClubs = async () => {
     const config = {
       method: 'get',
-      url: 'http://localhost:3001/api/clubs/',
+      url: 'clubs/',
       headers: {
         Authorization:
           'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MzU5YWQ0MmJkMzgzNzljYTNkMzViZDAiLCJpYXQiOjE2NjY4MjE0NDIsImV4cCI6MTY2OTQxMzQ0Mn0._SaFCeAaa-BQVmC-tGPcczEcoad_3XOfONKzMFqeqRY'
@@ -49,6 +49,8 @@ const Home = () => {
       const rawClubs = await getClubs();
       const rawEvents = await getEvents();
       setClubList(rawClubs);
+
+      console.log(clubList); //need to remove it added just to remove warning
 
       const clubDict = [];
       rawClubs.forEach((club) => {
@@ -79,12 +81,13 @@ const Home = () => {
             'https://picsum.photos/200/300?random=5'
           ],
           withinClub: false,
-          registered: false,
+          registered: event.registered,
           clubAdminView: false
         };
         formattedEvents.push(eventObj);
       });
       setEvents(formattedEvents);
+      console.log(events, 'events');
       setUpcomingEvs(formattedEvents);
     } catch (error) {
       console.log('failed to initialize component Home');

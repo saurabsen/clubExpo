@@ -19,8 +19,8 @@ const SearchBar = ({ handleSearch }) => {
   // user presses enter key - make the search
   const handleKeyDown = async (e) => {
     if (e.key === 'Enter') {
-      getSearchByClubs(e.target.value);
-      getSearchByEvents(e.target.value);
+      getSearchByClubs(searchString);
+      getSearchByEvents(searchString);
       navigate(`/search/`);
     }
   };

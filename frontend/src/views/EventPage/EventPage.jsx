@@ -2,9 +2,9 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 import './EventPage.css';
 import { Location, Calender, Money, Clock } from '../../assets';
-import { ReactComponent as DefaultBannerSvg } from '../../assets/banners/default.svg';
+// import { ReactComponent as DefaultBannerSvg } from '../../assets/banners/default.svg';
 import { ReactComponent as Share } from '../../assets/Icons/share.svg';
-import { Button, TextField } from '@mui/material';
+import { Button } from '@mui/material';
 
 const EventPage = (props) => {
   const [event, setEvent] = useState({});
@@ -27,7 +27,7 @@ const EventPage = (props) => {
   const getEvent = async (eventId) => {
     const config = {
       method: 'get',
-      url: `http://localhost:3001/api/events/${eventId}`,
+      url: `events/${eventId}`,
       headers: {
         'Content-Type': 'application/json',
         Authorization:
@@ -41,7 +41,7 @@ const EventPage = (props) => {
   const getClubs = async () => {
     const config = {
       method: 'get',
-      url: 'http://localhost:3001/api/clubs/',
+      url: 'clubs/',
       headers: {
         Authorization:
           'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MzU5YWQ0MmJkMzgzNzljYTNkMzViZDAiLCJpYXQiOjE2NjY4MjE0NDIsImV4cCI6MTY2OTQxMzQ0Mn0._SaFCeAaa-BQVmC-tGPcczEcoad_3XOfONKzMFqeqRY'
@@ -58,7 +58,7 @@ const EventPage = (props) => {
 
     const config = {
       method: 'post',
-      url: 'http://localhost:3001/api/users/allusers',
+      url: 'users/allusers',
       headers: {
         'Content-Type': 'application/json'
       },
@@ -72,7 +72,7 @@ const EventPage = (props) => {
   const addEventToUserModel = () => {
     const config = {
       method: 'post',
-      url: `http://localhost:3001/api/users/${userInfo._id}/attend/${event._id}`,
+      url: `users/${userInfo._id}/attend/${event._id}`,
       headers: {}
     };
     axios(config);
@@ -81,7 +81,7 @@ const EventPage = (props) => {
   const addUserToEventModel = () => {
     const config = {
       method: 'post',
-      url: `http://localhost:3001/api/events/${event._id}/attendedby/${userInfo._id}`,
+      url: `events/${event._id}/attendedby/${userInfo._id}`,
       headers: {}
     };
     axios(config);
@@ -90,7 +90,7 @@ const EventPage = (props) => {
   const removeEventFromUserModel = () => {
     const config = {
       method: 'post',
-      url: `http://localhost:3001/api/users/${userInfo._id}/unattend/${event._id}`,
+      url: `users/${userInfo._id}/unattend/${event._id}`,
       headers: {}
     };
     axios(config);
@@ -99,7 +99,7 @@ const EventPage = (props) => {
   const removeUserFromEventModel = () => {
     const config = {
       method: 'post',
-      url: `http://localhost:3001/api/events/${event._id}/unattendedby/${userInfo._id}`,
+      url: `events/${event._id}/unattendedby/${userInfo._id}`,
       headers: {}
     };
     axios(config);
@@ -322,17 +322,16 @@ const EventPage = (props) => {
   };
 
   const renderBanner = () => {
-    return ({
+    return {
       backgroundImage: `url(${event.featureImage})`,
       backgroundSize: 'cover',
       height: 300
-    });
+    };
   };
 
   return (
     <>
-      <div className="hero-container" style={renderBanner()}>
-      </div>
+      <div className="hero-container" style={renderBanner()}></div>
       {event ? renderEventContainer() : ''}
     </>
   );
