@@ -47,15 +47,11 @@ const Profile = () => {
 
   useEffect(() => {
     getClubs();
-  });
+  },[]);
 
   const getClubs = async () => {
-    const token = JSON.parse(localStorage.getItem('userToken'));
     const user = JSON.parse(localStorage.getItem('user'));
-
-    const data = await axios.get(`http://localhost:3001/api/clubs/`, {
-      headers: { Authorization: `Bearer ${token}` }
-    });
+    const data = await axios.get(`clubs/`);
 
     if (data) {
       const userClubs = data.data.filter((club) => club.createdBy === user._id);

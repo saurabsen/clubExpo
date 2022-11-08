@@ -12,6 +12,7 @@ import ProposalManagement from './ClubRequests/ClubRequests';
 import Proposal from './Proposal/Proposal';
 import Profile from './Profile/Profile';
 import ClubPage from './ClubPage/ClubPage';
+import ClubDetail from './ClubDetail/ClubDetail';
 import CreateEvent from './CreateEvent/CreateEvent';
 
 export {
@@ -26,6 +27,7 @@ export {
   EventsRegistered,
   ClubProposal,
   ProposalManagement,
+  ClubDetail,
   Proposal,
   Profile,
   ClubPage,
