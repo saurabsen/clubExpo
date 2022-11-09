@@ -64,11 +64,11 @@ const SideBar = () => {
               </li>
             </NavLink>
             <NavLink
-              to="/clubs-managed"
+              to="/club-managed"
               className={({ isActive }) => (isActive ? 'active-menu' : '')}
             >
               <li>
-                <img src={ClubsManaged} alt="All Clubs Icon" /> All Clubs
+                <img src={ClubsManaged} alt="Clubs managed Icon" /> Clubs Managed
               </li>
             </NavLink>
             <NavLink
