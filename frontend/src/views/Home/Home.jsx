@@ -92,7 +92,7 @@ const Home = () => {
             'https://picsum.photos/200/300?random=5'
           ],
           withinClub: false,
-          registered: event.registered,
+          registered: (updatedUser.eventsAttended.indexOf(event._id) !== -1 ? true : false),
           clubAdminView: false
         };
         formattedEvents.push(eventObj);
