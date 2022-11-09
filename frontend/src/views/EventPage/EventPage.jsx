@@ -165,7 +165,7 @@ const EventPage = (props) => {
 
   useEffect(() => {
     (async () => {
-      setUserInfo(await getUser('nhugnin2@studiopress.com'));
+      setUserInfo(await getUser(JSON.parse(localStorage.user).email));
     })();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [event]);
