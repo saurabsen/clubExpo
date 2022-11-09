@@ -114,7 +114,7 @@ const App = () => {
                 <Route path="/all-proposal" element={<ProposalManagement />} />
                 <Route path="/club-requests" element={<ClubRequests />} />
                 <Route path="/clubs-joined" element={<ClubsJoined />} />
-                <Route path="/clubs-managed" element={<ClubsManaged />} />
+                <Route path="/club-managed" element={<ClubsManaged />} />
                 <Route path="/discover-clubs" element={<DiscoverClubs />} />
                 <Route path="/events-registered" element={<EventsRegistered />} />
                 <Route path="/events/:eventId" element={<UserEventsPage />} />
