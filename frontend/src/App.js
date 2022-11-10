@@ -99,14 +99,14 @@ const App = () => {
       ) : (
         <Box sx={{ flexGrow: 1 }}>
           <Grid container>
-            {pathname === '/proposal' || pathname.includes('/clubs') ? (
+            {pathname === '/proposal' || pathname.includes('/clubs') || pathname.includes('/events/') ? (
               ''
             ) : (
               <Grid item xs={2}>
                 <SideBar />
               </Grid>
             )}
-            <Grid item xs={pathname.includes('/proposal') || pathname.includes('/clubs') ? 12 : 10}>
+            <Grid item xs={pathname.includes('/proposal') || pathname.includes('/clubs') || pathname.includes('/events/') ? 12 : 10}>
               <Routes>
                 <Route path="/home" element={<Home />} />
                 <Route path="/admin-dashboard" element={<AdminDashboard />} />
