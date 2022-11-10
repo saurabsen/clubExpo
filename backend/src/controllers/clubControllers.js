@@ -1,5 +1,5 @@
 const asyncHandler = require('express-async-handler');
-
+let ObjectId = require('mongoose').Types.ObjectId;
 const Club = require('../models/clubModel');
 
 // @desc Create Club
@@ -52,6 +52,17 @@ const getClubs = asyncHandler(async (req, res) => {
 // @desc Get Club
 // @route GET /api/clubs/:id
 // @access Private
+
+const getClubByMember = async (req, res) => {
+  const { userid } = req.params;
+
+  const clubByMember = await Club.find({
+    acceptedMembers: ObjectId('6359ac2abd38379ca3d35aa4'),
+  });
+  console.log(clubByMember);
+  res.status(200).json(clubByMember);
+};
+
 const getClub = asyncHandler(async (req, res) => {
   const { id } = req.params;
 
@@ -128,6 +139,7 @@ const deleteClub = asyncHandler(async (req, res) => {
 
 module.exports = {
   createClub,
+  getClubByMember,
   getClubs,
   getClub,
   updateClub,
