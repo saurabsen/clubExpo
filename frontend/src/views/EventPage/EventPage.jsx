@@ -130,7 +130,6 @@ const EventPage = (props) => {
   let rawAdminInfo;
 
   const initEvent = async () => {
-    console.log('initEvent called');
     try {
       const { eventId } = props;
       const rawEvent = await getEvent(eventId);
@@ -171,7 +170,6 @@ const EventPage = (props) => {
   }, [event]);
 
   useEffect(() => {
-    console.log('>>>userInfo', userInfo);
     if (userInfo) {
       setMainButton(selectButton());
     }
@@ -184,12 +182,9 @@ const EventPage = (props) => {
   }, [event]);
 
   useEffect(() => {
-    console.log('updating admin info');
-    console.log('clubInfo', clubInfo);
     if (clubInfo) {
       (async () => {updateAdminInfo();})();
     };
-    console.log('>>>>>adminInfo', adminInfo);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [clubInfo]);
 

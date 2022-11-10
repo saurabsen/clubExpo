@@ -52,7 +52,6 @@ const CreateEvent = (props) => {
 
   const onSubmitHandler = async (e) => {
     e.preventDefault();
-    console.log(formData);
     setFormData({ ...formData, availableSpots: parseInt(formData.availableSpots) });
     const config = {
       method: 'post',
