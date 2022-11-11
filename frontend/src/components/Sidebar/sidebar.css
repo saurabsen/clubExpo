@@ -1,12 +1,22 @@
 .sidebar {
   font-weight: 500;
+  border-right: 1px solid #e0e2e0;
+  background: #fff;
+  height: 100vh;
+  width: max-content;
+  position: fixed;
+  top: 0;
+  left: 0;
+  align-self: start;
+  margin-top: 70px;
 }
+
 
 .sidebar ul {
   display: flex;
   flex-direction: column;
   gap: 0.6rem;
-  padding: 32px 14px 0 0;
+  padding: 2rem 1rem;
 }
 
 .sidebar li {
@@ -21,11 +31,9 @@
   width: 22px;
 }
 
-.sidebar li:hover {
-  cursor: pointer;
-}
-
 .active-menu {
+  border-radius: 8px;
   font-weight: 700;
   background: #f3effb;
+  color: #5d1ebf;
 }

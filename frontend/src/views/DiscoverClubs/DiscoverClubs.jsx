@@ -1,12 +1,10 @@
 import { useEffect } from 'react';
 import './discoverclubs.css';
-import ClubCard from '../../components/ClubCard/ClubCard';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import { useActions } from '../../hooks/useActions';
 import { useTypedSelector } from '../../hooks/useTypedSelector';
-
-
+import ClubCard from '../../components/ClubCard/ClubCard';
 
 const DiscoverClubs = () => {
   const { getAllClubsData } = useActions();
@@ -14,21 +12,24 @@ const DiscoverClubs = () => {
 
   useEffect(() => {
     getAllClubsData('');
-  },[]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <>
       <Box sx={{ flexGrow: 1 }}>
-        <Grid container spacing={2} sx={{ p:2}}>
-          <Grid item xs={4}>
-            <ClubCard />
-          </Grid>
-          <Grid item xs={4}>
-            <ClubCard />
-          </Grid>
-          <Grid item xs={4}>
-            <ClubCard />
-          </Grid>
+        <Grid container spacing={2} sx={{ p: 2 }}>
+          {allDiscoverClubsData.data.map((clubData) => (
+            <Grid key={clubData.createdAt} item xs={4}>
+              <ClubCard
+                key={clubData._id}
+                clubImage={clubData.logoImage}
+                clubName={clubData.name}
+                clubNumMembers={clubData?.acceptedMembers?.length}
+                clubId={clubData._id}
+              />
+            </Grid>
+          ))}
         </Grid>
       </Box>
     </>
