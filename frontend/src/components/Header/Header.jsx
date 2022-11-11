@@ -1,14 +1,12 @@
-import { useState } from 'react';
-import { Avatar, Menu, MenuItem, Button } from '@mui/material';
+import { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
+import { Box, Avatar, Menu, MenuItem } from '@mui/material';
 import SearchBar from '../SearchBar/SearchBar';
 import { LogoRectangle, NotificationsOff, NotificationsOn } from '../../assets';
-import Box from '@mui/material/Box';
-import Grid from '@mui/material/Grid';
 import './header.css';
 
-const Header = ({ handleSearch }) => {
+const Header = ({ userIsLoggedIn, handleSearch, handleLogoutUser }) => {
   const [newNotification, setNewNotification] = useState(false);
-  const [notifications, setNotifications] = useState([]);
   const [showProfileModal, setShowProfileModal] = useState(null);
 
   const handleShowProfileModal = (e) => {
@@ -19,28 +17,99 @@ const Header = ({ handleSearch }) => {
     setShowProfileModal(null);
   };
 
-  return (
-    <Box sx={{ flexGrow: 1 }}>
-      <Grid container spacing={2} sx={{ p:3}}>
-        <Grid item xs={2}>
-          <img src={LogoRectangle} width="130" alt="Clubspace Logo" />
-        </Grid>
-        <Grid item xs={8} >
-        <SearchBar handleSearch={handleSearch} />
-        </Grid>
-        <Grid item xs={2}>
-        <img src={NotificationsOn} alt="Notification Bell On" />
-        <img src={NotificationsOff} alt="Notification Bell Off" />
-        <Avatar
-        id="profile-icon"
-        alt="User profile image"
-        src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=988&q=80"
-        onClick={handleShowProfileModal}
-      />
-        </Grid>
-      </Grid>
-    </Box>
+  const handleLogout = () => {
+    setShowProfileModal(null);
+    handleLogoutUser();
+  };
 
+  useEffect(() => {
+    setNewNotification(newNotification);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  return (
+    <>
+      {!userIsLoggedIn ? (
+        <Box
+          sx={{
+            padding: '1rem 4rem',
+            width: '100%',
+            border: '1px solid #e0e2e0',
+            position: 'sticky',
+            top: 0,
+            zIndex: 999,
+            backgroundColor: '#fff'
+          }}
+        >
+          <img src={LogoRectangle} style={{ width: '130px' }} alt="Clubspace Logo" />
+        </Box>
+      ) : (
+        <Box
+          sx={{
+            padding: '1rem 4rem',
+            width: '100%',
+            border: '1px solid #e0e2e0',
+            position: 'sticky',
+            top: 0,
+            zIndex: 999,
+            backgroundColor: '#fff',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '6rem'
+          }}
+        >
+          <img src={LogoRectangle} style={{ width: '130px' }} alt="Clubspace Logo" />
+          <SearchBar handleSearch={handleSearch} />
+          <Box
+            sx={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '4rem'
+            }}
+          >
+            <Box>
+              {!newNotification ? (
+                <Link to="/notification">
+                  <img
+                    src={NotificationsOff}
+                    style={{ width: '24px' }}
+                    alt="Notification Bell Off"
+                  />
+                </Link>
+              ) : (
+                <Link to="/notification">
+                  <img src={NotificationsOn} style={{ width: '24px' }} alt="Notification Bell On" />
+                </Link>
+              )}
+            </Box>
+            <Box>
+              <Avatar
+                id="profile-icon"
+                alt="User profile image"
+                src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=988&q=80"
+                sx={{ cursor: 'pointer' }}
+                onClick={handleShowProfileModal}
+              ></Avatar>
+              <Menu
+                anchorEl={showProfileModal}
+                open={Boolean(showProfileModal)}
+                onClose={handleCloseProfileModal}
+              >
+                <Link to="/profile">
+                  <MenuItem>Profile</MenuItem>
+                </Link>
+                <Link to="/submit-proposal">
+                  <MenuItem>Club Proposal</MenuItem>
+                </Link>
+                <Link onClick={handleLogout}>
+                  <MenuItem>Logout</MenuItem>
+                </Link>
+              </Menu>
+            </Box>
+          </Box>
+        </Box>
+      )}
+    </>
   );
 };
 

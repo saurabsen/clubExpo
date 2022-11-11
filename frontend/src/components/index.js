@@ -1,5 +1,9 @@
 import Header from './Header/Header';
 import Footer from './Footer/Footer';
 import SearchBar from './SearchBar/SearchBar';
+import SideBar from './Sidebar/SideBar';
+import Button from './Button/Button';
+import ProposalDetailCard from './ProposalDetailCard/ProposalDetailCard';
+import BackButton from './BackButton/BackButton';
 
-export { Header, Footer, SearchBar };
+export { Header, Footer, SearchBar, SideBar, Button, ProposalDetailCard, BackButton };

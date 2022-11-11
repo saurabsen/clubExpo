@@ -6,10 +6,21 @@ const Club = require('../models/clubModel');
 // @route POST /api/proposals
 // @access Public
 const submitProposal = asyncHandler(async (req, res) => {
-  const { id } = req.user; // authenticated user who is calling this func
-  const { clubName, description, noOfEventsMonth, members } = req.body;
+  // const { id } = req.user; // authenticated user who is calling this func
+  const {
+    clubName,
+    description,
+    noOfEventsMonth,
+    members,
+    isManageClub,
+    clubPurpose,
+    clubInterest,
+    clubActivities,
+    createdBy,
+    creatorName,
+  } = req.body;
 
-  if (!clubName || !description || !noOfEventsMonth || !members) {
+  if (!clubName || !description || !noOfEventsMonth || !members || !createdBy) {
     res.status(400);
     throw new Error('Please enter all the required details');
   }
@@ -18,17 +29,21 @@ const submitProposal = asyncHandler(async (req, res) => {
     clubName,
     description,
     noOfEventsMonth,
-    createdBy: id,
+    createdBy,
     members,
-    approvalStatus: '',
+    approvalStatus: 'Pending',
     approvalStatusReason: '',
+    isManageClub,
+    clubPurpose,
+    clubInterest,
+    clubActivities,
+    creatorName,
   });
 
   if (proposal) {
     res.status(201).json({
       id: proposal.id,
       clubName: proposal.clubName,
-      createdBy: proposal.createdBy,
     });
   } else {
     res.status(400);
@@ -58,25 +73,37 @@ const getOneProposal = asyncHandler(async (req, res) => {
 /*
 Body should be structured as follows:
 {
-  "statusArray" : ["statusCode1", "statusCode2", ...]
+  "statusValue" : ["statusCode1", "statusCode2", ...]
 }
 */
 const getMultipleProposalsByStatus = asyncHandler(async (req, res) => {
-  const { statusArray } = req.body;
+  const { statusValue } = req.body;
+
+  const proposals = await Proposal.find({});
 
   let filterArray = [];
 
-  statusArray.forEach((status) => {
-    filterArray.push({ approvalStatus: status });
+  proposals.forEach((status) => {
+    if (statusValue === '') {
+      if (
+        status.approvalStatus === 'Pending' ||
+        status.approvalStatus === 'Rejected' ||
+        status.approvalStatus === 'Approved'
+      ) {
+        filterArray.push(status);
+      }
+    } else {
+      if (status.approvalStatus === statusValue) {
+        filterArray.push(status);
+      }
+    }
   });
 
-  const filterObject = {
-    $or: filterArray,
-  };
+  // const filterObject = {
+  //   $or: filterArray,
+  // };
 
-  const proposals = await Proposal.find(filterObject);
-
-  res.status(200).json(proposals);
+  res.status(200).json(filterArray);
 });
 
 // @desc Update one proposal
@@ -92,10 +119,9 @@ const updateProposal = asyncHandler(async (req, res) => {
     throw new Error('Proposal not found');
   }
 
-  const { clubName, description, noOfEventsMonth, requestedBy, members, approvalStatus, approvalStatusReason } =
-    req.body;
+  const { clubName, description, noOfEventsMonth, createdBy, members, approvalStatus, approvalStatusReason } = req.body;
 
-  if (!clubName || !description || !noOfEventsMonth || !requestedBy || !members || !approvalStatus) {
+  if (!clubName || !description || !noOfEventsMonth || !createdBy || !members || !approvalStatus) {
     res.status(400);
     throw new Error('Please enter all the required details');
   }
@@ -103,7 +129,7 @@ const updateProposal = asyncHandler(async (req, res) => {
   targetProposal.clubName = clubName;
   targetProposal.description = description;
   targetProposal.noOfEventsMonth = noOfEventsMonth;
-  targetProposal.requestedBy = requestedBy;
+  targetProposal.createdBy = createdBy;
   targetProposal.members = members;
   targetProposal.approvalStatus = approvalStatus;
   targetProposal.approvalStatusReason = approvalStatusReason;

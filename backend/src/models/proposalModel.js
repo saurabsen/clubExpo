@@ -10,7 +10,7 @@ const proposalSchema = mongoose.Schema(
       type: String,
       required: [true, 'Please enter a description of your proposed club'],
     },
-    noOfEventsPerMonth: {
+    noOfEventsMonth: {
       type: Number,
       required: [true, 'Please enter your estimate number of events per month'],
     },
@@ -18,6 +18,10 @@ const proposalSchema = mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       required: [true, `Please enter proposal creator's user ID`],
       ref: 'User',
+    },
+    creatorName: {
+      type: String,
+      required: [true, `Please enter proposal creator's Name`],
     },
     members: [
       {
@@ -32,6 +36,18 @@ const proposalSchema = mongoose.Schema(
     approvalStatusReason: {
       type: String,
       required: [false, 'Please enter a reason for the decided approval status'],
+    },
+    isManageClub: {
+      type: Boolean,
+    },
+    clubPurpose: {
+      type: String,
+    },
+    clubInterest: {
+      type: String,
+    },
+    clubActivities: {
+      type: String,
     },
   },
   {
