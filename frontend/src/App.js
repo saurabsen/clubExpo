@@ -62,12 +62,6 @@ const App = () => {
           name: 'Dashboard'
         },
         {
-          routeLink: '/club-managed',
-          icon: ClubsManagedIcon,
-          altText: 'Clubs managed Icon',
-          name: 'Clubs Managed'
-        },
-        {
           routeLink: '/club-requests',
           icon: Request,
           altText: 'Club Requests Icon',
@@ -92,6 +86,12 @@ const App = () => {
           icon: Discover,
           altText: 'Discover Clubs Icon',
           name: 'Discover Clubs'
+        },
+        {
+          routeLink: '/club-managed',
+          icon: ClubsManagedIcon,
+          altText: 'Clubs managed Icon',
+          name: 'Clubs Managed'
         },
         {
           routeLink: '/clubs-joined',

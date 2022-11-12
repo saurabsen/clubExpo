@@ -29,9 +29,8 @@ const clubSchema = mongoose.Schema(
     ],
     acceptedMembers: [
       {
-        id: {
-          type: String,
-        },
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
       },
     ],
     pendingMembers: [

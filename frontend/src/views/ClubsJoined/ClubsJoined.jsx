@@ -10,7 +10,6 @@ const ClubsJoined = () => {
   const { getAllClubsData } = useActions();
   const clubsJoinedData = useTypedSelector((state) => state.clubs);
   const userData = JSON.parse(localStorage.getItem('user'));
-  console.log(userData);
   useEffect(() => {
     getAllClubsData(`members/${userData._id}`);
     // eslint-disable-next-line react-hooks/exhaustive-deps
