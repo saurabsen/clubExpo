@@ -8,9 +8,7 @@ import TabContext from '@mui/lab/TabContext';
 import TabList from '@mui/lab/TabList';
 import TabPanel from '@mui/lab/TabPanel';
 import Card from '@mui/material/Card';
-// import CardHeader from '@mui/material/CardHeader';
 import { Typography } from '@mui/material';
-// import { Chart } from "react-google-charts";
 import AboutClub from './AboutClub';
 import UpcomingEvents from './UpcomingEvents';
 import { useActions } from '../../hooks/useActions';
@@ -31,15 +29,7 @@ import axios from 'axios';
 import IconButton from '@mui/material/IconButton';
 import { styled } from '@mui/material/styles';
 import DeleteIcon from '@mui/icons-material/Delete';
-// import FolderIcon from '@mui/icons-material/Folder';
-
-export const data = [
-  ['Element', 'Density', { role: 'style' }],
-  ['Copper', 8.94, '#b87333'], // RGB value
-  ['Silver', 10.49, 'silver'], // English color name
-  ['Gold', 19.3, 'gold'],
-  ['Platinum', 21.45, 'color: #e5e4e2'] // CSS-style declaration
-];
+import Charts from '../../components/Charts/Charts';
 
 const Demo = styled('div')(({ theme }) => ({
   backgroundColor: theme.palette.background.paper
@@ -117,11 +107,12 @@ const ClubDetail = () => {
   const joinClub = async () => {
     const addClubMember = await axios.post(`clubmembers/add`, { clubid: id, userid: userData._id });
     getClubMemberStatus();
-    console.log(addClubMember);
   };
 
-  const deleteClubUser = () => {
-
+  const deleteClubUser = async (memberid) => {
+    const deleteClubMember = await axios.delete(`clubmembers/${memberid}/${id}`);
+    getAllClubsData(id);
+    getClubMembersData('', { userid: clubsDetailData.data.acceptedMembers });
   };
 
   return (
@@ -169,7 +160,7 @@ const ClubDetail = () => {
       <Divider />
 
       <Grid spacing={4} sx={{ pt: 4, pl: 4, pr: 4 }} container>
-        <Grid item xs={12} md={8}>
+        
           {userData !== null &&
           clubsDetailData !== null &&
           clubsDetailData.acceptedMembers !== undefined &&
@@ -177,15 +168,83 @@ const ClubDetail = () => {
           userData.userRole.includes('member')  &&
           !clubsDetailData.acceptedMembers.includes(userData.id) &&
           userData.id !== clubsDetailData.data.createdBy ? (
-            <Grid container>
-              <Grid item xs={12} md={12}>
-                <AboutClub about={clubsDetailData.data.description} />
-              </Grid>
-              <Grid sx={{ pt: 4 }} item xs={12} md={12}>
-                {events.length > 0 ? <UpcomingEvents events={events} /> : ''}
+            <>
+            <Grid item xs={12} md={8}>
+              <Grid container>
+                <Grid item xs={12} md={12}>
+                  <AboutClub about={clubsDetailData.data.description} />
+                </Grid>
+                <Grid sx={{ pt: 4 }} item xs={12} md={12}>
+                  {events.length > 0 ? <UpcomingEvents events={events} /> : ''}
+                </Grid>
               </Grid>
             </Grid>
+            <Grid item xs={12} md={4}>
+              <Grid container>
+                <Grid sx={{ pb: 6 }} item xs={12} md={12}>
+                  <Typography variant="h5" component="h5" sx={{ pb: 1 }}>
+                    Admin
+                  </Typography>
+                  <List
+                    sx={{
+                      width: '100%',
+                      backgroundColor: '#F3EFFB',
+                      padding: '15px 10px 15px 10px',
+                      borderRadius: '4%'
+                    }}
+                  >
+                    <ListItem alignItems="flex-start">
+                      <ListItemAvatar>
+                        <Avatar
+                          alt="Remy Sharp"
+                          src="https://images.unsplash.com/photo-1518756131217-31eb79b20e8f"
+                        />
+                      </ListItemAvatar>
+                      <ListItemText primary={clubsDetailData.data.admins} />
+                    </ListItem>
+                  </List>
+                </Grid>
+                {userData !== null &&
+                clubsDetailData !== null &&
+                userData.userRole !== undefined &&
+                clubsDetailData.acceptedMembers !== undefined &&
+                userData.userRole.includes('member')  &&
+                !clubsDetailData.acceptedMembers.includes(userData.id) &&
+                userData.id !== clubsDetailData.data.createdBy ? (
+                  <Grid item xs={12} md={12}>
+                    <Typography variant="h5" component="h5" sx={{ pb: 1 }}>
+                      Members
+                    </Typography>
+                    <Box
+                      sx={{
+                        backgroundColor: '#F3EFFB',
+                        padding: '35px 20px 35px 20px',
+                        borderRadius: '4%'
+                      }}
+                    >
+                      <ImageList sx={{ width: 400, height: 150 }} cols={5} rowHeight={70}>
+                        {clubMembersData.data.map((item) => (
+                          <ImageListItem key={item._id}>
+                            <img
+                              src={`${item.profileImage}?w=164&h=164&fit=crop&auto=format`}
+                              srcSet={`${item.profileImage}?w=164&h=164&fit=crop&auto=format&dpr=2 2x`}
+                              alt={item.firstName}
+                              loading="lazy"
+                            />
+                          </ImageListItem>
+                        ))}
+                      </ImageList>
+                    </Box>
+                  </Grid>
+                ) : (
+                  ''
+                )}
+              </Grid>
+              </Grid>
+          </>
+
           ) : (
+            <Grid item xs={12} md={12}>
             <Box sx={{ width: '100%', typography: 'body1' }}>
               <TabContext value={value}>
                 <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
@@ -216,8 +275,8 @@ const ClubDetail = () => {
                           userData.userRole.includes('clubAdmin') ? (clubMembersData.data.map((item) => (
                             <ListItem
                               secondaryAction={
-                                <IconButton onClick={deleteClubUser()} edge="end" aria-label="delete">
-                                  <DeleteIcon />
+                                <IconButton onClick={() => deleteClubUser(item._id)}  edge="end" aria-label="delete">
+                                  <DeleteIcon  />
                                 </IconButton>
                               }
                             >
@@ -254,75 +313,49 @@ const ClubDetail = () => {
                 </TabPanel>
                 <TabPanel value="3">Badges</TabPanel>
                 <TabPanel value="4">
-                  <AboutClub about={clubsDetailData.data.description} />
+                <Grid spacing={4} sx={{ pt: 2 }} container>
+                    <Grid item xs={12} md={8}>
+                      <AboutClub about={clubsDetailData.data.description} />
+                    </Grid>
+                    <Grid item xs={12} md={4}>
+                    <Typography variant="h5" component="h5" sx={{ pb: 1 }}>
+                    Admin
+                  </Typography>
+                  <List
+                    sx={{
+                      width: '100%',
+                      backgroundColor: '#F3EFFB',
+                      padding: '15px 10px 15px 10px',
+                      borderRadius: '4%'
+                    }}
+                  >
+                    <ListItem alignItems="flex-start">
+                      <ListItemAvatar>
+                        <Avatar
+                          alt="Remy Sharp"
+                          src="https://images.unsplash.com/photo-1518756131217-31eb79b20e8f"
+                        />
+                      </ListItemAvatar>
+                      <ListItemText primary={clubsDetailData.data.admins} />
+                    </ListItem>
+                  </List>
+                    </Grid>
+                  </Grid>
                 </TabPanel>
-                <TabPanel value="5">Badges</TabPanel>
+                <TabPanel value="5">
+                <Grid sx={{ pt: 2 }} container>
+                    <Grid item xs={12} md={12}>
+                        <Charts />
+                    </Grid>
+                    <Grid item xs={12} md={8}>
+                        <Charts />
+                    </Grid>
+                  </Grid>
+                </TabPanel>
               </TabContext>
             </Box>
-          )}
-        </Grid>
-        <Grid item xs={12} md={4}>
-          <Grid container>
-            <Grid sx={{ pb: 6 }} item xs={12} md={12}>
-              <Typography variant="h5" component="h5" sx={{ pb: 1 }}>
-                Admin
-              </Typography>
-              <List
-                sx={{
-                  width: '100%',
-                  backgroundColor: '#F3EFFB',
-                  padding: '15px 10px 15px 10px',
-                  borderRadius: '4%'
-                }}
-              >
-                <ListItem alignItems="flex-start">
-                  <ListItemAvatar>
-                    <Avatar
-                      alt="Remy Sharp"
-                      src="https://images.unsplash.com/photo-1518756131217-31eb79b20e8f"
-                    />
-                  </ListItemAvatar>
-                  <ListItemText primary={clubsDetailData.data.admins} />
-                </ListItem>
-              </List>
             </Grid>
-            {userData !== null &&
-            clubsDetailData !== null &&
-            userData.userRole !== undefined &&
-            clubsDetailData.acceptedMembers !== undefined &&
-            userData.userRole.includes('member')  &&
-            !clubsDetailData.acceptedMembers.includes(userData.id) &&
-            userData.id !== clubsDetailData.data.createdBy ? (
-              <Grid item xs={12} md={12}>
-                <Typography variant="h5" component="h5" sx={{ pb: 1 }}>
-                  Members
-                </Typography>
-                <Box
-                  sx={{
-                    backgroundColor: '#F3EFFB',
-                    padding: '35px 20px 35px 20px',
-                    borderRadius: '4%'
-                  }}
-                >
-                  <ImageList sx={{ width: 400, height: 150 }} cols={5} rowHeight={70}>
-                    {clubMembersData.data.map((item) => (
-                      <ImageListItem key={item._id}>
-                        <img
-                          src={`${item.profileImage}?w=164&h=164&fit=crop&auto=format`}
-                          srcSet={`${item.profileImage}?w=164&h=164&fit=crop&auto=format&dpr=2 2x`}
-                          alt={item.firstName}
-                          loading="lazy"
-                        />
-                      </ImageListItem>
-                    ))}
-                  </ImageList>
-                </Box>
-              </Grid>
-            ) : (
-              ''
-            )}
-          </Grid>
-        </Grid>
+          )}
       </Grid>
     </Box>
   );
