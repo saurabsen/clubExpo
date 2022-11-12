@@ -65,7 +65,7 @@ const ClubDetail = () => {
     const { data } = await axios.get(`clubmembers/${userData._id}/${id}`);
     data[0] !== undefined
       ? setClubStatus({ status: data[0]?.status, request: data[0]?.request })
-      : setClubStatus({ status: data[0]?.status, request: data[0]?.request });
+      : setClubStatus({ status: false, request: false });
   };
 
   useEffect(() => {
@@ -76,7 +76,7 @@ const ClubDetail = () => {
 
   useEffect(() => {
     if (clubsDetailData.data.acceptedMembers !== undefined) {
-      getClubMembersData('', { userid: clubsDetailData.data.acceptedMembers, clubid: id });
+      getClubMembersData('', { userid: clubsDetailData.data.acceptedMembers });
     }
   }, [clubsDetailData]);
 
@@ -120,56 +120,9 @@ const ClubDetail = () => {
     console.log(addClubMember);
   };
 
-  // const itemData = [
-  //   {
-  //     img: 'https://images.unsplash.com/photo-1551963831-b3b1ca40c98e',
-  //     title: 'Breakfast'
-  //   },
-  //   {
-  //     img: 'https://images.unsplash.com/photo-1551782450-a2132b4ba21d',
-  //     title: 'Burger'
-  //   },
-  //   {
-  //     img: 'https://images.unsplash.com/photo-1522770179533-24471fcdba45',
-  //     title: 'Camera'
-  //   },
-  //   {
-  //     img: 'https://images.unsplash.com/photo-1444418776041-9c7e33cc5a9c',
-  //     title: 'Coffee'
-  //   },
-  //   {
-  //     img: 'https://images.unsplash.com/photo-1533827432537-70133748f5c8',
-  //     title: 'Hats'
-  //   },
-  //   {
-  //     img: 'https://images.unsplash.com/photo-1558642452-9d2a7deb7f62',
-  //     title: 'Honey'
-  //   },
-  //   {
-  //     img: 'https://images.unsplash.com/photo-1516802273409-68526ee1bdd6',
-  //     title: 'Basketball'
-  //   },
-  //   {
-  //     img: 'https://images.unsplash.com/photo-1518756131217-31eb79b20e8f',
-  //     title: 'Fern'
-  //   },
-  //   {
-  //     img: 'https://images.unsplash.com/photo-1597645587822-e99fa5d45d25',
-  //     title: 'Mushrooms'
-  //   },
-  //   {
-  //     img: 'https://images.unsplash.com/photo-1567306301408-9b74779a11af',
-  //     title: 'Tomato basil'
-  //   },
-  //   {
-  //     img: 'https://images.unsplash.com/photo-1471357674240-e1a485acb3e1',
-  //     title: 'Sea star'
-  //   },
-  //   {
-  //     img: 'https://images.unsplash.com/photo-1589118949245-7d38baf380d6',
-  //     title: 'Bike'
-  //   }
-  // ];
+  const deleteClubUser = () => {
+
+  };
 
   return (
     <Box sx={{ width: '100%', typography: 'body1' }}>
@@ -193,8 +146,8 @@ const ClubDetail = () => {
             <Grid item xs={12} md={8}>
               {userData !== null &&
               userData.userRole !== undefined &&
-              userData.userRole === 'member' &&
-              userData.id !== clubsDetailData.data.admins ? (
+              userData.userRole.includes('member') &&
+              userData.id !== clubsDetailData.data.createdBy ? (
                 <Button style={{ width: '100%' }} variant="contained" onClick={joinClub}>
                   {clubStatus.status && !clubStatus.request
                     ? 'Joined'
@@ -218,9 +171,12 @@ const ClubDetail = () => {
       <Grid spacing={4} sx={{ pt: 4, pl: 4, pr: 4 }} container>
         <Grid item xs={12} md={8}>
           {userData !== null &&
+          clubsDetailData !== null &&
+          clubsDetailData.acceptedMembers !== undefined &&
           userData.userRole !== undefined &&
-          userData.userRole === 'member' &&
-          userData.id !== clubsDetailData.data.admins ? (
+          userData.userRole.includes('member')  &&
+          !clubsDetailData.acceptedMembers.includes(userData.id) &&
+          userData.id !== clubsDetailData.data.createdBy ? (
             <Grid container>
               <Grid item xs={12} md={12}>
                 <AboutClub about={clubsDetailData.data.description} />
@@ -238,7 +194,7 @@ const ClubDetail = () => {
                     <Tab label="Members" value="2" />
                     <Tab label="Badges" value="3" />
                     <Tab label="About" value="4" />
-                    <Tab label="Reports" value="5" />
+                    { userData !== null && userData.userRole !== undefined && userData.userRole.includes('clubAdmin') &&  (<Tab label="Reports" value="5" />) }
                   </TabList>
                 </Box>
                 <TabPanel value="1">
@@ -247,15 +203,20 @@ const ClubDetail = () => {
                 <TabPanel value="2">
                   <Grid spacing={4} sx={{ pt: 2 }} container>
                     <Grid item xs={12} md={6}>
-                      <Typography variant="h6" component="h6" sx={{ pb: 1 }}>
+                      {   userData !== null &&
+                          userData.userRole !== undefined &&
+                          userData.userRole.includes('clubAdmin') && (<Typography variant="h6" component="h6" sx={{ pb: 1 }}>
                         Existing Members
-                      </Typography>
+                      </Typography>) }
                       <Demo>
                         <List dense={dense}>
-                          {clubMembersData.data.map((item) => (
+                          {
+                          userData !== null &&
+                          userData.userRole !== undefined &&
+                          userData.userRole.includes('clubAdmin') ? (clubMembersData.data.map((item) => (
                             <ListItem
                               secondaryAction={
-                                <IconButton edge="end" aria-label="delete">
+                                <IconButton onClick={deleteClubUser()} edge="end" aria-label="delete">
                                   <DeleteIcon />
                                 </IconButton>
                               }
@@ -268,15 +229,27 @@ const ClubDetail = () => {
                                 secondary={secondary ? 'Secondary text' : null}
                               />
                             </ListItem>
-                          ))}
+                          ))) : (clubMembersData.data.map((item) => (
+                            <ListItem>
+                              <ListItemAvatar>
+                                <Avatar alt={item.firstName} src={item.profileImage} />
+                              </ListItemAvatar>
+                              <ListItemText
+                                primary={item.firstName}
+                                secondary={secondary ? 'Secondary text' : null}
+                              />
+                            </ListItem>
+                          )))}
                         </List>
                       </Demo>
                     </Grid>
-                    <Grid item xs={12} md={6}>
+                    { userData !== null &&
+                      userData.userRole !== undefined &&
+                      userData.userRole.includes('clubAdmin') && (<Grid item xs={12} md={6}>
                       <Typography variant="h6" component="h6" sx={{ pb: 1 }}>
                         Requests
                       </Typography>
-                    </Grid>
+                    </Grid>) }
                   </Grid>
                 </TabPanel>
                 <TabPanel value="3">Badges</TabPanel>
@@ -314,9 +287,12 @@ const ClubDetail = () => {
               </List>
             </Grid>
             {userData !== null &&
+            clubsDetailData !== null &&
             userData.userRole !== undefined &&
-            userData.userRole === 'member' &&
-            userData.id !== clubsDetailData.data.admins ? (
+            clubsDetailData.acceptedMembers !== undefined &&
+            userData.userRole.includes('member')  &&
+            !clubsDetailData.acceptedMembers.includes(userData.id) &&
+            userData.id !== clubsDetailData.data.createdBy ? (
               <Grid item xs={12} md={12}>
                 <Typography variant="h5" component="h5" sx={{ pb: 1 }}>
                   Members
