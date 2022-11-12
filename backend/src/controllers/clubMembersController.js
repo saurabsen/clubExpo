@@ -2,6 +2,7 @@ const asyncHandler = require('express-async-handler');
 let ObjectId = require('mongoose').Types.ObjectId;
 const ClubMembers = require('../models/clubMembersModal.js');
 const User = require('../models/userModel');
+const Club = require('../models/clubModel');
 
 const getClubMembers = asyncHandler(async (req, res) => {
   const { userid } = req.body;
@@ -67,8 +68,35 @@ const storeIndividualMember = asyncHandler(async (req, res) => {
   }
 });
 
+const deleteClubMember = asyncHandler(async (req, res) => {
+  const { clubid, userid } = req.params;
+
+  if (!userid || !clubid) {
+    res.status(400);
+    throw new Error('Please enter all the required details');
+  }
+
+  const clubMemberDeletion = await ClubMembers.deleteOne({
+    user_id: userid,
+    club_id: clubid,
+  });
+
+  const clubMemberArrayDeletion = await Club.updateOne(
+    { _id: clubid },
+    { $pull: { acceptedMembers: userid } }
+  );
+
+  if (clubMemberDeletion && clubMemberArrayDeletion) {
+    res.status(201).json('Deleted Successfully');
+  } else {
+    res.status(400);
+    throw new Error('Club not found');
+  }
+});
+
 module.exports = {
   getClubMembers,
   storeIndividualMember,
   getIndividualMember,
+  deleteClubMember,
 };

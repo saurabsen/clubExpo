@@ -9,19 +9,19 @@ import ClubCard from '../../components/ClubCard/ClubCard';
 const ClubsJoined = () => {
   const { getAllClubsData } = useActions();
   const clubsJoinedData = useTypedSelector((state) => state.clubs);
-  const userData = JSON.parse(localStorage.getItem('user'));
+  const {data:userData} = useTypedSelector((state) => state.auth);
   useEffect(() => {
     getAllClubsData(`members/${userData._id}`);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
   return (
     <>
       <Box sx={{ flexGrow: 1 }}>
         <Grid container spacing={2} sx={{ p: 2 }}>
-          {clubsJoinedData.data
-            .filter((clubData) =>
-              clubData.acceptedMembers.find((membersData) => membersData.id === userData._id)
-            )
+          <Grid item xs={12} md={12}>
+          <h3>Clubs Joined</h3> 
+          </Grid>
+          {clubsJoinedData.data !== null && clubsJoinedData.data !== undefined && clubsJoinedData.data.length > 0   && clubsJoinedData.data!== undefined && clubsJoinedData.data
             .map((clubData) => (
               <Grid key={clubData.createdAt} item xs={4}>
                 <ClubCard

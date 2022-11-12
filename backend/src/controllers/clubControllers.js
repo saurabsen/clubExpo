@@ -56,7 +56,7 @@ const getClubs = asyncHandler(async (req, res) => {
 const getClubByMember = async (req, res) => {
   const { userid } = req.params;
   const clubByMember = await Club.find({
-    name: 'HR Events Club',
+    acceptedMembers: { $in: userid },
   });
   res.status(200).json(clubByMember);
 };
