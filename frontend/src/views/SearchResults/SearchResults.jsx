@@ -73,7 +73,6 @@ const SearchResults = () => {
 
   useEffect(() => {
     setSearchclubs([...clubsData]);
-    console.log(clubsData, 'clubdata');
   }, [clubsData]);
 
   const eventInit = async () => {
@@ -124,7 +123,6 @@ const SearchResults = () => {
 
   useEffect(() => {
     eventInit();
-    console.log(clubsData, 'eventdata');
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [eventsData]);
 

@@ -1,21 +1,24 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
 const userSchema = mongoose.Schema(
   {
     firstName: {
       type: String,
-      required: [true, 'Please enter your first name'],
+      required: [true, "Please enter your first name"],
     },
     lastName: {
       type: String,
-      required: [true, 'Please enter your last name'],
+      required: [true, "Please enter your last name"],
     },
     phoneNumber: {
       type: String,
     },
+    bio: {
+      type: String,
+    },
     email: {
       type: String,
-      required: [true, 'Please enter your email id'],
+      required: [true, "Please enter your email id"],
       unique: true,
     },
     gender: {
@@ -26,15 +29,15 @@ const userSchema = mongoose.Schema(
     },
     address: {
       type: String,
-      required: [true, 'Please enter your address'],
+      required: [true, "Please enter your address"],
     },
     zipcode: {
       type: String,
-      required: [true, 'Please enter your zipcode'],
+      required: [true, "Please enter your zipcode"],
     },
     country: {
       type: String,
-      required: [true, 'Please enter your country name'],
+      required: [true, "Please enter your country name"],
     },
     organizationID: {
       type: Number,
@@ -42,19 +45,19 @@ const userSchema = mongoose.Schema(
     badges: [
       {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Badge',
+        ref: "Badge",
       },
     ],
     clubsJoined: [
       {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Club',
+        ref: "Club",
       },
     ],
     eventsAttended: [
       {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Event',
+        ref: "Event",
       },
     ],
     profileImage: {
@@ -62,7 +65,7 @@ const userSchema = mongoose.Schema(
     },
     password: {
       type: String,
-      required: [true, 'Please enter your password'],
+      required: [true, "Please enter your password"],
     },
   },
   {
@@ -70,4 +73,4 @@ const userSchema = mongoose.Schema(
   }
 );
 
-module.exports = mongoose.model('User', userSchema);
+module.exports = mongoose.model("User", userSchema);
