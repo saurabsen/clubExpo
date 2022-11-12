@@ -1,6 +1,6 @@
 import EventsCard from '../../components/EventsCard/EventsCard';
 import UpcomingEvents from '../../components/UpcomingEvents/UpcomingEvents';
-import { Typography, Grid, Tabs, Tab, TabPanel, Box, Button } from '@mui/material';
+import { Typography, Grid, Box, Button } from '@mui/material';
 import axios from 'axios';
 import { useState, useEffect } from 'react';
 
