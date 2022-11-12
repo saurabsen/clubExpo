@@ -27,6 +27,7 @@ export const loginUser = (credentials) => {
       const user = await axios.get(`users/me`);
 
       if (user) {
+        console.log(user.data);
         localStorage.setItem('user', JSON.stringify(user.data));
       }
 
