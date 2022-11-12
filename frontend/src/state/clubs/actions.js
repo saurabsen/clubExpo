@@ -24,3 +24,27 @@ export const getAllClubsData = (queryString) => {
     }
   };
 };
+
+export const getClubsDataByUser = (queryString) => {
+  return async (dispatch) => {
+    dispatch({
+      type: FETCH_CLUBS
+    });
+
+    try {
+      const data = await axios.get(`clubs/user/${queryString}`);
+
+      dispatch({
+        type: GET_FETCH_CLUBS_DATA_SUCCESS,
+        payload: data.data
+      });
+      console.log(data.data, 'red');
+      return data.data;
+    } catch (error) {
+      dispatch({
+        type: GET_FETCH_CLUBS_DATA_ERROR,
+        payload: error.message
+      });
+    }
+  };
+};

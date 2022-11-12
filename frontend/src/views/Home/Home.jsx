@@ -11,17 +11,24 @@ const Home = () => {
   const [upcomingEvs, setUpcomingEvs] = useState([]);
   const [clubList, setClubList] = useState([]);
 
+  const getUser = async (userEmail) => {
+    const data = JSON.stringify({
+      email: userEmail
+    });
+
+    const res = await axios.post('users/allusers', data);
+    return res.data[0];
+  };
+  
   const getEvents = async () => {
     const data = JSON.stringify({
-      clubIds: ['1234', '2345', '63573f4a54aef5c865de7107', '635cc70ca5cc5e9114f2d03e']
+      clubIds: JSON.parse(localStorage.user).clubsJoined
     });
     const config = {
       method: 'post',
       url: 'events/latestfromclubs',
       headers: {
         'Content-Type': 'application/json',
-        Authorization:
-          'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MzUwMmRiMzRhMjcwYmY0ZDFhMjc5MWIiLCJpYXQiOjE2NjYxOTg5NjMsImV4cCI6MTY2ODc5MDk2M30.lPOmtB9fdmlIhDIj_R4yAvnt04ZWmuReNPNESVAak_8'
       },
       data: data
     };
@@ -46,11 +53,13 @@ const Home = () => {
   const initComponent = async () => {
     try {
       const formattedEvents = [];
+      const updatedUser = await getUser(localStorage.user.email);
+      if (updatedUser) {
+        localStorage.setItem('user', JSON.stringify(updatedUser));
+      }
       const rawClubs = await getClubs();
       const rawEvents = await getEvents();
       setClubList(rawClubs);
-
-      console.log(clubList); //need to remove it added just to remove warning
 
       const clubDict = [];
       rawClubs.forEach((club) => {
@@ -81,16 +90,14 @@ const Home = () => {
             'https://picsum.photos/200/300?random=5'
           ],
           withinClub: false,
-          registered: event.registered,
+          registered: (updatedUser.eventsAttended.indexOf(event._id) !== -1 ? true : false),
           clubAdminView: false
         };
         formattedEvents.push(eventObj);
       });
       setEvents(formattedEvents);
-      console.log(events, 'events');
       setUpcomingEvs(formattedEvents);
     } catch (error) {
-      console.log('failed to initialize component Home');
     }
   };
 
