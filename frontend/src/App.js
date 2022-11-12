@@ -169,25 +169,26 @@ const App = () => {
         </Routes>
       ) : (
         <Box sx={{ flexGrow: 1 }}>
-          <Grid container>
+          <Box sx={{display: 'flex', flexFlow: 'row'}}>
             {pathname.includes('/proposal') ||
             pathname.includes('/clubs') ||
             pathname.includes('/events/') ? (
               ''
             ) : (
-              <Grid item xs={2}>
+              <Box sx={{display: {xs: 'none', md: 'block'}, flex: '0 0 231px'}}>
                 <SideBar sidebardata={sideBarMenu} />
-              </Grid>
+              </Box>
             )}
-            <Grid
-              item
-              xs={
-                pathname.includes('/proposal') ||
-                pathname.includes('/clubs') ||
-                pathname.includes('/events/')
-                  ? 12
-                  : 10
-              }
+            <Box
+              // item
+              // xs={
+              //   pathname.includes('/proposal') ||
+              //   pathname.includes('/clubs') ||
+              //   pathname.includes('/events/')
+              //     ? 12
+              //     : 10
+              // }
+              sx={{flexGrow: '1'}}
             >
               <Routes>
                 <Route exact path="/" element={<Home />} />
@@ -208,8 +209,8 @@ const App = () => {
                 <Route path="/clubs/:clubId/createevent" element={<CreateEventPage />} />
                 <Route path="/search" element={<SearchResults />} />
               </Routes>
-            </Grid>
-          </Grid>
+            </Box>
+          </Box>
         </Box>
       )}
     </ThemeProvider>
