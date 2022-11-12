@@ -1,6 +1,6 @@
 import { Grid, TextField, Button, Box } from '@mui/material';
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { LoginGirl } from '../../assets';
 import { useActions } from '../../hooks/useActions';
 // import { useTypedSelector } from '../../hooks/useTypedSelector';
@@ -8,19 +8,20 @@ import { useActions } from '../../hooks/useActions';
 function Login() {
   const [formData, setFormData] = useState({ email: '', password: '' });
   const { email, password } = formData;
-
   const { loginUser } = useActions();
-
   const onChangeHandler = (e) => {
     setFormData((prevState) => ({
       ...prevState,
       [e.target.name]: e.target.value
     }));
   };
-
+  const navigate = useNavigate();
   const onSubmitHandler = (e) => {
     e.preventDefault();
-    loginUser({ email, password });
+    loginUser({ email, password }).then(resp => {
+      if(resp)
+        (resp.userRole.includes('hubAdmin') ?  navigate('/admin-dashboard') : navigate('/home')  ) ;
+    });
   };
 
   return (

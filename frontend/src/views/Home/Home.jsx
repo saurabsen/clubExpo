@@ -61,8 +61,6 @@ const Home = () => {
       const rawEvents = await getEvents();
       setClubList(rawClubs);
 
-      console.log(clubList); //need to remove it added just to remove warning
-
       const clubDict = [];
       rawClubs.forEach((club) => {
         clubDict[[club._id]] = club.name;
@@ -98,10 +96,8 @@ const Home = () => {
         formattedEvents.push(eventObj);
       });
       setEvents(formattedEvents);
-      console.log(events, 'events');
       setUpcomingEvs(formattedEvents);
     } catch (error) {
-      console.log('failed to initialize component Home');
     }
   };
 

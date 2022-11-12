@@ -22,36 +22,107 @@ import {
   ClubPage,
   CreateEvent
 } from './views';
+import {
+  HomeIcon,
+  Discover,
+  ClubsJoined as ClubsJoinedIcon,
+  EventRegistered,
+  ClubsManaged as ClubsManagedIcon,
+  Dashboard,
+  Request
+} from './assets';
 import { useActions } from './hooks/useActions';
 import { useTypedSelector } from './hooks/useTypedSelector';
-import axios from 'axios';
 import SearchResults from './views/SearchResults/SearchResults';
+import axios from 'axios';
 
 const App = () => {
   const pathname = window.location.pathname;
-  const [userIsLoggedIn, setUserIsLoggedIn] = useState(false);
-
-  const navigate = useNavigate();
-
   const { logoutUser } = useActions();
-  const { data } = useTypedSelector((state) => state.auth);
+  const { data: userData } = useTypedSelector((state) => state.auth);
+  const navigate = useNavigate();
+  const token = JSON.parse(localStorage.getItem('userToken'));
+  const [sideBarMenu, setSideBarMenu] = useState([]);
 
   useEffect(() => {
-    if (data) {
-      setUserIsLoggedIn(true);
-      const token = JSON.parse(localStorage.getItem('userToken'));
-      axios.defaults.headers['Authorization'] = `Bearer ${token}`;
-      if (data.userRole === 'member' || data.userRole === 'clubAdmin') {
-        navigate('/home');
-      } else if (data.userRole === 'hubAdmin') {
-        navigate('/admin-dashboard');
-      }
-    } else {
-      setUserIsLoggedIn(false);
+    if (!token) {
       navigate('/login');
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [data]);
+  }, [token]);
+
+  useEffect(() => {
+    let menuItems = [];
+
+    if (userData != null && userData.userRole.includes('hubAdmin')) {
+      menuItems.push(
+        {
+          routeLink: '/admin-dashboard',
+          icon: Dashboard,
+          altText: 'Dashboard Icon',
+          name: 'Dashboard'
+        },
+        {
+          routeLink: '/club-managed',
+          icon: ClubsManagedIcon,
+          altText: 'Clubs managed Icon',
+          name: 'Clubs Managed'
+        },
+        {
+          routeLink: '/club-requests',
+          icon: Request,
+          altText: 'Club Requests Icon',
+          name: 'Club Requests'
+        }
+      );
+    }
+
+    if (
+      userData != null &&
+      (userData.userRole.includes('clubAdmin') || userData.userRole.includes('member'))
+    ) {
+      menuItems.push(
+        {
+          routeLink: '/home',
+          icon: HomeIcon,
+          altText: 'Home Icon',
+          name: 'Home'
+        },
+        {
+          routeLink: '/discover-clubs',
+          icon: Discover,
+          altText: 'Discover Clubs Icon',
+          name: 'Discover Clubs'
+        },
+        {
+          routeLink: '/clubs-joined',
+          icon: ClubsJoinedIcon,
+          altText: 'Clubs Joined Icon',
+          name: 'Clubs Joined'
+        },
+        {
+          routeLink: '/events-registered',
+          icon: EventRegistered,
+          altText: 'Event Registered Icon',
+          name: 'Events Registered'
+        }
+      );
+    }
+
+    setSideBarMenu([...menuItems]);
+  }, [userData]);
+
+  axios.interceptors.request.use(
+    (config) => {
+      const token = JSON.parse(localStorage.getItem('userToken'));
+      if (token) {
+        config.headers['Authorization'] = 'Bearer ' + token;
+      }
+      return config;
+    },
+    (error) => {
+      Promise.reject(error);
+    }
+  );
 
   const theme = createTheme({
     palette: {
@@ -91,23 +162,35 @@ const App = () => {
 
   return (
     <ThemeProvider theme={theme}>
-      <Header userIsLoggedIn={userIsLoggedIn} handleLogoutUser={handleLogoutUser} />
-      {!userIsLoggedIn ? (
+      <Header userIsLoggedIn={token} handleLogoutUser={handleLogoutUser} />
+      {!token ? (
         <Routes>
           <Route path="/login" element={<Login />} />
         </Routes>
       ) : (
         <Box sx={{ flexGrow: 1 }}>
           <Grid container>
-            {pathname === '/proposal' || pathname.includes('/clubs') || pathname.includes('/events/') ? (
+            {pathname.includes('/proposal') ||
+            pathname.includes('/clubs') ||
+            pathname.includes('/events/') ? (
               ''
             ) : (
               <Grid item xs={2}>
-                <SideBar />
+                <SideBar sidebardata={sideBarMenu} />
               </Grid>
             )}
-            <Grid item xs={pathname.includes('/proposal') || pathname.includes('/clubs') || pathname.includes('/events/') ? 12 : 10}>
+            <Grid
+              item
+              xs={
+                pathname.includes('/proposal') ||
+                pathname.includes('/clubs') ||
+                pathname.includes('/events/')
+                  ? 12
+                  : 10
+              }
+            >
               <Routes>
+                <Route exact path="/" element={<Home />} />
                 <Route path="/home" element={<Home />} />
                 <Route path="/admin-dashboard" element={<AdminDashboard />} />
                 <Route path="/submit-proposal" element={<ClubProposal />} />
