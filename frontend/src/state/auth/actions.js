@@ -26,10 +26,6 @@ export const loginUser = (credentials) => {
       // store user data object in localStorage
       const user = await axios.get(`users/me`);
 
-      if (user) {
-        localStorage.setItem('user', JSON.stringify(user.data));
-      }
-
       dispatch({
         type: GET_LOGIN_DATA_SUCCESS,
         payload: user.data
@@ -52,10 +48,6 @@ export const getUser = () => {
 
     try {
       const data = await axios.get(`users/me`);
-
-      if (data) {
-        localStorage.setItem('user', JSON.stringify(data.data));
-      }
 
       dispatch({
         type: GET_FETCH_USER_DATA_SUCCESS,

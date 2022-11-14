@@ -10,12 +10,10 @@ import {
   GET_LOGOUT_DATA_ERROR
 } from './types';
 
-const user = JSON.parse(localStorage.getItem('user'));
-
 const initialState = {
   loading: false,
   error: null,
-  data: user ? user : null
+  data: []
 };
 
 const authReducer = (state = initialState, action) => {
