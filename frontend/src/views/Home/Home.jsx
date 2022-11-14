@@ -3,13 +3,14 @@ import UpcomingEvents from '../../components/UpcomingEvents/UpcomingEvents';
 import Grid from '@mui/material/Grid';
 import { Typography } from '@mui/material';
 import axios from 'axios';
-import { useState } from 'react';
-import { useEffect } from 'react';
+import { useState, useEffect } from 'react';
+import { useTypedSelector } from '../../hooks/useTypedSelector';
 
 const Home = () => {
   const [events, setEvents] = useState([]);
   const [upcomingEvs, setUpcomingEvs] = useState([]);
   const [clubList, setClubList] = useState([]);
+  const { data: userData } = useTypedSelector((state) => state.auth);
 
   const getUser = async (userEmail) => {
     const data = JSON.stringify({
@@ -22,7 +23,7 @@ const Home = () => {
   
   const getEvents = async () => {
     const data = JSON.stringify({
-      clubIds: JSON.parse(localStorage.user).clubsJoined
+      clubIds: userData.clubsJoined
     });
     const config = {
       method: 'post',
@@ -40,10 +41,6 @@ const Home = () => {
     const config = {
       method: 'get',
       url: 'clubs/',
-      headers: {
-        Authorization:
-          'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MzU5YWQ0MmJkMzgzNzljYTNkMzViZDAiLCJpYXQiOjE2NjY4MjE0NDIsImV4cCI6MTY2OTQxMzQ0Mn0._SaFCeAaa-BQVmC-tGPcczEcoad_3XOfONKzMFqeqRY'
-      }
     };
 
     const res = await axios(config);
@@ -54,14 +51,9 @@ const Home = () => {
     try {
       const formattedEvents = [];
       const updatedUser = await getUser(localStorage.user.email);
-      if (updatedUser) {
-        localStorage.setItem('user', JSON.stringify(updatedUser));
-      }
       const rawClubs = await getClubs();
       const rawEvents = await getEvents();
       setClubList(rawClubs);
-
-      console.log(clubList); //need to remove it added just to remove warning
 
       const clubDict = [];
       rawClubs.forEach((club) => {
@@ -98,10 +90,8 @@ const Home = () => {
         formattedEvents.push(eventObj);
       });
       setEvents(formattedEvents);
-      console.log(events, 'events');
       setUpcomingEvs(formattedEvents);
     } catch (error) {
-      console.log('failed to initialize component Home');
     }
   };
 
