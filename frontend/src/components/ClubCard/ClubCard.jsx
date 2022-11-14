@@ -12,7 +12,8 @@ const ClubCard = (props) => {
     <Card sx={{ maxWidth: 345 }}>
       <CardMedia
         component="img"
-        height="140"
+        height="50"
+        sx={{height: '270px'}}
         image={clubImage}
         alt={`Feature image for club ${clubName}`}
       />
