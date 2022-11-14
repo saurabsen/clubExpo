@@ -8,11 +8,10 @@ import ClubCard from '../../components/ClubCard/ClubCard';
 const ClubsManaged = () => {
   const { getClubsDataByUser } = useActions();
   const clubs = useTypedSelector((state) => state.clubs);
+  const { data: userData } = useTypedSelector((state) => state.auth);
 
   useEffect(() => {
-    const userID = JSON.parse(localStorage.getItem('user'));
-    getClubsDataByUser(userID._id);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    getClubsDataByUser(userData._id);
   }, []);
 
   return (

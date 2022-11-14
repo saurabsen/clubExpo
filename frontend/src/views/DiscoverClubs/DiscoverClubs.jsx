@@ -18,8 +18,11 @@ const DiscoverClubs = () => {
   return (
     <>
       <Box sx={{ flexGrow: 1 }}>
+        <Grid item xs={12} md={12}>
+          <h3>Clubs Joined</h3> 
+        </Grid>
         <Grid container spacing={2} sx={{ p: 2 }}>
-          {allDiscoverClubsData.data.map((clubData) => (
+          {allDiscoverClubsData.data != null && allDiscoverClubsData.data.length> 0 && allDiscoverClubsData.data.map((clubData) => (
             <Grid key={clubData.createdAt} item xs={4}>
               <ClubCard
                 key={clubData._id}

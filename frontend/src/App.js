@@ -38,7 +38,7 @@ import axios from 'axios';
 
 const App = () => {
   const pathname = window.location.pathname;
-  const { logoutUser } = useActions();
+  const { getUser, logoutUser } = useActions();
   const { data: userData } = useTypedSelector((state) => state.auth);
   const navigate = useNavigate();
   const token = JSON.parse(localStorage.getItem('userToken'));
@@ -53,19 +53,17 @@ const App = () => {
   useEffect(() => {
     let menuItems = [];
 
-    if (userData != null && userData.userRole.includes('hubAdmin')) {
+    if (
+      userData != null &&
+      userData.userRole !== undefined &&
+      userData.userRole.includes('hubAdmin')
+    ) {
       menuItems.push(
         {
           routeLink: '/admin-dashboard',
           icon: Dashboard,
           altText: 'Dashboard Icon',
           name: 'Dashboard'
-        },
-        {
-          routeLink: '/club-managed',
-          icon: ClubsManagedIcon,
-          altText: 'Clubs managed Icon',
-          name: 'Clubs Managed'
         },
         {
           routeLink: '/club-requests',
@@ -78,6 +76,7 @@ const App = () => {
 
     if (
       userData != null &&
+      userData.userRole !== undefined &&
       (userData.userRole.includes('clubAdmin') || userData.userRole.includes('member'))
     ) {
       menuItems.push(
@@ -108,12 +107,26 @@ const App = () => {
       );
     }
 
+    if (
+      userData != null &&
+      userData.userRole !== undefined &&
+      userData.userRole.includes('clubAdmin')
+    ) {
+      menuItems.push({
+        routeLink: '/club-managed',
+        icon: ClubsManagedIcon,
+        altText: 'Clubs managed Icon',
+        name: 'Clubs Managed'
+      });
+    }
+
     setSideBarMenu([...menuItems]);
   }, [userData]);
 
   axios.interceptors.request.use(
     (config) => {
       const token = JSON.parse(localStorage.getItem('userToken'));
+      //getUser();
       if (token) {
         config.headers['Authorization'] = 'Bearer ' + token;
       }
@@ -171,7 +184,7 @@ const App = () => {
         <Box sx={{ flexGrow: 1 }}>
           <Grid container>
             {pathname.includes('/proposal') ||
-            pathname.includes('/clubs') ||
+            pathname.includes('/clubs/') ||
             pathname.includes('/events/') ? (
               ''
             ) : (
@@ -183,7 +196,7 @@ const App = () => {
               item
               xs={
                 pathname.includes('/proposal') ||
-                pathname.includes('/clubs') ||
+                pathname.includes('/clubs/') ||
                 pathname.includes('/events/')
                   ? 12
                   : 10
