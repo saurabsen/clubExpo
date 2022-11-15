@@ -11,15 +11,6 @@ const Home = () => {
   const [upcomingEvs, setUpcomingEvs] = useState([]);
   const [clubList, setClubList] = useState([]);
   const { data: userData } = useTypedSelector((state) => state.auth);
-
-  const getUser = async (userEmail) => {
-    const data = JSON.stringify({
-      email: userEmail
-    });
-
-    const res = await axios.post('users/allusers', data);
-    return res.data[0];
-  };
   
   const getEvents = async () => {
     const data = JSON.stringify({
