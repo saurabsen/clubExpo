@@ -3,6 +3,7 @@ import { styled, alpha } from '@mui/material/styles';
 import Button from '../Button/Button';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
+import { useNavigate } from 'react-router-dom';
 
 const StyledMenu = styled((props) => (
   <Menu
@@ -45,7 +46,8 @@ const StyledMenu = styled((props) => (
   },
 }));
 
-export default function CustomizedMenus() {
+export default function CustomizedMenus(props) {
+  const navigate = useNavigate();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
@@ -53,6 +55,7 @@ export default function CustomizedMenus() {
   };
   const handleClose = () => {
     setAnchorEl(null);
+    navigate(`/events/${props.eventId}`);
   };
 
   const dropMenuStyling = {
