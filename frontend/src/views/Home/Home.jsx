@@ -50,7 +50,7 @@ const Home = () => {
   const initComponent = async () => {
     try {
       const formattedEvents = [];
-      const updatedUser = await getUser(localStorage.user.email);
+      const updatedUser = userData;
       const rawClubs = await getClubs();
       const rawEvents = await getEvents();
       setClubList(rawClubs);
