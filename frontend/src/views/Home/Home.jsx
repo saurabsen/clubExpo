@@ -63,17 +63,10 @@ const Home = () => {
           eventLoc: event.location,
           eventPrice: event.price,
           eventImgUrl: event.featureImage,
-          numberOfAttendees: 100,
+          numberOfAttendees: event.attendees.length,
           eventId: event._id,
           registerClickHandler: '',
           shareClickHandler: '',
-          attendeeImgUrlList: [
-            'https://picsum.photos/200/300?random=1',
-            'https://picsum.photos/200/300?random=2',
-            'https://picsum.photos/200/300?random=3',
-            'https://picsum.photos/200/300?random=4',
-            'https://picsum.photos/200/300?random=5'
-          ],
           withinClub: false,
           registered: (updatedUser.eventsAttended.indexOf(event._id) !== -1 ? true : false),
           clubAdminView: false
