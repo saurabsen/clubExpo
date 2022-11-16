@@ -1,7 +1,6 @@
 import EventsCard from '../../components/EventsCard/EventsCard';
 import UpcomingEvents from '../../components/UpcomingEvents/UpcomingEvents';
-import Grid from '@mui/material/Grid';
-import { Typography } from '@mui/material';
+import { Typography, Grid, Box, Button } from '@mui/material';
 import axios from 'axios';
 import { useState, useEffect } from 'react';
 import { useTypedSelector } from '../../hooks/useTypedSelector';
@@ -11,15 +10,7 @@ const Home = () => {
   const [upcomingEvs, setUpcomingEvs] = useState([]);
   const [clubList, setClubList] = useState([]);
   const { data: userData } = useTypedSelector((state) => state.auth);
-
-  const getUser = async (userEmail) => {
-    const data = JSON.stringify({
-      email: userEmail
-    });
-
-    const res = await axios.post('users/allusers', data);
-    return res.data[0];
-  };
+  const [feedView, setFeedView] = useState(true);
   
   const getEvents = async () => {
     const data = JSON.stringify({
@@ -50,7 +41,7 @@ const Home = () => {
   const initComponent = async () => {
     try {
       const formattedEvents = [];
-      const updatedUser = await getUser(localStorage.user.email);
+      const updatedUser = userData;
       const rawClubs = await getClubs();
       const rawEvents = await getEvents();
       setClubList(rawClubs);
@@ -72,17 +63,10 @@ const Home = () => {
           eventLoc: event.location,
           eventPrice: event.price,
           eventImgUrl: event.featureImage,
-          numberOfAttendees: 100,
+          numberOfAttendees: event.attendees.length,
           eventId: event._id,
           registerClickHandler: '',
           shareClickHandler: '',
-          attendeeImgUrlList: [
-            'https://picsum.photos/200/300?random=1',
-            'https://picsum.photos/200/300?random=2',
-            'https://picsum.photos/200/300?random=3',
-            'https://picsum.photos/200/300?random=4',
-            'https://picsum.photos/200/300?random=5'
-          ],
           withinClub: false,
           registered: (updatedUser.eventsAttended.indexOf(event._id) !== -1 ? true : false),
           clubAdminView: false
@@ -100,44 +84,64 @@ const Home = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  const renderEventCards = (event) => {
+    return (
+      <EventsCard
+        clubName={event.clubName}
+        clubLogoUrl={event.clubLogoUrl}
+        eventName={event.eventName}
+        eventDesc={event.eventDesc}
+        eventDate={event.eventDate}
+        eventTime={event.eventTime}
+        eventLoc={event.eventLoc}
+        eventPrice={event.eventPrice}
+        eventImgUrl={event.eventImgUrl}
+        numberOfAttendees={event.numberOfAttendees}
+        registerClickHandler={event.registerClickHandler}
+        eventId={event.eventId}
+        shareClickHandler={event.shareClickHandler}
+        attendeeImgUrlList={event.attendeeImgUrlList}
+        withinClub={event.withinClub}
+        registered={event.registered}
+        clubAdminView={event.clubAdminView}
+      />
+    );
+  };
+
+  const renderTabs = () => {
+    const tabButtonStyles = {flexGrow: '1', boxShadow: 'unset', py: '13px'};
+    return (
+      <>
+        <Button onClick={() => setFeedView(true)} variant={feedView ? 'contained' : 'text'} sx={tabButtonStyles}>My feed</Button>
+        <Button onClick={() => setFeedView(false)} variant={feedView ? 'text' : 'contained'} sx={tabButtonStyles}>Calendar</Button>
+      </>
+    );
+  };
+
   const styleLatestEvents = {
     fontFamily: 'Oswald',
     fontWeight: 400,
     fontSize: 18,
     opacity: 0.4,
-    mb: 2
+    mb: 2,
+    display: {xs: 'none', lg: 'inline'}
   };
+
+  window.addEventListener('resize', () => {
+    if (window.innerWidth >= 1200 && !feedView) {setFeedView(true);}
+  });
 
   return (
     <>
-      <Grid container xs={12} columnSpacing={{ xs: 3 }}>
-        <Grid item xs={9} sx={{ mt: 4 }}>
+      <Box sx={{display: {xs: 'flex', lg: 'none'}, gap: '26px', borderBottom: '1px solid #E0E2E0', px: '24px', py: '12px', boxShadow: '2px 2px 4px rgba(0, 0, 0, 0.08)'}}>
+        {renderTabs()}
+      </Box>
+      <Grid container xs={12} columnSpacing={{ xs: 3 }} sx={{pl: '24px'}}>
+        <Grid item xs={12} lg={9} sx={{ mt: 4 }}>
           <Typography sx={styleLatestEvents}>Latest Events</Typography>
-          {events.map((event) => {
-            return (
-              <EventsCard
-                clubName={event.clubName}
-                clubLogoUrl={event.clubLogoUrl}
-                eventName={event.eventName}
-                eventDesc={event.eventDesc}
-                eventDate={event.eventDate}
-                eventTime={event.eventTime}
-                eventLoc={event.eventLoc}
-                eventPrice={event.eventPrice}
-                eventImgUrl={event.eventImgUrl}
-                numberOfAttendees={event.numberOfAttendees}
-                registerClickHandler={event.registerClickHandler}
-                eventId={event.eventId}
-                shareClickHandler={event.shareClickHandler}
-                attendeeImgUrlList={event.attendeeImgUrlList}
-                withinClub={event.withinClub}
-                registered={event.registered}
-                clubAdminView={event.clubAdminView}
-              />
-            );
-          })}
+          {(feedView) ? events.map((event) => renderEventCards(event)) : <UpcomingEvents upcomingEvents={upcomingEvs} />}
         </Grid>
-        <Grid item xs={3} sx={{ mt: 4 }}>
+        <Grid item xs={0} lg={3} sx={{ mt: 4, display: {xs: 'none', lg: 'block'} }}>
           <UpcomingEvents upcomingEvents={upcomingEvs} />
         </Grid>
       </Grid>
