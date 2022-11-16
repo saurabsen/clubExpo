@@ -4,8 +4,10 @@ import './EventPage.css';
 import { Location, Calender, Money, Clock } from '../../assets';
 import { Link, useNavigate } from 'react-router-dom';
 import { ReactComponent as Share } from '../../assets/Icons/share.svg';
-import { Button, Card, Grid, Box, CardMedia, TextField, Typography, Fab } from '@mui/material';
+import { Button, Card, Grid, Box, CardMedia, TextField, Typography } from '@mui/material';
 import { BackButton } from '../../components';
+import { useTypedSelector } from '../../hooks/useTypedSelector';
+import { useActions } from '../../hooks/useActions';
 
 const EventPage = (props) => {
   const [event, setEvent] = useState({});
@@ -13,6 +15,11 @@ const EventPage = (props) => {
   const [adminInfo, setAdminInfo] = useState();
   const [userInfo, setUserInfo] = useState();
   const [mainButton, setMainButton] = useState();
+  const { data: userData } = useTypedSelector((state) => state.auth);
+  const { getUser, addUserToEventModel, removeUserFromEventModel, addEventToUserModel, removeEventFromUserModel } = useActions();
+
+  console.log("userData", userData);
+  // getUser();
 
   const navigate = useNavigate();
 
@@ -34,7 +41,7 @@ const EventPage = (props) => {
     return res.data;
   };
 
-  const getUser = async (userEmail) => {
+  const getUserByEmail = async (userEmail) => {
     const data = JSON.stringify({
       email: userEmail
     });
@@ -52,42 +59,6 @@ const EventPage = (props) => {
     return res.data[0];
   };
 
-  const addEventToUserModel = () => {
-    const config = {
-      method: 'post',
-      url: `users/${userInfo._id}/attend/${event._id}`,
-      headers: {}
-    };
-    axios(config);
-  };
-
-  const addUserToEventModel = () => {
-    const config = {
-      method: 'post',
-      url: `events/${event._id}/attendedby/${userInfo._id}`,
-      headers: {}
-    };
-    axios(config);
-  };
-
-  const removeEventFromUserModel = () => {
-    const config = {
-      method: 'post',
-      url: `users/${userInfo._id}/unattend/${event._id}`,
-      headers: {}
-    };
-    axios(config);
-  };
-
-  const removeUserFromEventModel = () => {
-    const config = {
-      method: 'post',
-      url: `events/${event._id}/unattendedby/${userInfo._id}`,
-      headers: {}
-    };
-    axios(config);
-  };
-
   const getMatchingClub = (clubObjs, clubId) => {
     const matchingClubs = clubObjs.filter((clubObj) => clubObj._id === clubId);
     return matchingClubs[0];
@@ -99,31 +70,18 @@ const EventPage = (props) => {
   };
 
   const updateAdminInfo = async () => {
-    rawAdminInfo = await getUser(clubInfo.admins[0]);
-    await setAdminInfo(rawAdminInfo);
+    rawAdminInfo = await getUserByEmail(clubInfo.admins[0]);
+    setAdminInfo(rawAdminInfo);
   };
 
   const registerUser = () => {
-    addEventToUserModel();
-    addUserToEventModel();
-    let newEventsAttended = userInfo.eventsAttended;
-    newEventsAttended.push(event._id);
-    setUserInfo({
-      ...userInfo,
-      eventsAttended: newEventsAttended
-    });
+    addUserToEventModel(event._id, userData._id);
+    addEventToUserModel(userData._id, event._id);
   };
 
   const unregisterUser = () => {
-    removeEventFromUserModel();
-    removeUserFromEventModel();
-    let newEventsAttended = userInfo.eventsAttended;
-    const targetIndex = newEventsAttended.indexOf(event._id);
-    newEventsAttended.splice(targetIndex, 1);
-    setUserInfo({
-      ...userInfo,
-      eventsAttended: newEventsAttended
-    });
+    removeUserFromEventModel(event._id, userData._id);
+    removeEventFromUserModel(userData._id, event._id);
   };
 
   let rawClubs;
@@ -134,14 +92,14 @@ const EventPage = (props) => {
       const { eventId } = props;
       const rawEvent = await getEvent(eventId);
       setEvent(rawEvent);
-      // const userInfo = await getUser('nhugnin2@studiopress.com');
     } catch (error) {
       console.log("'", 'failed to load component Event Page:' + error.message);
     }
   };
 
   const selectButton = () => {
-    const eventLoc = userInfo.eventsAttended.indexOf(event._id);
+    // console.log('userData in selectButton', userData);
+    const eventLoc = userData.eventsAttended.indexOf(event._id);
     if (eventLoc !== -1) {
       return (
         <Button style={{ width: '100%' }} variant="outlined" onClick={unregisterUser}>
@@ -159,39 +117,39 @@ const EventPage = (props) => {
 
   useEffect(() => {
     initEvent();
+    console.log('*** initEvent completed');
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [props]);
-
+  }, []);
+      
   useEffect(() => {
-    (async () => {
-      setUserInfo(await getUser(JSON.parse(localStorage.user).email));
-    })();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [event]);
-
-  useEffect(() => {
-    if (userInfo) {
+    if (userData) {
       setMainButton(selectButton());
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [event, userInfo]);
+  }, [event, userData]);
 
   useEffect(() => {
     updateClubInfo();
+    console.log('*** updateClubInfo completed');
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [event]);
 
   useEffect(() => {
     if (clubInfo) {
-      (async () => {updateAdminInfo();})();
+      updateAdminInfo();
+      // (async () => {updateAdminInfo();})();
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [clubInfo]);
 
   const renderEventLinks = () => {
     return (
-      <Box className="eventscard-buttons">
-        <Button variant="outlined">
+      <Box className="eventpage-buttons" sx={{
+        display: 'flex',
+        flexFlow: 'row',
+        gap: '20px'
+      }}>
+        <Button variant="outlined" sx={{width: '100px'}}>
           <Share />
         </Button>
         {mainButton ? mainButton : null}

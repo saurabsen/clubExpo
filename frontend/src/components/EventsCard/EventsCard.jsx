@@ -13,7 +13,7 @@ const EventsCard = ({
   eventDate,
   eventTime,
   eventLoc,
-  eventPrice,
+  eventPrice = "Free",
   eventImgUrl,
   numberOfAttendees,
   registerClickHandler,
@@ -24,6 +24,22 @@ const EventsCard = ({
   registered = false,
   clubAdminView = false
 }) => {
+  const samplePhotos = [
+    'https://picsum.photos/200/300?random=1',
+    'https://picsum.photos/200/300?random=2',
+    'https://picsum.photos/200/300?random=3',
+    'https://picsum.photos/200/300?random=4',
+    'https://picsum.photos/200/300?random=5'
+  ];
+  const getSamplePhotos = () => {
+    let photoUrlList = [];
+    const numberDisplayed = (numberOfAttendees > 5) ? 5 : numberOfAttendees;
+    for (let index = 0; index < numberDisplayed; index++) {
+      photoUrlList.push(samplePhotos[index]);
+    }
+    return photoUrlList;
+  };
+
   const clubBrand = (
     <div className="eventscard-clubbrand">
       <div
@@ -34,13 +50,18 @@ const EventsCard = ({
     </div>
   );
 
-  const notRegisteredBtn = (
-    <Button style={{ width: '100%' }} variant="contained">
-      Register
-    </Button>
-  );
+  const notRegisteredBtn = (eventId) =>  {
+    return (
+    <Link style={{ width: '100%' }} to= {`/events/${eventId}`}>
+      <Button style={{ width: '100%' }} variant="contained">
+        Register
+      </Button>
+    </Link>
+  );};
 
-  const registeredBtn = <ButtonDropMenu style={{ width: '100%' }} />;
+  const registeredBtn = (eventId) => {
+    return (<ButtonDropMenu style={{ width: '100%' }} eventId={eventId} />);
+  };
 
   return (
     <div className="eventscard">
@@ -55,12 +76,12 @@ const EventsCard = ({
           className="eventscard-main-image"
           style={{ backgroundImage: `url(${eventImgUrl})` }}
         ></div>
-        <h4 className="mobileEventName">{eventName}</h4>
+        <h4 className="mobileEventName"><Link to={`/events/${eventId}`}>{eventName}</Link></h4>
         <div className="eventscard-buttons">
           <Button variant="outlined">
             <Share />
           </Button>
-          {registered ? registeredBtn : notRegisteredBtn}
+          {registered ? registeredBtn(eventId) : notRegisteredBtn(eventId)}
         </div>
       </div>
       <div className="eventscard-main">
@@ -98,7 +119,7 @@ const EventsCard = ({
         <div className="eventscard-footer-line">
           <div className="attendees-section">
             <div className="attendee-photos">
-              {attendeeImgUrlList.map((url, i) => {
+              {getSamplePhotos().map((url, i) => {
                 if (i > 4) return <></>;
                 return (
                   <div
