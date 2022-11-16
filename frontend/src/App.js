@@ -20,7 +20,8 @@ import {
   Proposal,
   Profile,
   ClubPage,
-  CreateEvent
+  CreateEvent,
+  NotFoundPage
 } from './views';
 import { useActions } from './hooks/useActions';
 import { useTypedSelector } from './hooks/useTypedSelector';
@@ -124,6 +125,7 @@ const App = () => {
                 <Route path="/clubs/:clubId" element={<ClubSinglePage />} />
                 <Route path="/clubs/:clubId/createevent" element={<CreateEventPage />} />
                 <Route path="/search" element={<SearchResults />} />
+                <Route path="/404" element={<NotFoundPage />} />
               </Routes>
             </Grid>
           </Grid>
