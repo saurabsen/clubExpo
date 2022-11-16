@@ -144,8 +144,12 @@ const EventPage = (props) => {
 
   const renderEventLinks = () => {
     return (
-      <Box className="eventscard-buttons">
-        <Button variant="outlined">
+      <Box className="eventpage-buttons" sx={{
+        display: 'flex',
+        flexFlow: 'row',
+        gap: '20px'
+      }}>
+        <Button variant="outlined" sx={{width: '100px'}}>
           <Share />
         </Button>
         {mainButton ? mainButton : null}
