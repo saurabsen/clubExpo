@@ -3,7 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { ProposalDetailCard } from '../../components';
 import { Button, Modal, Box } from '@mui/material';
-// import { useActions } from '../../hooks/useActions';
+import { useActions } from '../../hooks/useActions';
 import { useTypedSelector } from '../../hooks/useTypedSelector';
 
 const Proposal = () => {
@@ -14,7 +14,9 @@ const Proposal = () => {
   const { proposalId } = useParams();
   const navigate = useNavigate();
 
+  const { sendNotification } = useActions();
   const { data } = useTypedSelector((state) => state.proposals);
+  const { data: authData } = useTypedSelector((state) => state.auth);
 
   useEffect(() => {
     if (data) {
@@ -41,6 +43,15 @@ const Proposal = () => {
       const data = await axios.put(`proposals/${newProposal._id}`, newProposal);
 
       if (data) {
+        console.log(data);
+        debugger;
+        const notification = {
+          message: `Your club, ${proposal.clubName} was not approved by Hub Admin`,
+          type: 'proposalRejected',
+          from: authData ? authData._id : '',
+          to: proposal.createdBy
+        };
+        const sent = await sendNotification(notification);
         setRejectModalOpen(false);
         navigate('/admin-dashboard');
         window.location.reload();

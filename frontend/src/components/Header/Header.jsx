@@ -4,10 +4,16 @@ import { Box, Avatar, Menu, MenuItem } from '@mui/material';
 import SearchBar from '../SearchBar/SearchBar';
 import { LogoRectangle, NotificationsOff, NotificationsOn } from '../../assets';
 import './header.css';
+import { useActions } from '../../hooks/useActions';
+import { useTypedSelector } from '../../hooks/useTypedSelector';
 
 const Header = ({ userIsLoggedIn, handleSearch, handleLogoutUser }) => {
   const [newNotification, setNewNotification] = useState(false);
   const [showProfileModal, setShowProfileModal] = useState(null);
+
+  const { getNotifications } = useActions();
+  const { data } = useTypedSelector((state) => state.auth);
+  const { notifications } = useTypedSelector((state) => state.notifications);
 
   const handleShowProfileModal = (e) => {
     setShowProfileModal(e.currentTarget);
@@ -23,10 +29,23 @@ const Header = ({ userIsLoggedIn, handleSearch, handleLogoutUser }) => {
   };
 
   useEffect(() => {
-    setNewNotification(newNotification);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    if (data) {
+      getNotifications(data._id);
+    }
   }, []);
 
+  useEffect(() => {
+    setNewNotification(false);
+
+    if (typeof notifications === 'object') {
+      notifications.map((notification) => {
+        if (!notification.read) {
+          setNewNotification(true);
+          return;
+        }
+      });
+    }
+  }, [notifications]);
   return (
     <>
       {!userIsLoggedIn ? (
@@ -69,7 +88,7 @@ const Header = ({ userIsLoggedIn, handleSearch, handleLogoutUser }) => {
           >
             <Box>
               {!newNotification ? (
-                <Link to="/notification">
+                <Link to="/notifications">
                   <img
                     src={NotificationsOff}
                     style={{ width: '24px' }}
@@ -77,7 +96,7 @@ const Header = ({ userIsLoggedIn, handleSearch, handleLogoutUser }) => {
                   />
                 </Link>
               ) : (
-                <Link to="/notification">
+                <Link to="/notifications">
                   <img src={NotificationsOn} style={{ width: '24px' }} alt="Notification Bell On" />
                 </Link>
               )}
