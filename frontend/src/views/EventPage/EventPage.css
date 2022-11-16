@@ -39,6 +39,12 @@
   bottom: 0;
 }
 
+.eventpage-buttons button {
+  padding: 16px 0;
+  font-size: 16px;
+  border-radius: 8px;
+}
+
 .eventpage-footer-line {
   display: flex;
   flex-flow: row;
