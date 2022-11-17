@@ -206,6 +206,7 @@ export default function ClubProposal() {
                     <div className="input-group">
                       <p>How many events will this club organize per month?</p>
                       <TextField
+                        placeholder="2"
                         fullWidth
                         name="noOfEventsMonth"
                         onChange={handleChange}
