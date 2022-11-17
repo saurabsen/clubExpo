@@ -42,7 +42,7 @@ const UpcomingEvents = ({ upcomingEvents }) => {
     );
   });
 
-  formattedEvents = formattedEvents.filter(event => (event.eventDate > (new Date())));
+  formattedEvents = formattedEvents.filter(event => (event.eventDate >= (new Date())));
 
   let sortedEvents = [...formattedEvents].sort((a, b) => {
     return a.eventDate - b.eventDate;

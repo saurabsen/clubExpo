@@ -71,7 +71,9 @@ const Home = () => {
           registered: (updatedUser.eventsAttended.indexOf(event._id) !== -1 ? true : false),
           clubAdminView: false
         };
-        formattedEvents.push(eventObj);
+        if (dayStart >= new Date()) {
+          formattedEvents.push(eventObj);
+        }
       });
       setEvents(formattedEvents);
       setUpcomingEvs(formattedEvents);
