@@ -1,0 +1,17 @@
+.desktopSearchbar {
+  display: block;
+}
+
+.mobileSearchIcon {
+  display: none;
+}
+
+@media only screen and (max-width: 900px) {
+  .desktopSearchbar {
+    display: none;
+  }
+
+  .mobileSearchIcon {
+    display: unset;
+  }
+}
