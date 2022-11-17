@@ -9,7 +9,6 @@ import {
 } from './types';
 
 export const sendNotification = (notification) => {
-  debugger
   return async (dispatch) => {
     dispatch({
       type: SEND_NOTIFICATION
@@ -18,14 +17,14 @@ export const sendNotification = (notification) => {
     try {
       const token = JSON.parse(localStorage.getItem('userToken'));
 
-      console.log(notification);
-
       const sent = await axios.post(`notifications/`, notification, {
         headers: { Authorization: `Bearer ${token}` }
       });
 
       if (sent) {
-        const notifications = await axios.get(`notifications/`);
+        const notifications = await axios.get(`notifications/`, {
+          headers: { Authorization: `Bearer ${token}` }
+        });
 
         dispatch({
           type: SEND_NOTIFICATION_SUCCESS,
@@ -67,7 +66,7 @@ export const getNotifications = (userID) => {
 
       dispatch({
         type: GET_NOTIFICATION_SUCCESS,
-        payload: myNotifications
+        payload: myNotifications.reverse()
       });
 
       return notifications;

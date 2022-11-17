@@ -14,7 +14,6 @@ const Proposal = () => {
   const { proposalId } = useParams();
   const navigate = useNavigate();
 
-  const { sendNotification } = useActions();
   const { data } = useTypedSelector((state) => state.proposals);
   const { data: authData } = useTypedSelector((state) => state.auth);
 
@@ -23,7 +22,6 @@ const Proposal = () => {
       const proposal = data.filter((proposal) => proposal._id === proposalId);
 
       if (proposal[0]) {
-        console.log(proposal[0]);
         setProposal(proposal[0]);
       }
     }
@@ -43,17 +41,16 @@ const Proposal = () => {
       const data = await axios.put(`proposals/${newProposal._id}`, newProposal);
 
       if (data) {
-        console.log(data);
-        debugger;
+        setRejectModalOpen(false);
         const notification = {
           message: `Your club, ${proposal.clubName} was not approved by Hub Admin`,
           type: 'proposalRejected',
           from: authData ? authData._id : '',
           to: proposal.createdBy
         };
-        const sent = await sendNotification(notification);
-        setRejectModalOpen(false);
-        navigate('/admin-dashboard');
+        localStorage.removeItem('notification');
+        localStorage.setItem('notification', JSON.stringify(notification));
+        navigate('/club-requests');
         window.location.reload();
       } else {
         alert('Error');
@@ -99,6 +96,15 @@ const Proposal = () => {
 
   const closeApproveModal = () => {
     setApproveModalOpen(false);
+    const notification = {
+      message: `Your club ${proposal.clubName} has been approved and a new club is created on your behalf`,
+      type: 'newClub',
+      from: authData ? authData._id : '',
+      to: proposal.createdBy
+    };
+    localStorage.removeItem('notification');
+    localStorage.setItem('notification', JSON.stringify(notification));
+    navigate('/club-requests');
     window.location.reload();
   };
 
@@ -107,7 +113,7 @@ const Proposal = () => {
   };
 
   return (
-    <div style={{ padding: '1rem 0', maxWidth: '800px' }}>
+    <div style={{ padding: '1rem', maxWidth: '800px', margin: 'auto' }}>
       <h3>Club Proposal Details</h3>
       <br />
       {proposal ? (

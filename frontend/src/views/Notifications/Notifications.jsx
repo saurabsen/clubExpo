@@ -27,9 +27,9 @@ const Notifications = () => {
   };
 
   return (
-    <Box sx={{ padding: '2rem 4rem 0 0', margin: '0 2rem' }}>
+    <Box sx={{ padding: '2rem' }}>
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-        <h3 style={{ padding: '0 1rem' }}>Notifications</h3>
+        <h3>Notifications</h3>
         <p style={{ cursor: 'pointer' }} onClick={markAllAsRead}>
           Mark all as read
         </p>
@@ -38,16 +38,16 @@ const Notifications = () => {
         {notifications && typeof notifications === 'object' && notifications.length > 0
           ? notifications.map((notification) => {
               return (
-                <>
+                <div key={notification._id}>
                   <ListItem
                     button
-                    sx={{ color: notification.read ? 'grey' : 'black' }}
+                    sx={{ color: notification.read ? 'grey' : 'black', padding: '1rem 0' }}
                     onClick={() => openNotification(notification)}
                   >
                     <ListItemText primary={notification.message} />
                   </ListItem>
                   <Divider />
-                </>
+                </div>
               );
             })
           : null}

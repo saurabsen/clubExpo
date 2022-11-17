@@ -28,14 +28,18 @@ const Header = ({ userIsLoggedIn, handleSearch, handleLogoutUser }) => {
     handleLogoutUser();
   };
 
-  useEffect(() => {
-    if (data) {
-      getNotifications(data._id);
-    }
-  }, []);
+  // useEffect(() => {
+  //   if (data) {
+  //     getNotifications(data._id);
+  //   }
+  // }, []);
 
   useEffect(() => {
     setNewNotification(false);
+
+    if (data) {
+      getNotifications(data._id);
+    }
 
     if (typeof notifications === 'object') {
       notifications.map((notification) => {
