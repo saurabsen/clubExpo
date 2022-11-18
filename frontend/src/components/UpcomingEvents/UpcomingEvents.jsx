@@ -1,3 +1,4 @@
+import { Typography } from '@mui/material';
 import './upcomingevents.css';
 
 const UpcomingEvents = ({ upcomingEvents }) => {
@@ -42,7 +43,7 @@ const UpcomingEvents = ({ upcomingEvents }) => {
     );
   });
 
-  formattedEvents = formattedEvents.filter(event => (event.eventDate > (new Date())));
+  formattedEvents = formattedEvents.filter(event => (event.eventDate >= (new Date())));
 
   let sortedEvents = [...formattedEvents].sort((a, b) => {
     return a.eventDate - b.eventDate;
@@ -63,7 +64,9 @@ const UpcomingEvents = ({ upcomingEvents }) => {
   return (
     <div className="upcomingevents">
       <h4>Upcoming Events</h4>
-
+      {(sortedEvents.length ===0 ) ? (
+        <Typography sx={{fontFamily: 'Raleway, sans-serif', color: '#808780', fontWeight: '700'}}>No events to show</Typography>) : 
+      ''}
       {sortedEvents.map((event, i) => {
         const eventDate = event.eventDate;
 
