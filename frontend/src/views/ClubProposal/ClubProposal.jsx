@@ -319,7 +319,7 @@ export default function ClubProposal() {
             ) : (
               <>
                 <Card sx={{ textAlign: 'center', padding: '2rem 0' }} variant="outlined">
-                  <h4>Thank you for submitting the proposal!</h4>
+                  <h3>Thank you for submitting the proposal!</h3>
                   <br />
                   <p>You will get a notification once the proposal is approved.</p>
                   <br />

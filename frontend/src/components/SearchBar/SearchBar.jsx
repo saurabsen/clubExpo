@@ -31,7 +31,7 @@ const SearchBar = ({ handleSearch }) => {
         <Grid item>
           <img src={Search} alt="Search Icon" />
         </Grid>
-        <Grid item xs={11}>
+        <Grid item xs={8}>
           <TextField
             id="standard-search"
             placeholder="Search"
