@@ -57,3 +57,18 @@
   flex-flow: row;
   justify-content: space-around;
 }
+
+.base-title {
+  position: absolute;
+  color: white;
+  top: 40%;
+  left: 20%;
+  transform: translateX(-50%);
+}
+
+@media only screen and (max-width: 400px) {
+  .base-title {
+    top: 18%;
+    left: 45%;
+  }
+}

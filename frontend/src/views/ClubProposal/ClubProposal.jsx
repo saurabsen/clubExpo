@@ -94,6 +94,7 @@ export default function ClubProposal() {
         <Box sx={{ position: 'relative' }} className="card-img">
           <CardMedia component="img" height={{ xs: '194px', md: '462px' }} image={Base} />
           <div
+            className="base-title"
             style={{
               position: 'absolute',
               color: 'white',
@@ -153,7 +154,6 @@ export default function ClubProposal() {
                   </React.Fragment>
                 ) : (
                   <React.Fragment>
-                    <Typography sx={{ mt: 2, mb: 1 }}>Step {activeStep + 1}</Typography>
                     <h2>
                       Please answer a few questions for the admin to approve your club request
                     </h2>
