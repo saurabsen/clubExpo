@@ -8,7 +8,7 @@ import TabContext from '@mui/lab/TabContext';
 import TabList from '@mui/lab/TabList';
 import TabPanel from '@mui/lab/TabPanel';
 import Card from '@mui/material/Card';
-import { Typography } from '@mui/material';
+import {  Typography } from '@mui/material';
 import AboutClub from './AboutClub';
 import UpcomingEvents from './UpcomingEvents';
 import { useActions } from '../../hooks/useActions';
@@ -37,7 +37,7 @@ const Demo = styled('div')(({ theme }) => ({
 
 const ClubDetail = () => {
   const { getAllClubsData, getAllEventsData, getClubMembersData } = useActions();
-  const clubsDetailData = useTypedSelector((state) => state.clubs);
+  const {data: clubsDetailData } = useTypedSelector((state) => state.clubs);
   const clubEventsData = useTypedSelector((state) => state.events);
   const clubMembersData = useTypedSelector((state) => state.clubMember);
   const { data: userData } = useTypedSelector((state) => state.auth);
@@ -65,8 +65,8 @@ const ClubDetail = () => {
   }, []);
 
   useEffect(() => {
-    if (clubsDetailData.data.acceptedMembers !== undefined) {
-      getClubMembersData('', { userid: clubsDetailData.data.acceptedMembers });
+    if (clubsDetailData.acceptedMembers !== undefined) {
+      getClubMembersData('', { userid: clubsDetailData.acceptedMembers });
     }
   }, [clubsDetailData]);
 
@@ -112,7 +112,7 @@ const ClubDetail = () => {
   const deleteClubUser = async (memberid) => {
     const deleteClubMember = await axios.delete(`clubmembers/${memberid}/${id}`);
     getAllClubsData(id);
-    getClubMembersData('', { userid: clubsDetailData.data.acceptedMembers });
+    getClubMembersData('', { userid: clubsDetailData.acceptedMembers });
   };
 
   return (
@@ -120,15 +120,15 @@ const ClubDetail = () => {
       <Card sx={{ width: '100%', height: '500px', pb: 4 }}>
         <CardMedia
           component="img"
-          height="140"
-          image={clubsDetailData.data.coverImage}
+          height="80"
+          image={clubsDetailData.coverImage}
           alt="green iguana"
         />
       </Card>
       <Grid spacing={4} sx={{ pt: 4, pl: 4, pr: 4, pb: 4 }} container>
         <Grid item xs={12} md={8}>
           <Typography variant="h4" component="h4" sx={{ pb: 1 }}>
-            {clubsDetailData.data.name}
+            {clubsDetailData.name}
           </Typography>
         </Grid>
         <Grid item xs={12} md={4}>
@@ -138,7 +138,7 @@ const ClubDetail = () => {
               {userData !== null &&
               userData.userRole !== undefined &&
               userData.userRole.includes('member') &&
-              userData.id !== clubsDetailData.data.createdBy ? (
+              userData._id !== clubsDetailData.createdBy ? (
                 <Button style={{ width: '100%' }} variant="contained" onClick={joinClub}>
                   {clubStatus.status && !clubStatus.request
                     ? 'Joined'
@@ -160,19 +160,18 @@ const ClubDetail = () => {
       <Divider />
 
       <Grid spacing={4} sx={{ pt: 4, pl: 4, pr: 4 }} container>
-        
           {userData !== null &&
           clubsDetailData !== null &&
-          clubsDetailData.acceptedMembers !== undefined &&
           userData.userRole !== undefined &&
           userData.userRole.includes('member')  &&
-          !clubsDetailData.acceptedMembers.includes(userData.id) &&
-          userData.id !== clubsDetailData.data.createdBy ? (
+          clubsDetailData.acceptedMembers !== undefined &&
+          !clubsDetailData.acceptedMembers.includes(userData._id) &&
+          userData._id !== clubsDetailData.createdBy ? (
             <>
             <Grid item xs={12} md={8}>
               <Grid container>
                 <Grid item xs={12} md={12}>
-                  <AboutClub about={clubsDetailData.data.description} />
+                  <AboutClub about={clubsDetailData.description} />
                 </Grid>
                 <Grid sx={{ pt: 4 }} item xs={12} md={12}>
                   {events.length > 0 ? <UpcomingEvents events={events} /> : ''}
@@ -200,7 +199,7 @@ const ClubDetail = () => {
                           src="https://images.unsplash.com/photo-1518756131217-31eb79b20e8f"
                         />
                       </ListItemAvatar>
-                      <ListItemText primary={clubsDetailData.data.admins} />
+                      <ListItemText primary={clubsDetailData.admins} />
                     </ListItem>
                   </List>
                 </Grid>
@@ -209,8 +208,8 @@ const ClubDetail = () => {
                 userData.userRole !== undefined &&
                 clubsDetailData.acceptedMembers !== undefined &&
                 userData.userRole.includes('member')  &&
-                !clubsDetailData.acceptedMembers.includes(userData.id) &&
-                userData.id !== clubsDetailData.data.createdBy ? (
+                !clubsDetailData.acceptedMembers.includes(userData._id) &&
+                userData._id !== clubsDetailData.createdBy ? (
                   <Grid item xs={12} md={12}>
                     <Typography variant="h5" component="h5" sx={{ pb: 1 }}>
                       Members
@@ -249,10 +248,9 @@ const ClubDetail = () => {
               <TabContext value={value}>
                 <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
                   <TabList onChange={handleChange} aria-label="lab API tabs example">
-                    <Tab label="Events" value="1" />
-                    <Tab label="Members" value="2" />
-                    <Tab label="Badges" value="3" />
-                    <Tab label="About" value="4" />
+                    <Tab sx={{fontFamily: 'Oswald', fontSize: '18px'}} label="Events" value="1" />
+                    <Tab sx={{fontFamily: 'Oswald', fontSize: '18px'}} label="Members" value="2" />
+                    <Tab sx={{fontFamily: 'Oswald', fontSize: '18px'}} label="About" value="4" />
                     { userData !== null && userData.userRole !== undefined && userData.userRole.includes('clubAdmin') &&  (<Tab label="Reports" value="5" />) }
                   </TabList>
                 </Box>
@@ -261,7 +259,7 @@ const ClubDetail = () => {
                 </TabPanel>
                 <TabPanel value="2">
                   <Grid spacing={4} sx={{ pt: 2 }} container>
-                    <Grid item xs={12} md={6}>
+                    <Grid item xs={12} md={3}>
                       {   userData !== null &&
                           userData.userRole !== undefined &&
                           userData.userRole.includes('clubAdmin') && (<Typography variant="h6" component="h6" sx={{ pb: 1 }}>
@@ -274,14 +272,15 @@ const ClubDetail = () => {
                           userData.userRole !== undefined &&
                           userData.userRole.includes('clubAdmin') ? (clubMembersData.data.map((item) => (
                             <ListItem
+                              sx={{ border: '1px solid #E0E2E0'}}
                               secondaryAction={
                                 <IconButton onClick={() => deleteClubUser(item._id)}  edge="end" aria-label="delete">
                                   <DeleteIcon  />
                                 </IconButton>
                               }
                             >
-                              <ListItemAvatar>
-                                <Avatar alt={item.firstName} src={item.profileImage} />
+                              <ListItemAvatar sx={{pt:1, pb:1}}>
+                                <Avatar sx={{ border: '8px'}} alt={item.firstName} src={item.profileImage} />
                               </ListItemAvatar>
                               <ListItemText
                                 primary={item.firstName}
@@ -289,9 +288,9 @@ const ClubDetail = () => {
                               />
                             </ListItem>
                           ))) : (clubMembersData.data.map((item) => (
-                            <ListItem>
-                              <ListItemAvatar>
-                                <Avatar alt={item.firstName} src={item.profileImage} />
+                            <ListItem sx={{ border: '1px solid #E0E2E0'}}>
+                              <ListItemAvatar sx={{pt:1, pb:1}}>
+                                <Avatar sx={{ borderRadius: '8px'}} alt={item.firstName} src={item.profileImage} />
                               </ListItemAvatar>
                               <ListItemText
                                 primary={item.firstName}
@@ -311,11 +310,10 @@ const ClubDetail = () => {
                     </Grid>) }
                   </Grid>
                 </TabPanel>
-                <TabPanel value="3">Badges</TabPanel>
                 <TabPanel value="4">
                 <Grid spacing={4} sx={{ pt: 2 }} container>
                     <Grid item xs={12} md={8}>
-                      <AboutClub about={clubsDetailData.data.description} />
+                      <AboutClub about={clubsDetailData.description} />
                     </Grid>
                     <Grid item xs={12} md={4}>
                     <Typography variant="h5" component="h5" sx={{ pb: 1 }}>
@@ -336,7 +334,7 @@ const ClubDetail = () => {
                           src="https://images.unsplash.com/photo-1518756131217-31eb79b20e8f"
                         />
                       </ListItemAvatar>
-                      <ListItemText primary={clubsDetailData.data.admins} />
+                      <ListItemText primary={clubsDetailData.admins} />
                     </ListItem>
                   </List>
                     </Grid>
