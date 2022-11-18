@@ -182,17 +182,18 @@ const App = () => {
         </Routes>
       ) : (
         <Box sx={{ flexGrow: 1 }}>
-          <Box sx={{display: 'flex', flexFlow: 'row'}}>
+          <Box sx={{ display: 'flex', flexFlow: 'row' }}>
             {pathname.includes('/proposal') ||
+            pathname.includes('/submit-proposal') ||
             pathname.includes('/clubs/') ||
             pathname.includes('/events/') ? (
               ''
             ) : (
-              <Box sx={{display: {xs: 'none', md: 'block'}, flex: '0 0 231px'}}>
+              <Box sx={{ display: { xs: 'none', md: 'block' }, flex: '0 0 231px' }}>
                 <SideBar sidebardata={sideBarMenu} />
               </Box>
             )}
-            <Box sx={{flexGrow: '1'}}>
+            <Box sx={{ flexGrow: '1' }}>
               <Routes>
                 <Route exact path="/" element={<Home />} />
                 <Route path="/home" element={<Home />} />
