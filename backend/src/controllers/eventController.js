@@ -104,7 +104,10 @@ const getMultipleEventsFromClubs = asyncHandler(async (req, res) => {
     $or: clubFilters
   };
 
-  const events = await Event.find(filterObject);
+  let events = await Event.find(filterObject);
+  events.sort((a, b) => {
+    return b.startDate - a.startDate;
+  });
 
   res.status(200).json(events);
 })
