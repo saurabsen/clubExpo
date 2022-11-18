@@ -13,13 +13,15 @@ import {
   ADD_EVENT_TO_USER_MODEL_ERROR,
   REMOVE_EVENT_FROM_USER_MODEL,
   REMOVE_EVENT_FROM_USER_MODEL_SUCCESS,
-  REMOVE_EVENT_FROM_USER_MODEL_ERROR,
+  REMOVE_EVENT_FROM_USER_MODEL_ERROR
 } from './types';
+
+const user = JSON.parse(localStorage.getItem('user'));
 
 const initialState = {
   loading: false,
   error: null,
-  data: []
+  data: user ? user : null
 };
 
 const authReducer = (state = initialState, action) => {
