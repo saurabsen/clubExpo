@@ -3,7 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { ProposalDetailCard } from '../../components';
 import { Button, Modal, Box } from '@mui/material';
-// import { useActions } from '../../hooks/useActions';
+import { useActions } from '../../hooks/useActions';
 import { useTypedSelector } from '../../hooks/useTypedSelector';
 
 const Proposal = () => {
@@ -15,13 +15,13 @@ const Proposal = () => {
   const navigate = useNavigate();
 
   const { data } = useTypedSelector((state) => state.proposals);
+  const { data: authData } = useTypedSelector((state) => state.auth);
 
   useEffect(() => {
     if (data) {
       const proposal = data.filter((proposal) => proposal._id === proposalId);
 
       if (proposal[0]) {
-        console.log(proposal[0]);
         setProposal(proposal[0]);
       }
     }
@@ -42,7 +42,15 @@ const Proposal = () => {
 
       if (data) {
         setRejectModalOpen(false);
-        navigate('/admin-dashboard');
+        const notification = {
+          message: `Your club, ${proposal.clubName} was not approved by Hub Admin`,
+          type: 'proposalRejected',
+          from: authData ? authData._id : '',
+          to: proposal.createdBy
+        };
+        localStorage.removeItem('notification');
+        localStorage.setItem('notification', JSON.stringify(notification));
+        navigate('/club-requests');
         window.location.reload();
       } else {
         alert('Error');
@@ -88,6 +96,15 @@ const Proposal = () => {
 
   const closeApproveModal = () => {
     setApproveModalOpen(false);
+    const notification = {
+      message: `Your club ${proposal.clubName} has been approved and a new club is created on your behalf`,
+      type: 'newClub',
+      from: authData ? authData._id : '',
+      to: proposal.createdBy
+    };
+    localStorage.removeItem('notification');
+    localStorage.setItem('notification', JSON.stringify(notification));
+    navigate('/club-requests');
     window.location.reload();
   };
 
@@ -96,7 +113,7 @@ const Proposal = () => {
   };
 
   return (
-    <div style={{ padding: '1rem 0', maxWidth: '800px' }}>
+    <div style={{ padding: '1rem', maxWidth: '800px', margin: 'auto' }}>
       <h3>Club Proposal Details</h3>
       <br />
       {proposal ? (
