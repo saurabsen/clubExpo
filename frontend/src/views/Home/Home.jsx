@@ -4,6 +4,7 @@ import { Typography, Grid, Box, Button } from '@mui/material';
 import axios from 'axios';
 import { useState, useEffect } from 'react';
 import { useTypedSelector } from '../../hooks/useTypedSelector';
+import { useNavigate } from 'react-router-dom';
 
 const Home = () => {
   const [events, setEvents] = useState([]);
@@ -11,6 +12,7 @@ const Home = () => {
   const [clubList, setClubList] = useState([]);
   const { data: userData } = useTypedSelector((state) => state.auth);
   const [feedView, setFeedView] = useState(true);
+  const navigate = useNavigate();
   
   const getEvents = async () => {
     const data = JSON.stringify({
@@ -83,6 +85,7 @@ const Home = () => {
 
   useEffect(() => {
     initComponent();
+    console.log(events.length);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -107,6 +110,30 @@ const Home = () => {
         registered={event.registered}
         clubAdminView={event.clubAdminView}
       />
+    );
+  };
+
+  const renderNoEvents = () => {
+    return (
+      <>
+        <Box sx={{textAlign: 'center'}}>
+          <br/>
+          <Typography sx={{color: '#808780', fontFamily: 'Raleway, sans-serif'}}>
+            Looks like you haven't joined any clubs. Try joining clubs <br/>
+            to see events happening.
+          </Typography>
+          <br/>
+          <Button variant='contained' onClick={() => {navigate('/discover-clubs');}} 
+          sx={{
+            fontSize: '16px', 
+            px: '40px', 
+            py: '16px', 
+            borderRadius: '8px',
+            boxShadow: 'unset'}}>
+            Discover clubs
+          </Button>
+        </Box>
+      </>
     );
   };
 
@@ -141,7 +168,9 @@ const Home = () => {
       <Grid container xs={12} columnSpacing={{ xs: 3 }} sx={{pl: '24px'}}>
         <Grid item xs={12} lg={9} sx={{ mt: 4 }}>
           <Typography sx={styleLatestEvents}>Latest Events</Typography>
-          {(feedView) ? events.map((event) => renderEventCards(event)) : <UpcomingEvents upcomingEvents={upcomingEvs} />}
+          {(feedView) ? 
+            ( (events.length !== 0) ? events.map((event) => renderEventCards(event)) : renderNoEvents() ) : 
+            <UpcomingEvents upcomingEvents={upcomingEvs} />}
         </Grid>
         <Grid item xs={0} lg={3} sx={{ mt: 4, display: {xs: 'none', lg: 'block'} }}>
           <UpcomingEvents upcomingEvents={upcomingEvs} />
