@@ -48,7 +48,7 @@ const Profile = () => {
 
   useEffect(() => {
     getClubs();
-  },[]);
+  }, []);
 
   const getClubs = async () => {
     // eslint-disable-next-line react-hooks/rules-of-hooks
@@ -62,7 +62,7 @@ const Profile = () => {
   };
 
   return (
-    <Box sx={{ width: '1400px', padding: '2rem 0' }}>
+    <Box sx={{ maxWidth: '100%', padding: '2rem' }}>
       <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
         <Tabs value={value} onChange={handleChange} aria-label="profile tabs">
           <Tab label="About" {...a11yProps(0)} />

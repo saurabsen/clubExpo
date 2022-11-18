@@ -24,7 +24,7 @@ export default function ClubProposal() {
   const [skipped, setSkipped] = React.useState(new Set());
   const [proposalCreationComplete, setProposalCreationComplete] = React.useState(false);
 
-  const { submitProposal } = useActions();
+  const { submitProposal, sendNotification } = useActions();
   const { data } = useTypedSelector((state) => state.auth);
 
   const [formValue, setFormValue] = React.useState({
@@ -78,8 +78,15 @@ export default function ClubProposal() {
 
   const handleFromData = async (e) => {
     e.preventDefault();
-    const data = await submitProposal(formValue);
-    if (data) {
+    const submitted = await submitProposal(formValue);
+    if (submitted) {
+      const notification = {
+        message: `Club proposal request from ${data.firstName} ${data.lastName}`,
+        type: 'newProposal',
+        from: data ? data._id : '',
+        to: '636f40dc6edb298fb1bca49f' // Hub Admin ID
+      };
+      const sent = await sendNotification(notification);
       setProposalCreationComplete(true);
     }
   };
@@ -199,6 +206,7 @@ export default function ClubProposal() {
                     <div className="input-group">
                       <p>How many events will this club organize per month?</p>
                       <TextField
+                        placeholder="2"
                         fullWidth
                         name="noOfEventsMonth"
                         onChange={handleChange}
