@@ -20,7 +20,8 @@ import {
   Proposal,
   Profile,
   ClubPage,
-  CreateEvent
+  CreateEvent,
+  Notifications
 } from './views';
 import {
   HomeIcon,
@@ -251,6 +252,7 @@ const App = () => {
                   ''
                 )}
                 <Route path="/profile" element={<Profile />} />
+                <Route path="/notifications" element={<Notifications />} />
               </Routes>
             </Box>
           </Box>

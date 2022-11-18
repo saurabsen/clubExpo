@@ -14,7 +14,7 @@ import {
   ADD_EVENT_TO_USER_MODEL_ERROR,
   REMOVE_EVENT_FROM_USER_MODEL,
   REMOVE_EVENT_FROM_USER_MODEL_SUCCESS,
-  REMOVE_EVENT_FROM_USER_MODEL_ERROR,
+  REMOVE_EVENT_FROM_USER_MODEL_ERROR
 } from './types';
 
 export const loginUser = (credentials) => {
@@ -31,6 +31,10 @@ export const loginUser = (credentials) => {
       axios.defaults.headers['Authorization'] = `Bearer ${data.data.token}`;
       // store user data object in localStorage
       const user = await axios.get(`users/me`);
+
+      if (user) {
+        localStorage.setItem('user', JSON.stringify(user.data));
+      }
 
       dispatch({
         type: GET_LOGIN_DATA_SUCCESS,
@@ -55,6 +59,10 @@ export const getUser = () => {
     try {
       const data = await axios.get(`users/me`);
 
+      if (data) {
+        localStorage.setItem('user', JSON.stringify(data.data));
+      }
+
       dispatch({
         type: GET_FETCH_USER_DATA_SUCCESS,
         payload: data.data
@@ -78,7 +86,7 @@ export const addEventToUserModel = (userId, eventId) => {
     try {
       await axios.post(`users/${userId}/attend/${eventId}`);
       const data = await axios.get(`users/me`);
-      
+
       dispatch({
         type: ADD_EVENT_TO_USER_MODEL_SUCCESS,
         payload: data.data
@@ -102,7 +110,7 @@ export const removeEventFromUserModel = (userId, eventId) => {
     try {
       await axios.post(`users/${userId}/unattend/${eventId}`);
       const data = await axios.get(`users/me`);
-      
+
       dispatch({
         type: REMOVE_EVENT_FROM_USER_MODEL_SUCCESS,
         payload: data.data
