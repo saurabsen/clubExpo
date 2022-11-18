@@ -40,6 +40,7 @@ app.use('/api/proposals', require('./src/routes/proposalRoutes'));
 app.use('/api/events', require('./src/routes/eventRoutes'));
 app.use("/api/search", require("./src/routes/searchRoutes"));
 app.use('/api/clubmembers', require('./src/routes/clubMembersRoutes'));
+app.use('/api/notifications', require('./src/routes/notificationRoutes'));
 
 app.use(errorHandler);
 

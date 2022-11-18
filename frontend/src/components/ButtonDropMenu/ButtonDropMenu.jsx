@@ -55,7 +55,6 @@ export default function CustomizedMenus(props) {
   };
   const handleClose = () => {
     setAnchorEl(null);
-    navigate(`/events/${props.eventId}`);
   };
 
   const dropMenuStyling = {
@@ -82,10 +81,10 @@ export default function CustomizedMenus(props) {
         open={open}
         onClose={handleClose}
       >
-        <MenuItem onClick={handleClose} disableRipple sx={dropMenuStyling}>
+        <MenuItem onClick={() => {handleClose(); navigate(`/events/${props.eventId}`);}} disableRipple sx={dropMenuStyling}>
           Registered
         </MenuItem>
-        <MenuItem onClick={handleClose} disableRipple sx={dropMenuStyling}>
+        <MenuItem onClick={() => {handleClose(); navigate(`/events/${props.eventId}`);}} disableRipple sx={dropMenuStyling}>
           Not Interested
         </MenuItem>
       </StyledMenu>
