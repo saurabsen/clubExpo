@@ -51,6 +51,7 @@ import LogoRectangle from './Logo/logo-rectangle.svg';
 import LoginGirl from './Images/LoginGirl.png';
 import profileCover from './Images/profileCover.png';
 // import LoginGirl from './Images/ivana-cajina-7JWXbeBB4gY-unsplash.jpg';
+import Base from './Images/Base.png';
 
 export {
   AddMember,
@@ -98,5 +99,6 @@ export {
   profileCover,
   instagram,
   twitter,
-  email
+  email,
+  Base
 };

@@ -4,6 +4,8 @@ import { Typography, Grid, Box, Button } from '@mui/material';
 import axios from 'axios';
 import { useState, useEffect } from 'react';
 import { useTypedSelector } from '../../hooks/useTypedSelector';
+import Calendar from '../../components/Calendar/Calendar';
+import Card from '@mui/material/Card';
 import { useNavigate } from 'react-router-dom';
 
 const Home = () => {
@@ -15,16 +17,15 @@ const Home = () => {
   const navigate = useNavigate();
   
   const getEvents = async () => {
-    const data = JSON.stringify({
-      clubIds: userData.clubsJoined
-    });
     const config = {
       method: 'post',
       url: 'events/latestfromclubs',
       headers: {
         'Content-Type': 'application/json',
       },
-      data: data
+      data: {
+        clubIds: userData.clubsJoined
+      }
     };
     const res = await axios(config);
     return res.data;
@@ -172,8 +173,9 @@ const Home = () => {
             ( (events.length !== 0) ? events.map((event) => renderEventCards(event)) : renderNoEvents() ) : 
             <UpcomingEvents upcomingEvents={upcomingEvs} />}
         </Grid>
-        <Grid item xs={0} lg={3} sx={{ mt: 4, display: {xs: 'none', lg: 'block'} }}>
+        <Grid item xs={12} lg={2} sx={{ mt: 4, display: {xs: 'none', lg: 'block'} }}>
           <UpcomingEvents upcomingEvents={upcomingEvs} />
+            <Calendar />
         </Grid>
       </Grid>
     </>

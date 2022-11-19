@@ -108,6 +108,20 @@ const getClubByUser = asyncHandler(async (req, res) => {
   }
 });
 
+const getClubByAdmin = asyncHandler(async (req, res) => {
+  const { id } = req.params;
+  console.log(req.params);
+
+  const club = await Club.find({ createdBy: id });
+
+  if (club) {
+    res.status(200).json(club);
+  } else {
+    res.status(400);
+    throw new Error('Club not found');
+  }
+});
+
 // @desc Update Club
 // @route PUT /api/clubs/:id
 // @access Private
@@ -160,6 +174,7 @@ module.exports = {
   getClubByMember,
   getClubs,
   getClub,
+  getClubByAdmin,
   getClubByUser,
   updateClub,
   deleteClub,
