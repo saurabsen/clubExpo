@@ -1,6 +1,8 @@
 const asyncHandler = require("express-async-handler");
-
+let ObjectId = require("mongoose").Types.ObjectId;
 const Club = require("../models/clubModel");
+const coverImg = require("../assets/index");
+const defLogo = require("../assets/index");
 
 // @desc Create Club
 // @route GET /api/clubs
@@ -16,8 +18,8 @@ const createClub = asyncHandler(async (req, res) => {
   //create club
   const club = await Club.create({
     name,
-    logoImage: "",
-    coverImage: "",
+    logoImage: defLogo.defLogo,
+    coverImage: coverImg.coverImg,
     description,
     createdBy,
     admins,
@@ -28,6 +30,8 @@ const createClub = asyncHandler(async (req, res) => {
     status: "",
     tags: "",
   });
+
+  console.log(club, "clubs");
 
   if (club) {
     res.status(201).json({
@@ -52,6 +56,15 @@ const getClubs = asyncHandler(async (req, res) => {
 // @desc Get Club
 // @route GET /api/clubs/:id
 // @access Private
+
+const getClubByMember = async (req, res) => {
+  const { userid } = req.params;
+  const clubByMember = await Club.find({
+    acceptedMembers: { $in: userid },
+  });
+  res.status(200).json(clubByMember);
+};
+
 const getClub = asyncHandler(async (req, res) => {
   const { id } = req.params;
 
@@ -92,6 +105,20 @@ const getClubByUser = asyncHandler(async (req, res) => {
   } else {
     res.status(400);
     throw new Error("Club not found");
+  }
+});
+
+const getClubByAdmin = asyncHandler(async (req, res) => {
+  const { id } = req.params;
+  console.log(req.params);
+
+  const club = await Club.find({ createdBy: id });
+
+  if (club) {
+    res.status(200).json(club);
+  } else {
+    res.status(400);
+    throw new Error('Club not found');
   }
 });
 
@@ -144,8 +171,10 @@ const deleteClub = asyncHandler(async (req, res) => {
 
 module.exports = {
   createClub,
+  getClubByMember,
   getClubs,
   getClub,
+  getClubByAdmin,
   getClubByUser,
   updateClub,
   deleteClub,

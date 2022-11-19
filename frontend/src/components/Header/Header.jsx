@@ -1,13 +1,21 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Box, Avatar, Menu, MenuItem } from '@mui/material';
 import SearchBar from '../SearchBar/SearchBar';
-import { LogoRectangle, NotificationsOff, NotificationsOn } from '../../assets';
+import { LogoRectangle, NotificationsOff, NotificationsOn, Search } from '../../assets';
 import './header.css';
+import { useActions } from '../../hooks/useActions';
+import { useTypedSelector } from '../../hooks/useTypedSelector';
 
 const Header = ({ userIsLoggedIn, handleSearch, handleLogoutUser }) => {
   const [newNotification, setNewNotification] = useState(false);
   const [showProfileModal, setShowProfileModal] = useState(null);
+
+  const { getNotifications } = useActions();
+  const { data } = useTypedSelector((state) => state.auth);
+  const { notifications } = useTypedSelector((state) => state.notifications);
+  const userData = JSON.parse(localStorage.getItem('user'));
 
   const handleShowProfileModal = (e) => {
     setShowProfileModal(e.currentTarget);
@@ -23,10 +31,23 @@ const Header = ({ userIsLoggedIn, handleSearch, handleLogoutUser }) => {
   };
 
   useEffect(() => {
-    setNewNotification(newNotification);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+    setNewNotification(false);
 
+    if (data) {
+      getNotifications(data._id);
+    }
+
+    if (typeof notifications === 'object') {
+      // eslint-disable-next-line array-callback-return
+      notifications.map((notification) => {
+        if (!notification.read) {
+          setNewNotification(true);
+          // eslint-disable-next-line array-callback-return
+          return;
+        }
+      });
+    }
+  }, [notifications]);
   return (
     <>
       {!userIsLoggedIn ? (
@@ -54,22 +75,41 @@ const Header = ({ userIsLoggedIn, handleSearch, handleLogoutUser }) => {
             zIndex: 999,
             backgroundColor: '#fff',
             display: 'flex',
+            justifyContent: 'space-between',
             alignItems: 'center',
             gap: '6rem'
           }}
         >
-          <img src={LogoRectangle} style={{ width: '130px' }} alt="Clubspace Logo" />
-          <SearchBar handleSearch={handleSearch} />
+          <Box
+            sx={{
+              width: '100%',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '6rem'
+            }}
+          >
+            <Link to="/home">
+              <img src={LogoRectangle} style={{ width: '130px' }} alt="Clubspace Logo" />
+            </Link>
+            <Box className="desktopSearchbar" sx={{ width: '100%' }}>
+              <SearchBar handleSearch={handleSearch} />
+            </Box>
+          </Box>
           <Box
             sx={{
               display: 'flex',
               alignItems: 'center',
-              gap: '4rem'
+              gap: '2rem'
             }}
           >
+            <Box className="mobileSearchIcon">
+              <Link>
+                <img src={Search} style={{ width: '26px' }} alt="Search Icon" />
+              </Link>
+            </Box>
             <Box>
               {!newNotification ? (
-                <Link to="/notification">
+                <Link to="/notifications">
                   <img
                     src={NotificationsOff}
                     style={{ width: '24px' }}
@@ -77,7 +117,7 @@ const Header = ({ userIsLoggedIn, handleSearch, handleLogoutUser }) => {
                   />
                 </Link>
               ) : (
-                <Link to="/notification">
+                <Link to="/notifications">
                   <img src={NotificationsOn} style={{ width: '24px' }} alt="Notification Bell On" />
                 </Link>
               )}
@@ -86,7 +126,7 @@ const Header = ({ userIsLoggedIn, handleSearch, handleLogoutUser }) => {
               <Avatar
                 id="profile-icon"
                 alt="User profile image"
-                src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=988&q=80"
+                src={userData.profileImage}
                 sx={{ cursor: 'pointer' }}
                 onClick={handleShowProfileModal}
               ></Avatar>

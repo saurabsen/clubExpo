@@ -8,7 +8,13 @@ import {
   GET_FETCH_USER_DATA_ERROR,
   LOGOUT_USER,
   GET_LOGOUT_DATA_SUCCESS,
-  GET_LOGOUT_DATA_ERROR
+  GET_LOGOUT_DATA_ERROR,
+  ADD_EVENT_TO_USER_MODEL,
+  ADD_EVENT_TO_USER_MODEL_SUCCESS,
+  ADD_EVENT_TO_USER_MODEL_ERROR,
+  REMOVE_EVENT_FROM_USER_MODEL,
+  REMOVE_EVENT_FROM_USER_MODEL_SUCCESS,
+  REMOVE_EVENT_FROM_USER_MODEL_ERROR
 } from './types';
 
 export const loginUser = (credentials) => {
@@ -65,6 +71,81 @@ export const getUser = () => {
     } catch (error) {
       dispatch({
         type: GET_FETCH_USER_DATA_ERROR,
+        payload: error.message
+      });
+    }
+  };
+};
+
+export const updateUser = () => {
+  return async (dispatch) => {
+    dispatch({
+      type: FETCH_USER
+    });
+
+    try {
+      const data = await axios.get(`users/me`);
+
+      if (data) {
+        localStorage.setItem('user', JSON.stringify(data.data));
+      }
+
+      dispatch({
+        type: GET_FETCH_USER_DATA_SUCCESS,
+        payload: data.data
+      });
+      return data;
+    } catch (error) {
+      dispatch({
+        type: GET_FETCH_USER_DATA_ERROR,
+        payload: error.message
+      });
+    }
+  };
+};
+
+export const addEventToUserModel = (userId, eventId) => {
+  return async (dispatch) => {
+    dispatch({
+      type: ADD_EVENT_TO_USER_MODEL
+    });
+
+    try {
+      await axios.post(`users/${userId}/attend/${eventId}`);
+      const data = await axios.get(`users/me`);
+
+      dispatch({
+        type: ADD_EVENT_TO_USER_MODEL_SUCCESS,
+        payload: data.data
+      });
+      return data;
+    } catch (error) {
+      dispatch({
+        type: ADD_EVENT_TO_USER_MODEL_ERROR,
+        payload: error.message
+      });
+    }
+  };
+};
+
+export const removeEventFromUserModel = (userId, eventId) => {
+  return async (dispatch) => {
+    dispatch({
+      type: REMOVE_EVENT_FROM_USER_MODEL
+    });
+
+    try {
+      await axios.post(`users/${userId}/unattend/${eventId}`);
+      const data = await axios.get(`users/me`);
+
+      dispatch({
+        type: REMOVE_EVENT_FROM_USER_MODEL_SUCCESS,
+        payload: data.data
+      });
+      return data;
+    } catch (error) {
+      dispatch({
+        type: REMOVE_EVENT_FROM_USER_MODEL_ERROR,
         payload: error.message
       });
     }

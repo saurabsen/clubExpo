@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import './clubrequests.css';
@@ -19,17 +20,22 @@ const ClubRequests = () => {
   const [allProposals, setAllProposals] = useState([]);
   const navigate = useNavigate();
 
-  const { getProposalByStatus } = useActions();
+  const { getProposalByStatus, sendNotification } = useActions();
   const { data } = useTypedSelector((state) => state.proposals);
 
   useEffect(() => {
     getProposalByStatus();
     // eslint-disable-next-line react-hooks/exhaustive-deps
+
+    let notificationToBeSent = localStorage.getItem('notification');
+    notificationToBeSent = JSON.parse(notificationToBeSent);
+    sendNotification(notificationToBeSent);
+    localStorage.removeItem('notification');
   }, []);
 
   useEffect(() => {
     if (data) {
-      setAllProposals(data);
+      setAllProposals(data.reverse());
     }
   }, [data]);
 
@@ -41,11 +47,11 @@ const ClubRequests = () => {
   };
 
   return (
-    <div style={{ padding: '2rem 0' }}>
+    <div style={{ padding: '2rem' }}>
       <h3>Club Requests</h3>
       <br />
-      <TableContainer component={Paper} sx={{ maxWidth: 'fit-content' }}>
-        <Table sx={{ minWidth: 650 }} size="medium" aria-label="a dense table">
+      <TableContainer component={Paper} sx={{ maxWidth: '100%' }}>
+        <Table sx={{ padding: '1rem' }} size="medium" aria-label="a dense table">
           <TableHead className="table-head">
             <TableRow>
               <TableCell align="center">Clubname</TableCell>
@@ -108,7 +114,7 @@ const ClubRequests = () => {
                     variant="contained"
                     onClick={() => viewProposal(row._id)}
                   >
-                    View Details
+                    View Request
                   </Button>
                 </TableCell>
               </TableRow>
