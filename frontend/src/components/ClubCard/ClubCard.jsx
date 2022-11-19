@@ -9,7 +9,7 @@ import { Link } from 'react-router-dom';
 const ClubCard = (props) => {
   let {clubImage, clubName, clubNumMembers, clubId} = props;
   return (
-    <Card sx={{ maxWidth: 345 }}>
+    <Card sx={{ maxWidth: '100%', mb:2 }}>
       <CardMedia
         component="img"
         height="50"
@@ -25,7 +25,7 @@ const ClubCard = (props) => {
         </Link>
       </CardContent>
       <CardActions>
-        <Typography gutterBottom component="div" sx={{pl:1}}>
+        <Typography gutterBottom component="div" sx={{pl:1, color: '#676F66', fontWeight: 500, fontSize: '16px'}}>
           {clubNumMembers} {clubNumMembers !== 1 ? "members" : "member"}
         </Typography>
       </CardActions>
