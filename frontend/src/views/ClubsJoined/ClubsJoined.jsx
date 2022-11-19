@@ -7,11 +7,14 @@ import { useTypedSelector } from '../../hooks/useTypedSelector';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import ClubCard from '../../components/ClubCard/ClubCard';
+import { useNavigate } from 'react-router-dom';
 
 const ClubsJoined = () => {
   const { getAllClubsData } = useActions();
   const clubsJoinedData = useTypedSelector((state) => state.clubs);
   const {data:userData} = useTypedSelector((state) => state.auth);
+  const navigate = useNavigate();
+
   useEffect(() => {
     if(userData!== null && Object.keys(userData).length > 0)
     getAllClubsData(`members/${userData._id}`);
@@ -40,14 +43,25 @@ const ClubsJoined = () => {
                 </Grid>
               ) )
             ) : !clubsJoinedData.loading ?  (
-              <Grid item xs={12} style={{display: "flex", justifyContent: "center"}}>
-                <Typography gutterBottom component="div" sx={{color: '#676F66', fontWeight: 500, fontSize: '16px'}}>
-                  {'Looks like you haven’t joined any clubs. Try joining clubs from discover clubs section.'}
-                </Typography>
-                <Button variant="contained">
-                    {'Discover Clubs'}
-                </Button>
-              </Grid>
+              <Grid item xs={12} md={12}>
+              <Box sx={{textAlign: 'center'}}>
+              <br/>
+              <Typography sx={{color: '#808780', fontFamily: 'Raleway, sans-serif'}}>
+                Looks like you haven't joined any clubs. Try joining clubs <br/>
+                to see events happening.
+              </Typography>
+              <br/>
+              <Button variant='contained' onClick={() => {navigate('/discover-clubs');}} 
+              sx={{
+                fontSize: '16px', 
+                px: '40px', 
+                py: '16px', 
+                borderRadius: '8px',
+                boxShadow: 'unset'}}>
+                Discover clubs
+              </Button>
+            </Box>
+            </Grid>
             ) : ('')}
         </Grid>
       </Box>
