@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Box, Avatar, Menu, MenuItem } from '@mui/material';
@@ -37,9 +38,11 @@ const Header = ({ userIsLoggedIn, handleSearch, handleLogoutUser }) => {
     }
 
     if (typeof notifications === 'object') {
+      // eslint-disable-next-line array-callback-return
       notifications.map((notification) => {
         if (!notification.read) {
           setNewNotification(true);
+          // eslint-disable-next-line array-callback-return
           return;
         }
       });
