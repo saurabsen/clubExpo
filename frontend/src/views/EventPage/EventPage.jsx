@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import './EventPage.css';
@@ -16,9 +17,15 @@ const EventPage = (props) => {
   const [userInfo, setUserInfo] = useState();
   const [mainButton, setMainButton] = useState();
   const { data: userData } = useTypedSelector((state) => state.auth);
-  const { getUser, addUserToEventModel, removeUserFromEventModel, addEventToUserModel, removeEventFromUserModel } = useActions();
+  const {
+    getUser,
+    addUserToEventModel,
+    removeUserFromEventModel,
+    addEventToUserModel,
+    removeEventFromUserModel
+  } = useActions();
 
-  console.log("userData", userData);
+  console.log('userData', userData);
   // getUser();
 
   const navigate = useNavigate();
@@ -26,7 +33,7 @@ const EventPage = (props) => {
   const getEvent = async (eventId) => {
     const config = {
       method: 'get',
-      url: `events/${eventId}`,
+      url: `events/${eventId}`
     };
     const res = await axios(config);
     return res.data;
@@ -35,7 +42,7 @@ const EventPage = (props) => {
   const getClubs = async () => {
     const config = {
       method: 'get',
-      url: 'clubs/',
+      url: 'clubs/'
     };
     const res = await axios(config);
     return res.data;
@@ -120,7 +127,7 @@ const EventPage = (props) => {
     console.log('*** initEvent completed');
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-      
+
   useEffect(() => {
     if (userData) {
       setMainButton(selectButton());
@@ -138,18 +145,21 @@ const EventPage = (props) => {
     if (clubInfo) {
       updateAdminInfo();
       // (async () => {updateAdminInfo();})();
-    };
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [clubInfo]);
 
   const renderEventLinks = () => {
     return (
-      <Box className="eventpage-buttons" sx={{
-        display: 'flex',
-        flexFlow: 'row',
-        gap: '20px'
-      }}>
-        <Button variant="outlined" sx={{width: '100px'}}>
+      <Box
+        className="eventpage-buttons"
+        sx={{
+          display: 'flex',
+          flexFlow: 'row',
+          gap: '20px'
+        }}
+      >
+        <Button variant="outlined" sx={{ width: '100px' }}>
           <Share />
         </Button>
         {mainButton ? mainButton : null}
@@ -159,22 +169,31 @@ const EventPage = (props) => {
 
   const renderEventDetails = () => {
     return (
-      <Box sx={{
-        mb: '40px',
-      }}>
+      <Box
+        sx={{
+          mb: '40px'
+        }}
+      >
         <div>
           <h4 className="event-name">{event.name}</h4>
         </div>
         <div className="eventscard-main">
-          <Typography sx={{
-            fontColor: '#666666',
-          }}>{event.desc}</Typography>
+          <Typography
+            sx={{
+              fontColor: '#666666'
+            }}
+          >
+            {event.desc}
+          </Typography>
         </div>
-        <Box className="eventscard-footer" sx={{
-          display: 'flex',
-          flexFlow: 'column',
-          gap: '24px'
-        }}>
+        <Box
+          className="eventscard-footer"
+          sx={{
+            display: 'flex',
+            flexFlow: 'column',
+            gap: '24px'
+          }}
+        >
           <div className="eventpage-footer-line">
             <p>
               <span>
@@ -203,8 +222,8 @@ const EventPage = (props) => {
               {event.price ?? 'FREE'}
             </p>
           </div>
-          <Box sx={{display: 'flex', flexFlow: 'column', gap: '16px'}}>
-            <Box sx={{display: {xs: 'none', md: 'inline'}}}>
+          <Box sx={{ display: 'flex', flexFlow: 'column', gap: '16px' }}>
+            <Box sx={{ display: { xs: 'none', md: 'inline' } }}>
               <h4>About Event</h4>
             </Box>
             <p>{event.description ?? ''}</p>
@@ -223,24 +242,30 @@ const EventPage = (props) => {
 
     return (
       <Link to={`/clubs/${clubInfo._id}`}>
-        <Box className="event-club-info" sx={{
-          mb: '24px'
-        }}>
-          <Card sx={{p: '24px',
-            borderRadius: '8px',
-            boxShadow: 'unset',
-            border: {xs: 'solid 1px #E0E2E0', md: 'solid 1px #F3EFFB'},
-            backgroundColor: {md: '#F3EFFB'},
-            display: 'flex',
-            flexFlow: 'row',
-            justifyContent: 'flex-start',
-            alignItems: 'center',
-            gap: '16px'
-          }}>
-            <Box sx={{maxWidth: 'fit-content', padding: '0'}}>
+        <Box
+          className="event-club-info"
+          sx={{
+            mb: '24px'
+          }}
+        >
+          <Card
+            sx={{
+              p: '24px',
+              borderRadius: '8px',
+              boxShadow: 'unset',
+              border: { xs: 'solid 1px #E0E2E0', md: 'solid 1px #F3EFFB' },
+              backgroundColor: { md: '#F3EFFB' },
+              display: 'flex',
+              flexFlow: 'row',
+              justifyContent: 'flex-start',
+              alignItems: 'center',
+              gap: '16px'
+            }}
+          >
+            <Box sx={{ maxWidth: 'fit-content', padding: '0' }}>
               <Box className="club-admin-img" sx={styleClubAdminImg}></Box>
             </Box>
-            <Box sx={{display: 'flex', flexFlow: 'column', gap: '8px'}}>
+            <Box sx={{ display: 'flex', flexFlow: 'column', gap: '8px' }}>
               <h5>{adminInfo.firstName + ' ' + adminInfo.lastName}</h5>
               <h6>{clubInfo.name}</h6>
             </Box>
@@ -254,7 +279,7 @@ const EventPage = (props) => {
     return (
       <Box className="event-comments">
         <div>
-          <Box sx={{display: {xs: 'none', md: 'block'}, mb: '16px'}}>
+          <Box sx={{ display: { xs: 'none', md: 'block' }, mb: '16px' }}>
             <h4>Write Comments</h4>
           </Box>
           <TextField
@@ -283,44 +308,58 @@ const EventPage = (props) => {
   const renderEventContainer = () => {
     return (
       <>
-        <Grid container className="event-container" 
-          direction='row'
-          xs={12} 
+        <Grid
+          container
+          className="event-container"
+          direction="row"
+          xs={12}
           sx={{
-            p: '20px',
-        }}>
-          <Grid item className="event-details"
+            p: '20px'
+          }}
+        >
+          <Grid
+            item
+            className="event-details"
             xs={12}
             md={8}
             sx={{
-              pr: {md: '54px'},
-              borderRight: {md: '1px solid hsla(0,0%,0%,.1)'}
-          }}>
+              pr: { md: '54px' },
+              borderRight: { md: '1px solid hsla(0,0%,0%,.1)' }
+            }}
+          >
             {renderEventDetails()}
-            <Box display={{md: 'none'}}>
+            <Box display={{ md: 'none' }}>
               {adminInfo ? renderClubInfo() : 'adminInfo is empty'}
             </Box>
             {renderEventComments()}
           </Grid>
-          <Grid item xs={0} md={4} display={{xs: 'none', md: 'block'}} 
+          <Grid
+            item
+            xs={0}
+            md={4}
+            display={{ xs: 'none', md: 'block' }}
             sx={{
               pl: '24px'
-          }}>
+            }}
+          >
             {renderEventLinks()}
-            <Box sx={{mt: '92px',display: 'flex', flexFlow: 'column', gap: '16px'}}>
+            <Box sx={{ mt: '92px', display: 'flex', flexFlow: 'column', gap: '16px' }}>
               <h4>Admin</h4>
               {adminInfo ? renderClubInfo() : 'adminInfo is empty'}
             </Box>
           </Grid>
         </Grid>
-        <Box className="event-links" sx={{
-          px: '18px',
-          py: '24px',
-          display: {xs: 'block', md: 'none'},
-          background: 'white',
-          boxShadow: '2px -2px 4px rgba(0, 0, 0, 0.08)',
-          zIndex: '2000'
-        }}>
+        <Box
+          className="event-links"
+          sx={{
+            px: '18px',
+            py: '24px',
+            display: { xs: 'block', md: 'none' },
+            background: 'white',
+            boxShadow: '2px -2px 4px rgba(0, 0, 0, 0.08)',
+            zIndex: '2000'
+          }}
+        >
           {renderEventLinks()}
         </Box>
       </>
@@ -328,15 +367,19 @@ const EventPage = (props) => {
   };
 
   const renderBanner = () => {
-
     return (
-      <Box sx={{position: 'relative'}}>
+      <Box sx={{ position: 'relative' }}>
         <CardMedia
-          component='img'
+          component="img"
           image={event.featureImage}
-          sx={{height: {xs: '211px', md: '462px'}}}
+          sx={{ height: { xs: '211px', md: '462px' } }}
         />
-        <Box onClick={() => {navigate(-1);}} sx={{position: 'absolute', top: '30px', left: '30px'}}>
+        <Box
+          onClick={() => {
+            navigate(-1);
+          }}
+          sx={{ position: 'absolute', top: '30px', left: '30px' }}
+        >
           <BackButton />
         </Box>
       </Box>
@@ -344,7 +387,7 @@ const EventPage = (props) => {
   };
 
   return (
-    <Card sx={{width: '100%', border: 'unset', boxShadow: 'unset'}}>
+    <Card sx={{ width: '100%', border: 'unset', boxShadow: 'unset' }}>
       {renderBanner()}
       {event ? renderEventContainer() : ''}
     </Card>
