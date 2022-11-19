@@ -54,7 +54,7 @@ const ClubDetail = () => {
   const clubMembersData = useTypedSelector((state) => state.clubMember);
   const { data: userData } = useTypedSelector((state) => state.auth);
   const [clubStatus, setClubStatus] = useState(false);
-  const [events, setEvents] = useState({ status: false, request: false });
+  const [events, setEvents] = useState([]);
   const [value, setValue] = useState('1');
   const dense = false;
   const handleChange = (event, newValue) => {
@@ -118,6 +118,9 @@ const ClubDetail = () => {
     setChartAnalyticsData(chartData);
 
   },[previousEvents]);
+
+
+
   useEffect(() => {
     const formattedEvents = [];
     clubEventsData.data.forEach((event) => {
@@ -228,7 +231,7 @@ const ClubDetail = () => {
                   <AboutClub about={clubsDetailData.description} />
                 </Grid>
                 <Grid sx={{ pt: 4 }} item xs={12} md={12}>
-                  {events.length > 0 ? <UpcomingEvents events={events} /> : ''}
+                  {events.length > 0 ? <UpcomingEvents title={'Upcoming Events'} events={events} /> : ''}
                 </Grid>
               </Grid>
             </Grid>
@@ -318,7 +321,7 @@ const ClubDetail = () => {
                   </TabList>
                 </Box>
                 <TabPanel value="1">
-                  {events.length > 0 ? <UpcomingEvents events={events} /> : ''}
+                  {events.length > 0 ? <UpcomingEvents title={'Upcoming Events'} events={events} /> : ''}
                 </TabPanel>
                 <TabPanel value="2">
                   <Grid spacing={4} sx={{ pt: 2, }} container>
