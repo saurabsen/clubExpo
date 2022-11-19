@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React from 'react';
 import './createEvent.css';
 import { useState } from 'react';
@@ -95,25 +96,28 @@ const CreateEvent = (props) => {
   return (
     <>
       <Card>
-        <Box sx={{position: 'relative'}}>
+        <Box sx={{ position: 'relative' }}>
           <CardMedia
             component="img"
-            height={{xs: '194px', md: '462px'}}
+            height={{ xs: '194px', md: '462px' }}
             image={'https://picsum.photos/id/910/800/200'}
           />
-          <Box onClick={() => navigate(-1)} sx={{position: 'absolute', top: '30px', left: '30px'}}>
+          <Box
+            onClick={() => navigate(-1)}
+            sx={{ position: 'absolute', top: '30px', left: '30px' }}
+          >
             <BackButton />
           </Box>
         </Box>
-        <Box sx={{display: 'flex', flexFlow: 'row', justifyContent: 'center', pt: '40px'}}>
+        <Box sx={{ display: 'flex', flexFlow: 'row', justifyContent: 'center', pt: '40px' }}>
           <Box
             component="form"
             onSubmit={onSubmitHandler}
             sx={{
               px: '16px',
-              '& > *': {mb: '24px'},
+              '& > *': { mb: '24px' },
               flexGrow: '1',
-              maxWidth: '669px',
+              maxWidth: '669px'
             }}
             noValidate
             autoComplete="off"
@@ -145,7 +149,9 @@ const CreateEvent = (props) => {
             </Card>
             <Card sx={cardStyle}>
               <FormControl fullWidth>
-                <FormLabel id="demo-radio-buttons-group-label" sx={{color: 'black'}}><h5>Location</h5></FormLabel>
+                <FormLabel id="demo-radio-buttons-group-label" sx={{ color: 'black' }}>
+                  <h5>Location</h5>
+                </FormLabel>
                 <RadioGroup
                   aria-labelledby="demo-radio-buttons-group-label"
                   defaultValue="Online"
@@ -182,7 +188,9 @@ const CreateEvent = (props) => {
             </Card>
             <Card sx={cardStyle}>
               <FormControl>
-                <FormLabel id="formEventPriceType" sx={{color: 'black'}}><h5>Type of event</h5></FormLabel>
+                <FormLabel id="formEventPriceType" sx={{ color: 'black' }}>
+                  <h5>Type of event</h5>
+                </FormLabel>
                 <RadioGroup
                   aria-labelledby="formEventPriceType"
                   defaultValue="free"
@@ -207,7 +215,9 @@ const CreateEvent = (props) => {
               </FormControl>
             </Card>
             <Box sx={{ display: 'flex', gap: '20px', mt: '40px', justifyContent: 'space-between' }}>
-              <Button variant="outlined" onClick={() => navigate(-1)} sx={buttonStyle}>Exit</Button>
+              <Button variant="outlined" onClick={() => navigate(-1)} sx={buttonStyle}>
+                Exit
+              </Button>
               <Button variant="contained" type="submit" sx={buttonStyle}>
                 Create
               </Button>
