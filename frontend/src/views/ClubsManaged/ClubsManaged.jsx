@@ -21,7 +21,9 @@ const ClubsManaged = () => {
         <br />
         <Box sx={{ flexGrow: 1 }}>
           <Grid container spacing={2} sx={{ p: 2 }}>
-            {clubs.data.map((clubData) => (
+            { clubs.data !== null && 
+            clubs.data !== undefined && 
+            clubs.data.length > 0 ?(clubs.data.map((clubData) => (
               <Grid key={clubData.createdAt} item xs={4}>
                 <ClubCard
                   key={clubData._id}
@@ -31,7 +33,7 @@ const ClubsManaged = () => {
                   clubId={clubData._id}
                 />
               </Grid>
-            ))}
+            ))) : !clubs.loading ?  (''):('')}
           </Grid>
         </Box>
       </div>

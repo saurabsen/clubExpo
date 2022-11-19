@@ -26,14 +26,26 @@ import Button from '@mui/material/Button';
 import Divider from '@mui/material/Divider';
 import { useParams, Link } from 'react-router-dom';
 import axios from 'axios';
-import IconButton from '@mui/material/IconButton';
 import { styled } from '@mui/material/styles';
-import DeleteIcon from '@mui/icons-material/Delete';
 import Charts from '../../components/Charts/Charts';
+import ClubMembers from './ClubMembers';
+import Modal from '@mui/material/Modal';
 
 const Demo = styled('div')(({ theme }) => ({
   backgroundColor: theme.palette.background.paper
 }));
+
+const style = {
+  position: 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  width: 600,
+  bgcolor: 'background.paper',
+  border: '1px solid #000',
+  boxShadow: 24,
+  p: 4,
+};
 
 const ClubDetail = () => {
   const { getAllClubsData, getAllEventsData, getClubMembersData } = useActions();
@@ -45,11 +57,25 @@ const ClubDetail = () => {
   const [events, setEvents] = useState({ status: false, request: false });
   const [value, setValue] = useState('1');
   const dense = false;
-  const secondary = false;
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
   const { id } = useParams();
+  const [openModal, setOpenModal] = useState(false);
+  const handleOpenModal = () => {
+    getClubMembersData('', { clubid: id }).then(resp => {
+      if(resp){
+        setOpenModal(true);
+      }
+    });
+  };
+  const handleCloseModal = () => {
+    setOpenModal(false);
+  };
+
+  const [previousEvents, setPreviousEvents] = useState([]);
+  const [chartAnalyticsData, setChartAnalyticsData] = useState([]);
+
 
   const getClubMemberStatus = async () => {
     const { data } = await axios.get(`clubmembers/${userData._id}/${id}`);
@@ -65,11 +91,33 @@ const ClubDetail = () => {
   }, []);
 
   useEffect(() => {
-    if (clubsDetailData.acceptedMembers !== undefined) {
-      getClubMembersData('', { userid: clubsDetailData.acceptedMembers });
-    }
-  }, [clubsDetailData]);
+      getClubMembersData('', { clubid: id });
+      const getEventsData = async () =>{
+        return await axios.get(`/events/previousevents/${id}`);
+      };
+      getEventsData().then(resp => {
+        if(resp) {
+          setPreviousEvents(resp.data);
+        }
+      });
+  }, []);
 
+  useEffect(() =>{
+    const chartData=[["Element", "Events", { role: "style" }]];
+    const uniqueDates = [...new Set(previousEvents.map(item => item.startDate))];
+    const chartAnalytics = [];
+    uniqueDates.forEach(uniquedata=>{
+      let newArray = previousEvents.filter(data => data.startDate === uniquedata);
+      chartAnalytics[uniquedata]= newArray.length;
+    });
+
+    for (var key in chartAnalytics) {
+      chartData.push([key, chartAnalytics[key], '#8658CE']);
+    }
+
+    setChartAnalyticsData(chartData);
+
+  },[previousEvents]);
   useEffect(() => {
     const formattedEvents = [];
     clubEventsData.data.forEach((event) => {
@@ -109,13 +157,19 @@ const ClubDetail = () => {
     getClubMemberStatus();
   };
 
+  const addClubMember = async (memberid) => {
+    const addClubMember = await axios.post(`clubmembers/addclubmember`, { clubid: id, userid: memberid });
+    getClubMembersData('', { clubid: id });
+  };
+
   const deleteClubUser = async (memberid) => {
     const deleteClubMember = await axios.delete(`clubmembers/${memberid}/${id}`);
     getAllClubsData(id);
-    getClubMembersData('', { userid: clubsDetailData.acceptedMembers });
+    getClubMembersData('', { clubid: id });
   };
 
   return (
+    <>
     <Box sx={{ width: '100%', typography: 'body1' }}>
       <Card sx={{ width: '100%', height: '500px', pb: 4 }}>
         <CardMedia
@@ -189,12 +243,12 @@ const ClubDetail = () => {
                       width: '100%',
                       backgroundColor: '#F3EFFB',
                       padding: '15px 10px 15px 10px',
-                      borderRadius: '4%'
                     }}
                   >
                     <ListItem alignItems="flex-start">
                       <ListItemAvatar>
                         <Avatar
+                          sx={{ border: '8px'}}
                           alt="Remy Sharp"
                           src="https://images.unsplash.com/photo-1518756131217-31eb79b20e8f"
                         />
@@ -211,9 +265,18 @@ const ClubDetail = () => {
                 !clubsDetailData.acceptedMembers.includes(userData._id) &&
                 userData._id !== clubsDetailData.createdBy ? (
                   <Grid item xs={12} md={12}>
-                    <Typography variant="h5" component="h5" sx={{ pb: 1 }}>
-                      Members
-                    </Typography>
+                    <Grid container>
+                      <Grid item xs={6} md={6}>
+                        <Typography variant="h5" component="h5" sx={{ pb: 1 }}>
+                          Members
+                        </Typography>
+                      </Grid>
+                      <Grid item xs={6} md={6} sx={{ textAlign:'right'}}>
+                        <Button variant="text" onClick={() => {handleOpenModal();}}>
+                          View all
+                        </Button>
+                      </Grid>
+                    </Grid>
                     <Box
                       sx={{
                         backgroundColor: '#F3EFFB',
@@ -222,7 +285,7 @@ const ClubDetail = () => {
                       }}
                     >
                       <ImageList sx={{ width: 400, height: 150 }} cols={5} rowHeight={70}>
-                        {clubMembersData.data.map((item) => (
+                        {clubMembersData.data !== null && clubMembersData.data !== undefined && clubMembersData.data.length >0 &&  clubMembersData.data.filter(data => data.status).map((item) => (
                           <ImageListItem key={item._id}>
                             <img
                               src={`${item.profileImage}?w=164&h=164&fit=crop&auto=format`}
@@ -248,66 +311,49 @@ const ClubDetail = () => {
               <TabContext value={value}>
                 <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
                   <TabList onChange={handleChange} aria-label="lab API tabs example">
-                    <Tab sx={{fontFamily: 'Oswald', fontSize: '18px'}} label="Events" value="1" />
-                    <Tab sx={{fontFamily: 'Oswald', fontSize: '18px'}} label="Members" value="2" />
-                    <Tab sx={{fontFamily: 'Oswald', fontSize: '18px'}} label="About" value="4" />
-                    { userData !== null && userData.userRole !== undefined && userData.userRole.includes('clubAdmin') &&  (<Tab label="Reports" value="5" />) }
+                    <Tab className="tabfonts"  label="Events" value="1" />
+                    <Tab className="tabfonts"  label="Members" value="2" />
+                    <Tab className="tabfonts"  label="About" value="4" />
+                    { userData !== null && userData.userRole !== undefined && userData.userRole.includes('clubAdmin') &&  (<Tab className="tabfonts" label="Reports" value="5" />) }
                   </TabList>
                 </Box>
                 <TabPanel value="1">
                   {events.length > 0 ? <UpcomingEvents events={events} /> : ''}
                 </TabPanel>
                 <TabPanel value="2">
-                  <Grid spacing={4} sx={{ pt: 2 }} container>
-                    <Grid item xs={12} md={3}>
-                      {   userData !== null &&
-                          userData.userRole !== undefined &&
-                          userData.userRole.includes('clubAdmin') && (<Typography variant="h6" component="h6" sx={{ pb: 1 }}>
-                        Existing Members
-                      </Typography>) }
-                      <Demo>
-                        <List dense={dense}>
-                          {
-                          userData !== null &&
-                          userData.userRole !== undefined &&
-                          userData.userRole.includes('clubAdmin') ? (clubMembersData.data.map((item) => (
-                            <ListItem
-                              sx={{ border: '1px solid #E0E2E0'}}
-                              secondaryAction={
-                                <IconButton onClick={() => deleteClubUser(item._id)}  edge="end" aria-label="delete">
-                                  <DeleteIcon  />
-                                </IconButton>
-                              }
-                            >
-                              <ListItemAvatar sx={{pt:1, pb:1}}>
-                                <Avatar sx={{ border: '8px'}} alt={item.firstName} src={item.profileImage} />
-                              </ListItemAvatar>
-                              <ListItemText
-                                primary={item.firstName}
-                                secondary={secondary ? 'Secondary text' : null}
-                              />
-                            </ListItem>
-                          ))) : (clubMembersData.data.map((item) => (
-                            <ListItem sx={{ border: '1px solid #E0E2E0'}}>
-                              <ListItemAvatar sx={{pt:1, pb:1}}>
-                                <Avatar sx={{ borderRadius: '8px'}} alt={item.firstName} src={item.profileImage} />
-                              </ListItemAvatar>
-                              <ListItemText
-                                primary={item.firstName}
-                                secondary={secondary ? 'Secondary text' : null}
-                              />
-                            </ListItem>
-                          )))}
-                        </List>
-                      </Demo>
-                    </Grid>
-                    { userData !== null &&
-                      userData.userRole !== undefined &&
-                      userData.userRole.includes('clubAdmin') && (<Grid item xs={12} md={6}>
-                      <Typography variant="h6" component="h6" sx={{ pb: 1 }}>
-                        Requests
-                      </Typography>
-                    </Grid>) }
+                  <Grid spacing={4} sx={{ pt: 2, }} container>
+                    <Grid item xs={12} md={6} sx={{display: 'flex', flexFlow: 'wrap', gap: '1rem' }}>
+                        {   userData !== null &&
+                            userData.userRole !== undefined &&
+                            userData.userRole.includes('clubAdmin') && (
+                        <Typography sx={{flexBasis: '100%',  pb: 1}}  variant="h5" component="h5">
+                          Existing Members ({clubMembersData.data !== null && clubMembersData.data !== undefined &&  clubMembersData.data.filter(data => data.status).length})
+                        </Typography>) }
+                       
+                            {
+                            clubMembersData.data !== null && clubMembersData.data !== undefined && clubMembersData.data.length >0 &&  clubMembersData.data.filter(data => data.status).map((item) => (
+                             <div style={{flexBasis: '48%'}}> <ClubMembers key={item._id} item={item} userData={userData} deleteClubUser={deleteClubUser} /></div>
+
+                            ))
+                            }
+                        
+                      </Grid>
+                      <Grid item xs={12} md={6} sx={{display: 'flex', flexFlow: 'wrap', gap: '1rem' }}>
+                      { userData !== null &&
+                        userData.userRole !== undefined &&
+                        userData.userRole.includes('clubAdmin') && (<>
+                        <Typography variant="h5" component="h5" sx={{ pb: 1, flexBasis: '100%' }}>
+                          Requests ({clubMembersData.data !== null && clubMembersData.data !== undefined &&  clubMembersData.data.filter(data => data.request).length})
+                        </Typography>
+
+                        {
+                        clubMembersData.data !== null && clubMembersData.data !== undefined && clubMembersData.data.length >0 &&  clubMembersData.data.filter(data => data.request).map((item) => (
+                          <div style={{flexBasis: '48%'}}> <ClubMembers key={item._id} item={item} userData={userData} deleteClubUser={deleteClubUser} addClubMember={addClubMember} /></div>
+                        ))
+                        }
+                      
+                      </>) }
+                      </Grid>
                   </Grid>
                 </TabPanel>
                 <TabPanel value="4">
@@ -343,7 +389,7 @@ const ClubDetail = () => {
                 <TabPanel value="5">
                 <Grid sx={{ pt: 2 }} container>
                     <Grid item xs={12} md={12}>
-                        <Charts />
+                        <Charts chartData={chartAnalyticsData} />
                     </Grid>
                     <Grid item xs={12} md={8}>
                         <Charts />
@@ -356,6 +402,28 @@ const ClubDetail = () => {
           )}
       </Grid>
     </Box>
+    <Modal
+        open={openModal}
+        onClose={handleCloseModal}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={style}>
+          <Typography id="modal-modal-title" variant="h5" component="h5">
+            Members
+          </Typography>
+          <Demo>
+            <List dense={dense}>
+              {
+              clubMembersData.data.map((item) => (
+                <ClubMembers key={item._id} item={item} userData={userData} deleteClubUser={deleteClubUser} />
+              ))
+              }
+            </List>
+          </Demo>
+        </Box>
+      </Modal>
+    </>
   );
 };
 

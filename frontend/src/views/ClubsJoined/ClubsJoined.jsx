@@ -26,8 +26,7 @@ const ClubsJoined = () => {
           </Grid>
           {clubsJoinedData.data !== null && 
             clubsJoinedData.data !== undefined && 
-            clubsJoinedData.data.length > 0   && 
-            clubsJoinedData.data!== undefined ? (
+            clubsJoinedData.data.length > 0 ? (
               clubsJoinedData.data
               .map((clubData) => (
                 <Grid key={clubData.createdAt} item xs={12} md={4}>

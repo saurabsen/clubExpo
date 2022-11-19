@@ -211,46 +211,21 @@ const App = () => {
             <Box sx={{ flexGrow: '1' }}>
               <Routes>
                 <Route exact path="/" element={<Home />} />
-                {userData != null &&
-                userData.userRole !== undefined &&
-                userData.userRole.includes('hubAdmin') ? (
-                  <>
-                    <Route path="/admin-dashboard" element={<AdminDashboard />} />
-                    <Route path="/club-requests" element={<ClubRequests />} />
-                    <Route path="/all-proposal" element={<ProposalManagement />} />
-                    <Route path="/proposals/:proposalId" element={<Proposal />} />
-                  </>
-                ) : (
-                  ''
-                )}
-                {userData != null &&
-                userData.userRole !== undefined &&
-                (userData.userRole.includes('clubAdmin') ||
-                  userData.userRole.includes('member')) ? (
-                  <>
-                    <Route path="/home" element={<Home />} />
-                    <Route path="/discover-clubs" element={<DiscoverClubs />} />
-                    <Route path="/clubs-joined" element={<ClubsJoined />} />
-                    <Route path="/events-registered" element={<EventsRegistered />} />
-                    <Route path="/events/:eventId" element={<UserEventsPage />} />
-                    <Route path="/submit-proposal" element={<ClubProposal />} />
-                    <Route path="/clubs/:id" element={<ClubDetail />} />
-                    <Route path="/clubs/:clubId" element={<ClubSinglePage />} />
-                    <Route path="/search" element={<SearchResults />} />
-                  </>
-                ) : (
-                  ''
-                )}
-                {userData != null &&
-                userData.userRole !== undefined &&
-                userData.userRole.includes('clubAdmin') ? (
-                  <>
-                    <Route path="/club-managed" element={<ClubsManaged />} />
-                    <Route path="/clubs/:clubId/createevent" element={<CreateEventPage />} />
-                  </>
-                ) : (
-                  ''
-                )}
+                <Route path="/admin-dashboard" element={<AdminDashboard />} />
+                <Route path="/club-requests" element={<ClubRequests />} />
+                <Route path="/all-proposal" element={<ProposalManagement />} />
+                <Route path="/proposals/:proposalId" element={<Proposal />} />
+                <Route path="/home" element={<Home />} />
+                <Route path="/discover-clubs" element={<DiscoverClubs />} />
+                <Route path="/clubs-joined" element={<ClubsJoined />} />
+                <Route path="/events-registered" element={<EventsRegistered />} />
+                <Route path="/events/:eventId" element={<UserEventsPage />} />
+                <Route path="/submit-proposal" element={<ClubProposal />} />
+                <Route path="/clubs/:id" element={<ClubDetail />} />
+                <Route path="/clubs/:clubId" element={<ClubSinglePage />} />
+                <Route path="/search" element={<SearchResults />} />
+                <Route path="/club-managed" element={<ClubsManaged />} />
+                <Route path="/clubs/:clubId/createevent" element={<CreateEventPage />} />
                 <Route path="/profile" element={<Profile />} />
                 <Route path="/notifications" element={<Notifications />} />
               </Routes>
