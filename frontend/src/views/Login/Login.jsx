@@ -18,9 +18,9 @@ function Login() {
   const navigate = useNavigate();
   const onSubmitHandler = (e) => {
     e.preventDefault();
-    loginUser({ email, password }).then(resp => {
-      if(resp)
-        (resp.userRole.includes('hubAdmin') ?  navigate('/admin-dashboard') : navigate('/home')  ) ;
+    loginUser({ email, password }).then((resp) => {
+      if (resp)
+        resp.userRole.includes('hubAdmin') ? navigate('/admin-dashboard') : navigate('/home');
     });
   };
 
@@ -29,10 +29,10 @@ function Login() {
       <Grid
         container
         item
-        xs={6}
+        xs={4}
         flexDirection="column"
         gap="2rem"
-        sx={{ padding: '16rem 22rem 0 4rem' }}
+        sx={{ padding: '16rem 8rem 0 4rem' }}
       >
         <h1>Login</h1>
         <form onSubmit={onSubmitHandler}>
@@ -81,7 +81,7 @@ function Login() {
           </Button>
         </form>
       </Grid>
-      <Grid item xs={6}>
+      <Grid item xs={8}>
         <img src={LoginGirl} alt="Login Page Girl" />
       </Grid>
     </Grid>
