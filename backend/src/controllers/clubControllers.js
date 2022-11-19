@@ -1,6 +1,8 @@
-const asyncHandler = require('express-async-handler');
-let ObjectId = require('mongoose').Types.ObjectId;
-const Club = require('../models/clubModel');
+const asyncHandler = require("express-async-handler");
+let ObjectId = require("mongoose").Types.ObjectId;
+const Club = require("../models/clubModel");
+const coverImg = require("../assets/index");
+const defLogo = require("../assets/index");
 
 // @desc Create Club
 // @route GET /api/clubs
@@ -10,14 +12,14 @@ const createClub = asyncHandler(async (req, res) => {
 
   if (!name || !description || !createdBy || !admins) {
     res.status(400);
-    throw new Error('Please enter all the required details');
+    throw new Error("Please enter all the required details");
   }
 
   //create club
   const club = await Club.create({
     name,
-    logoImage: '',
-    coverImage: '',
+    logoImage: defLogo.defLogo,
+    coverImage: coverImg.coverImg,
     description,
     createdBy,
     admins,
@@ -25,9 +27,11 @@ const createClub = asyncHandler(async (req, res) => {
     pendingMembers: [],
     events: [],
     badges: [],
-    status: '',
-    tags: '',
+    status: "",
+    tags: "",
   });
+
+  console.log(club, "clubs");
 
   if (club) {
     res.status(201).json({
@@ -37,7 +41,7 @@ const createClub = asyncHandler(async (req, res) => {
     });
   } else {
     res.status(400);
-    throw new Error('Invalid Club');
+    throw new Error("Invalid Club");
   }
 });
 
@@ -84,7 +88,7 @@ const getClub = asyncHandler(async (req, res) => {
     });
   } else {
     res.status(400);
-    throw new Error('Club not found');
+    throw new Error("Club not found");
   }
 });
 
@@ -100,7 +104,7 @@ const getClubByUser = asyncHandler(async (req, res) => {
     res.status(200).json(club);
   } else {
     res.status(400);
-    throw new Error('Club not found');
+    throw new Error("Club not found");
   }
 });
 
@@ -128,7 +132,7 @@ const updateClub = asyncHandler(async (req, res) => {
 
   if (!club) {
     res.status(400);
-    throw new Error('Club not found');
+    throw new Error("Club not found");
   }
 
   const updatedClub = await Club.findByIdAndUpdate(id, req.body, {
@@ -143,7 +147,7 @@ const updateClub = asyncHandler(async (req, res) => {
     });
   } else {
     res.status(400);
-    throw new Error('Club not found');
+    throw new Error("Club not found");
   }
 });
 
@@ -157,7 +161,7 @@ const deleteClub = asyncHandler(async (req, res) => {
 
   if (!club) {
     res.status(400);
-    throw new Error('Club not found');
+    throw new Error("Club not found");
   }
 
   await club.remove();

@@ -200,6 +200,7 @@ const App = () => {
         <Box sx={{ flexGrow: 1 }}>
           <Box sx={{ display: 'flex', flexFlow: 'row' }}>
             {pathname.includes('/proposal') ||
+            pathname.includes('/submit-proposal') ||
             pathname.includes('/clubs/') ||
             pathname.includes('/events/') ? (
               ''
