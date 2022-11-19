@@ -1,9 +1,9 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import * as React from 'react';
 import axios from 'axios';
 import PropTypes from 'prop-types';
 import { Box, Card, Tabs, Tab, Typography, CardMedia } from '@mui/material';
 import { useEffect } from 'react';
-import { useTypedSelector } from '../../hooks/useTypedSelector';
 import { BackButton } from '../../components';
 import { profileCover } from '../../assets';
 import { useNavigate } from 'react-router-dom';

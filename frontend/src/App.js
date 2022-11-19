@@ -1,7 +1,8 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 // import '@fontsource/raleway';
 import { useState, useEffect } from 'react';
 import { Routes, Route, useParams, useNavigate, useLocation } from 'react-router-dom';
-import { Box, Grid } from '@mui/material';
+import { Box } from '@mui/material';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { Header, SideBar } from './components';
 import {
