@@ -171,7 +171,7 @@ const Home = () => {
           <Typography sx={styleLatestEvents}>Latest Events</Typography>
           {(feedView) ? 
             ( (events.length !== 0) ? events.map((event) => renderEventCards(event)) : renderNoEvents() ) : 
-            <UpcomingEvents upcomingEvents={upcomingEvs} />}
+            <UpcomingEvents title={'Upcoming Events'} upcomingEvents={upcomingEvs} />}
         </Grid>
         <Grid item xs={12} lg={2} sx={{ mt: 4, display: {xs: 'none', lg: 'block'} }}>
           <UpcomingEvents upcomingEvents={upcomingEvs} />
