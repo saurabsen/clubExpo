@@ -14,6 +14,7 @@ const Header = ({ userIsLoggedIn, handleSearch, handleLogoutUser }) => {
   const { getNotifications } = useActions();
   const { data } = useTypedSelector((state) => state.auth);
   const { notifications } = useTypedSelector((state) => state.notifications);
+  const userData = JSON.parse(localStorage.getItem('user'));
 
   const handleShowProfileModal = (e) => {
     setShowProfileModal(e.currentTarget);
@@ -122,7 +123,7 @@ const Header = ({ userIsLoggedIn, handleSearch, handleLogoutUser }) => {
               <Avatar
                 id="profile-icon"
                 alt="User profile image"
-                src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=988&q=80"
+                src={userData.profileImage}
                 sx={{ cursor: 'pointer' }}
                 onClick={handleShowProfileModal}
               ></Avatar>
