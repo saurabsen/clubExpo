@@ -217,7 +217,25 @@ const getEvents = asyncHandler(async (req, res) => {
     startDate: { $lte: new Date().toISOString() },
   });
 
-  console.log(events);
+  if (events) {
+    res.status(200).json(events);
+  } else {
+    res.status(400);
+    throw new Error('Something went wrong');
+  }
+});
+
+const getEventsByUser = asyncHandler(async (req, res) => {
+  const { userid } = req.body;
+
+  if (!userid) {
+    res.status(400);
+    throw new Error('Event not found');
+  }
+
+  const events = await Event.find({
+    attendees: { $in: userid },
+  });
 
   if (events) {
     res.status(200).json(events);
@@ -338,6 +356,7 @@ module.exports = {
   updateEvent,
   deleteEvent,
   addUserToEvent,
+  getEventsByUser,
   removeUserFromEvent,
   getEvents,
 };
