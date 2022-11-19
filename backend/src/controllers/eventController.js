@@ -5,12 +5,38 @@ const Event = require('../models/eventModel.js');
 // @route POST /api/event/single
 // @access Public
 const createEvent = asyncHandler(async (req, res) => {
-  const {name, featureImage, description, startDate, endDate, attendees, type, location, contact, clubId, createdByAdmin, availableSpots} = req.body;
+  const {
+    name,
+    featureImage,
+    description,
+    startDate,
+    endDate,
+    attendees,
+    type,
+    location,
+    contact,
+    clubId,
+    createdByAdmin,
+    availableSpots,
+  } = req.body;
 
   // Check if all information is entered
-  if (!name || !featureImage || !description || !startDate || !endDate || !attendees || !type || !location || !contact || !clubId || !createdByAdmin || !availableSpots) {
+  if (
+    !name ||
+    !featureImage ||
+    !description ||
+    !startDate ||
+    !endDate ||
+    !attendees ||
+    !type ||
+    !location ||
+    !contact ||
+    !clubId ||
+    !createdByAdmin ||
+    !availableSpots
+  ) {
     res.status(400);
-    throw new Error("Please enter all the required details");
+    throw new Error('Please enter all the required details');
   }
 
   const event = await Event.create({
@@ -25,29 +51,29 @@ const createEvent = asyncHandler(async (req, res) => {
     contact: contact,
     clubId: clubId,
     createdByAdmin: createdByAdmin,
-    availableSpots: availableSpots
-  })
+    availableSpots: availableSpots,
+  });
 
   if (event) {
     res.status(201).json({
       _id: event.id,
       name: event.name,
       createdByAdmin: event.createdByAdmin,
-    })
+    });
   } else {
     res.status(400);
-    throw new Error("Failed to create event. Check event details.")
+    throw new Error('Failed to create event. Check event details.');
   }
-})
-
+});
 
 // @desc get single event
 // @route GET /api/event/single
 // @access Public
+
 const getEventDetails = asyncHandler(async (req, res) => {
   const { eventId } = req.params;
 
-  const event = await Event.findOne({ _id: eventId })
+  const event = await Event.findOne({ _id: eventId });
   const {
     name,
     featureImage,
@@ -61,7 +87,7 @@ const getEventDetails = asyncHandler(async (req, res) => {
     clubId,
     createdByAdmin,
     availableSpots,
-    } = event;
+  } = event;
 
   res.status(200).json({
     _id: event.id,
@@ -76,9 +102,9 @@ const getEventDetails = asyncHandler(async (req, res) => {
     contact,
     clubId,
     createdByAdmin,
-    availableSpots
-  })
-})
+    availableSpots,
+  });
+});
 
 // @desc get multiple events using club ids
 // @route POST /api/events
@@ -91,17 +117,15 @@ Body must be structured as follows:
 */
 const getMultipleEventsFromClubs = asyncHandler(async (req, res) => {
   const { clubIds } = req.body;
-  
+
   const clubFilters = [];
 
   clubIds.forEach((id) => {
-    clubFilters.push(
-      { clubId: id }
-    )
+    clubFilters.push({ clubId: id });
   });
 
   const filterObject = {
-    $or: clubFilters
+    $or: clubFilters,
   };
 
   let events = await Event.find(filterObject);
@@ -110,7 +134,7 @@ const getMultipleEventsFromClubs = asyncHandler(async (req, res) => {
   });
 
   res.status(200).json(events);
-})
+});
 
 // @desc update event
 // @route PUT /api/events
@@ -118,22 +142,46 @@ const getMultipleEventsFromClubs = asyncHandler(async (req, res) => {
 const updateEvent = asyncHandler(async (req, res) => {
   const { eventId } = req.params;
 
-  let targetEvent = await Event.findOne({ _id: eventId })
+  let targetEvent = await Event.findOne({ _id: eventId });
 
   if (!targetEvent) {
-    res.status(404).json(
-      {
-        message: "Can't find record of event"
-      }
-    )
+    res.status(404).json({
+      message: "Can't find record of event",
+    });
   }
 
-  const {name, featureImage, description, startDate, endDate, attendees, type, location, contact, clubId, createdByAdmin, availableSpots} = req.body;
+  const {
+    name,
+    featureImage,
+    description,
+    startDate,
+    endDate,
+    attendees,
+    type,
+    location,
+    contact,
+    clubId,
+    createdByAdmin,
+    availableSpots,
+  } = req.body;
 
   // Check if all information is entered
-  if (!name || !featureImage || !description || !startDate || !endDate || !attendees || !type || !location || !contact || !clubId || !createdByAdmin || !availableSpots) {
+  if (
+    !name ||
+    !featureImage ||
+    !description ||
+    !startDate ||
+    !endDate ||
+    !attendees ||
+    !type ||
+    !location ||
+    !contact ||
+    !clubId ||
+    !createdByAdmin ||
+    !availableSpots
+  ) {
     res.status(400);
-    throw new Error("Please enter all the required details");
+    throw new Error('Please enter all the required details');
   }
 
   targetEvent.name = name;
@@ -151,13 +199,33 @@ const updateEvent = asyncHandler(async (req, res) => {
 
   await targetEvent.save();
 
-  res.status(200).json(
-    {
-      message: `Event with ID ${eventId} updated.`
-    }
-  )
+  res.status(200).json({
+    message: `Event with ID ${eventId} updated.`,
+  });
 });
 
+const getEvents = asyncHandler(async (req, res) => {
+  const { clubid } = req.params;
+
+  if (!clubid) {
+    res.status(400);
+    throw new Error('Event not found');
+  }
+
+  const events = await Event.find({
+    clubId: clubid,
+    startDate: { $lte: new Date().toISOString() },
+  });
+
+  console.log(events);
+
+  if (events) {
+    res.status(200).json(events);
+  } else {
+    res.status(400);
+    throw new Error('Something went wrong');
+  }
+});
 
 // @desc delete event
 // @route DELETE /api/events
@@ -165,29 +233,25 @@ const updateEvent = asyncHandler(async (req, res) => {
 const deleteEvent = asyncHandler(async (req, res) => {
   const { eventId } = req.params;
 
-  const targetEvent = await Event.findOne({_id: eventId});
+  const targetEvent = await Event.findOne({ _id: eventId });
 
   if (!targetEvent) {
-    res.status(404).json(
-      {
-        message: "Can't find record of event"
-      }
-    )
+    res.status(404).json({
+      message: "Can't find record of event",
+    });
   }
 
-  await Event.deleteOne({_id: eventId})
-  .then((err) => {
-    if (err) {console.log(err)};
-    console.log(`Event with ID ${eventId} deleted`)
+  await Event.deleteOne({ _id: eventId }).then((err) => {
+    if (err) {
+      console.log(err);
+    }
+    console.log(`Event with ID ${eventId} deleted`);
   });
 
-  res.status(200).json(
-    {
-      message: "Successful delete"
-    }
-  )
-})
-
+  res.status(200).json({
+    message: 'Successful delete',
+  });
+});
 
 // @desc Add user to Event
 // @route POST /api/events/:eventid/attendedby/:userid
@@ -206,27 +270,27 @@ const addUserToEvent = asyncHandler(async (req, res) => {
   let attendeesArray = existEvent.attendees;
   const targetIndex = attendeesArray.indexOf(userid);
 
-
   if (targetIndex === -1) {
-    attendeesArray.push(userid)
+    attendeesArray.push(userid);
   } else {
     res.status(400);
     throw new Error('User is already part of event');
   }
 
-  const updatedEvent = await Event.findByIdAndUpdate(eventid, {attendees: attendeesArray}) 
+  const updatedEvent = await Event.findByIdAndUpdate(eventid, {
+    attendees: attendeesArray,
+  });
 
   if (updatedEvent) {
     res.status(200).json({
       id: updatedEvent.id,
-      attendees: attendeesArray
-    })
+      attendees: attendeesArray,
+    });
   } else {
     res.status(400);
-    throw new Error("Something went wrong")
+    throw new Error('Something went wrong');
   }
-
-}) 
+});
 
 // @desc Remove user from Event
 // @route POST /api/events/:eventid/unattendedby/:userid
@@ -249,23 +313,23 @@ const removeUserFromEvent = asyncHandler(async (req, res) => {
     res.status(400);
     throw new Error('User is not part of this event');
   } else {
-    attendeesArray.splice(targetIndex, 1)
+    attendeesArray.splice(targetIndex, 1);
   }
 
-  const updatedEvent = await Event.findByIdAndUpdate(eventid, {attendees: attendeesArray}) 
+  const updatedEvent = await Event.findByIdAndUpdate(eventid, {
+    attendees: attendeesArray,
+  });
 
   if (updatedEvent) {
     res.status(200).json({
       id: updatedEvent.id,
-      attendees: attendeesArray
-    })
+      attendees: attendeesArray,
+    });
   } else {
     res.status(400);
-    throw new Error("Something went wrong")
+    throw new Error('Something went wrong');
   }
-
-})
-
+});
 
 module.exports = {
   createEvent,
@@ -275,4 +339,5 @@ module.exports = {
   deleteEvent,
   addUserToEvent,
   removeUserFromEvent,
-}
+  getEvents,
+};
