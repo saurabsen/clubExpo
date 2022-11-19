@@ -21,6 +21,7 @@ import {
   Profile,
   ClubPage,
   CreateEvent,
+  NotFoundPage,
   Notifications
 } from './views';
 import {
@@ -202,6 +203,7 @@ const App = () => {
             {pathname.includes('/proposal') ||
             pathname.includes('/submit-proposal') ||
             pathname.includes('/clubs/') ||
+            pathname.includes('/profile') ||
             pathname.includes('/events/') ? (
               ''
             ) : (
@@ -225,6 +227,7 @@ const App = () => {
                 <Route path="/clubs/:id" element={<ClubDetail />} />
                 <Route path="/clubs/:clubId" element={<ClubSinglePage />} />
                 <Route path="/search" element={<SearchResults />} />
+                <Route path="/404" element={<NotFoundPage />} />
                 <Route path="/club-managed" element={<ClubsManaged />} />
                 <Route path="/clubs/:clubId/createevent" element={<CreateEventPage />} />
                 <Route path="/profile" element={<Profile />} />

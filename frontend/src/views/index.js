@@ -14,6 +14,7 @@ import Profile from './Profile/Profile';
 import ClubPage from './ClubPage/ClubPage';
 import ClubDetail from './ClubDetail/ClubDetail';
 import CreateEvent from './CreateEvent/CreateEvent';
+import NotFoundPage from './NotFoundPage/NotFoundPage';
 import Notifications from './Notifications/Notifications';
 
 export {
@@ -33,5 +34,6 @@ export {
   Profile,
   ClubPage,
   CreateEvent,
+  NotFoundPage,
   Notifications
 };

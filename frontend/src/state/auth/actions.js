@@ -77,6 +77,33 @@ export const getUser = () => {
   };
 };
 
+export const updateUser = () => {
+  return async (dispatch) => {
+    dispatch({
+      type: FETCH_USER
+    });
+
+    try {
+      const data = await axios.get(`users/me`);
+
+      if (data) {
+        localStorage.setItem('user', JSON.stringify(data.data));
+      }
+
+      dispatch({
+        type: GET_FETCH_USER_DATA_SUCCESS,
+        payload: data.data
+      });
+      return data;
+    } catch (error) {
+      dispatch({
+        type: GET_FETCH_USER_DATA_ERROR,
+        payload: error.message
+      });
+    }
+  };
+};
+
 export const addEventToUserModel = (userId, eventId) => {
   return async (dispatch) => {
     dispatch({
