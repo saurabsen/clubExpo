@@ -30,6 +30,7 @@ import { styled } from '@mui/material/styles';
 import Charts from '../../components/Charts/Charts';
 import ClubMembers from './ClubMembers';
 import Modal from '@mui/material/Modal';
+import { format } from 'date-fns';
 
 const Demo = styled('div')(({ theme }) => ({
   backgroundColor: theme.palette.background.paper
@@ -55,6 +56,9 @@ const ClubDetail = () => {
   const { data: userData } = useTypedSelector((state) => state.auth);
   const [clubStatus, setClubStatus] = useState(false);
   const [events, setEvents] = useState([]);
+  const [attendeesAnalyticsData, setAttendeesAnalyticsData] = useState([]);
+  const [eventChartTitle, setEventChartTitle] = useState('');
+  const [attendeesChartTitle, setAttendessChartTitle] = useState('');
   const [value, setValue] = useState('1');
   const dense = false;
   const handleChange = (event, newValue) => {
@@ -74,7 +78,7 @@ const ClubDetail = () => {
   };
 
   const [previousEvents, setPreviousEvents] = useState([]);
-  const [chartAnalyticsData, setChartAnalyticsData] = useState([]);
+  const [chartEventAnalyticsData, setChartEventAnalyticsData] = useState([]);
 
 
   const getClubMemberStatus = async () => {
@@ -90,6 +94,30 @@ const ClubDetail = () => {
     getClubMemberStatus();
   }, []);
 
+  const optionsEvents = {
+    title: "Total events registered",
+    chartArea: { width: "80%" },
+    hAxis: {
+      title: "Days",
+    },
+    vAxis: {
+      title: "Events",
+      minValue: 0,
+    },
+  };
+
+  const optionsRegistration = {
+    title: "Total  Registrations",
+    chartArea: { width: "80%" },
+    hAxis: {
+      title: "Days",
+    },
+    vAxis: {
+      title: "Registrations",
+      minValue: 0,
+    },
+  };
+
   useEffect(() => {
       getClubMembersData('', { clubid: id });
       const getEventsData = async () =>{
@@ -103,19 +131,45 @@ const ClubDetail = () => {
   }, []);
 
   useEffect(() =>{
-    const chartData=[["Element", "Events", { role: "style" }]];
-    const uniqueDates = [...new Set(previousEvents.map(item => item.startDate))];
-    const chartAnalytics = [];
+    const chartData=[["Days", "Events", { role: "style" }]];
+    const attendeesChartData=[["Days", "Registrations", { role: "style" }]];
+    const uniqueDates = [...new Set(previousEvents.map(item => new Date(item.startDate)))].sort((date1, date2) => date1 - date2);
+    const chartEventAnalytics = [];
+    const registrationAnalytics = [];
+    let totalEvents= 0;
+    let totalRegistration = 0;
     uniqueDates.forEach(uniquedata=>{
-      let newArray = previousEvents.filter(data => data.startDate === uniquedata);
-      chartAnalytics[uniquedata]= newArray.length;
+      let newArray = previousEvents.filter(data => {
+        const  date1 = new Date(data.startDate);
+        if (
+          date1.getFullYear() === uniquedata.getFullYear() &&
+          date1.getMonth() === uniquedata.getMonth() &&
+          date1.getDate() === uniquedata.getDate()
+        ) { 
+          return data;
+        }
+
+       });
+      chartEventAnalytics[format(uniquedata, "dd MMM yyyy")]= newArray.length;
+      let attendees = newArray.reduce((acc,obj)=> { return acc + obj.attendees.length; }, 0); 
+      registrationAnalytics[format(uniquedata, "dd MMM yyyy")] = attendees;
+      console.log(newArray);
+      totalEvents += newArray.length;
+      totalRegistration +=attendees;
     });
 
-    for (var key in chartAnalytics) {
-      chartData.push([key, chartAnalytics[key], '#8658CE']);
+    for (let key in chartEventAnalytics) {
+      chartData.push([key, chartEventAnalytics[key], '#8658CE']);
     }
 
-    setChartAnalyticsData(chartData);
+    for (let dateKey in registrationAnalytics) {
+      attendeesChartData.push([dateKey, registrationAnalytics[dateKey], '#8658CE']);
+    }    
+
+    setChartEventAnalyticsData(chartData);
+    setAttendeesAnalyticsData(attendeesChartData);
+    setEventChartTitle('Total Events ('+ totalEvents+")");
+    setAttendessChartTitle('Total Registrations ('+totalRegistration+")");
 
   },[previousEvents]);
 
@@ -391,11 +445,11 @@ const ClubDetail = () => {
                 </TabPanel>
                 <TabPanel value="5">
                 <Grid sx={{ pt: 2 }} container>
-                    <Grid item xs={12} md={12}>
-                        <Charts chartData={chartAnalyticsData} />
+                    <Grid item xs={12} md={12} sx={{ pb: 3}}>
+                        <Charts options={optionsEvents} title={eventChartTitle} chartData={chartEventAnalyticsData} />
                     </Grid>
                     <Grid item xs={12} md={8}>
-                        <Charts />
+                        <Charts zoptions={optionsRegistration} title={attendeesChartTitle} chartData={attendeesAnalyticsData} />
                     </Grid>
                   </Grid>
                 </TabPanel>

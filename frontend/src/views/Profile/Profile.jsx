@@ -51,7 +51,6 @@ const Profile = () => {
   const [userClubs, setUserClubs] = React.useState([]);
   // const [userData, setUserData] = React.useState([]);
   const navigate = useNavigate();
-  // eslint-disable-next-line react-hooks/rules-of-hooks
   const { data: userData } = useTypedSelector((state) => state.auth);
 
   const handleChange = (event, newValue) => {
@@ -59,19 +58,23 @@ const Profile = () => {
   };
 
   useEffect(() => {
-    getClubs();
-  }, []);
+    const getClubs = async () => {
+      // eslint-disable-next-line react-hooks/rules-of-hooks
+      const data = await axios.get(`clubs/`);
+  
+      if (data) {
+        const userClubs = data.data.filter((club) => club.createdBy === userData._id);
+        setUserClubs(userClubs);
+      }
+    };
 
-  const getClubs = async () => {
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    const { data: userData } = useTypedSelector((state) => state.auth);
-    const data = await axios.get(`clubs/`);
-
-    if (data) {
-      const userClubs = data.data.filter((club) => club.createdBy === userData._id);
-      setUserClubs(userClubs);
+    if(userData!= null && Object.keys(userData).length >0){
+      getClubs();
     }
-  };
+    
+
+  }, [userData]);
+
 
   const stringAvatar = (name) => {
     return {
@@ -105,13 +108,13 @@ const Profile = () => {
         <Stack direction="row" spacing={2} sx={{ mt: -8, justifyContent: 'space-between' }}>
           <Stack direction="row" spacing={2}>
             <Avatar
-              {...stringAvatar(`${userData.firstName} ${userData.lastName}`)}
+              {...stringAvatar(`${userData !== null && userData.firstName !== undefined && userData.firstName} ${userData !== null && userData.lastName !== undefined && userData.lastName}`)}
               sx={{ bgcolor: purple[500], width: 100, height: 100, mt: -5 }}
-              src={userData.profileImage}
+              src={userData !== null && userData.profileImage}
               variant="rounded"
             ></Avatar>
             <h2>
-              {userData.firstName} {userData.lastName}
+              {userData !== null && userData.firstName !== undefined && userData.firstName} {userData !== null &&userData.lastName !== undefined && userData.lastName}
             </h2>
           </Stack>
           <Button type="outline" innerText="Edit Profile">
@@ -127,7 +130,7 @@ const Profile = () => {
         </Box>
         <TabPanel value={value} index={0}>
           <h4>Bio</h4>
-          {userData.description}
+          {userData !== null && userData.description !==undefined && userData.description}
           <br />
           <br />
           <br />
@@ -135,18 +138,18 @@ const Profile = () => {
           <br />
           <div style={{ display: 'flex', flexFlow: 'row', alignItems: 'center' }}>
             <img src={instagram} style={{ width: '30px' }} alt="Notification Bell Off" />@
-            {userData.firstName}
-            {userData.lastName}
+            {userData !== null && userData.firstName !== undefined && userData.firstName}
+            {userData !== null && userData.lastName !== undefined && userData.lastName}
           </div>
           <br />
           <div style={{ display: 'flex', flexFlow: 'row', alignItems: 'center' }}>
             <img src={twitter} style={{ width: '30px' }} alt="Notification Bell Off" />
-            {userData.firstName}.{userData.lastName} &nbsp; &nbsp;
+            {userData !== null && userData.firstName !== undefined && userData.firstName}.{userData !== null && userData.lastName !== undefined && userData.lastName} &nbsp; &nbsp;
           </div>
           <br />
           <div style={{ display: 'flex', flexFlow: 'row', alignItems: 'center' }}>
             <img src={email} style={{ width: '30px' }} alt="Notification Bell Off" />
-            {userData.firstName}.{userData.lastName}@gmail.com
+            {userData !== null && userData.firstName !== undefined && userData.firstName}.{userData !== null && userData.lastName !== undefined && userData.lastName}@gmail.com
           </div>
         </TabPanel>
         <TabPanel value={value} index={1}>

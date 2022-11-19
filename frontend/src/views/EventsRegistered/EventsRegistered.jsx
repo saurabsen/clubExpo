@@ -5,12 +5,16 @@ import { useTypedSelector } from '../../hooks/useTypedSelector';
 import UpcomingEvents from '../ClubDetail/UpcomingEvents';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
+import { useNavigate } from 'react-router-dom';
+import Typography from '@mui/material/Typography';
+import Button from '@mui/material/Button';
 
 const EventsRegistered = () => {
   const { getAllEventsData } = useActions();
   const { data: userData } = useTypedSelector((state) => state.auth);
   const eventsData = useTypedSelector((state) => state.events);
   const [events, setEvents] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     getAllEventsData('user',{ userid: userData._id});
@@ -55,9 +59,29 @@ const EventsRegistered = () => {
       <Box sx={{ flexGrow: 1 }}>
         <Grid container spacing={3} sx={{ p: 2 }}>
           <Grid item xs={12} md={12}>
-          <h3>Clubs Joined</h3> 
+          <h3>Events Registered</h3> 
           </Grid>
-          { events.length > 0 ? <Grid item xs={12} md={12}><UpcomingEvents title={''} events={events} /></Grid> : ''}
+          { events.length > 0 ? <Grid item xs={12} md={12}><UpcomingEvents title={''} events={events} /></Grid> : (
+              <Grid item xs={12} md={12}>
+              <Box sx={{textAlign: 'center'}}>
+              <br/>
+              <Typography sx={{color: '#808780', fontFamily: 'Raleway, sans-serif'}}>
+                Looks like you haven't registered in any events. Try joining clubs <br/>
+                to see events happening.
+              </Typography>
+              <br/>
+              <Button variant='contained' onClick={() => {navigate('/discover-clubs');}} 
+              sx={{
+                fontSize: '16px', 
+                px: '40px', 
+                py: '16px', 
+                borderRadius: '8px',
+                boxShadow: 'unset'}}>
+                Discover clubs
+              </Button>
+            </Box>
+            </Grid>
+          )}
           </Grid>
           </Box>
 

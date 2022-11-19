@@ -5,6 +5,7 @@ const {
   createEvent,
   getEventDetails,
   getMultipleEventsFromClubs,
+  getEventsByUser,
   getEvents,
   updateEvent,
   deleteEvent,
@@ -20,11 +21,6 @@ router.post('/', protect, createEvent);
 router.post('/:eventid/attendedby/:userid', addUserToEvent);
 router.post('/:eventid/unattendedby/:userid', removeUserFromEvent);
 router.get('/previousevents/:clubid', protect, getEvents);
-
-// router.get("/events?filter=latest", getEventDetails);
-// router.get("/events/latest?userId=iddxxx", getEventDetails);
-// router.get("/events/:id", getEventDetails);
-// router.get("/users/:userId/events/latest", getEventDetails);
-// router.get("/users/:userId/events", getEventDetails);
+router.post('/user', protect, getEventsByUser);
 
 module.exports = router;
