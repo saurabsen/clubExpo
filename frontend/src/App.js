@@ -1,6 +1,6 @@
 // import '@fontsource/raleway';
 import { useState, useEffect } from 'react';
-import { Routes, Route, useParams, useNavigate } from 'react-router-dom';
+import { Routes, Route, useParams, useNavigate, useLocation } from 'react-router-dom';
 import { Box, Grid } from '@mui/material';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { Header, SideBar } from './components';
@@ -44,12 +44,20 @@ const App = () => {
   const navigate = useNavigate();
   const token = JSON.parse(localStorage.getItem('userToken'));
   const [sideBarMenu, setSideBarMenu] = useState([]);
+  const location = useLocation();
 
   useEffect(() => {
     if (!token) {
       navigate('/login');
     }
   }, [token]);
+
+  useEffect(() => {
+    const token = JSON.parse(localStorage.getItem('userToken'));
+    if (location.pathname !== '/login' && token) {
+      getUser();
+    }
+  }, [location]);
 
   useEffect(() => {
     let menuItems = [];
@@ -152,7 +160,14 @@ const App = () => {
       button: {
         textTransform: 'none',
         fontWeight: 500,
-        fontFamily: 'Raleway'
+        fontFamily: 'Raleway',
+        fontSize: '16px'
+      },
+      h4: {
+        fontFamily: 'Oswald'
+      },
+      h5: {
+        fontFamily: 'Oswald'
       }
     }
   });
@@ -197,22 +212,22 @@ const App = () => {
             <Box sx={{ flexGrow: '1' }}>
               <Routes>
                 <Route exact path="/" element={<Home />} />
-                <Route path="/home" element={<Home />} />
                 <Route path="/admin-dashboard" element={<AdminDashboard />} />
-                <Route path="/submit-proposal" element={<ClubProposal />} />
-                <Route path="/all-proposal" element={<ProposalManagement />} />
                 <Route path="/club-requests" element={<ClubRequests />} />
-                <Route path="/clubs-joined" element={<ClubsJoined />} />
-                <Route path="/club-managed" element={<ClubsManaged />} />
+                <Route path="/all-proposal" element={<ProposalManagement />} />
+                <Route path="/proposals/:proposalId" element={<Proposal />} />
+                <Route path="/home" element={<Home />} />
                 <Route path="/discover-clubs" element={<DiscoverClubs />} />
+                <Route path="/clubs-joined" element={<ClubsJoined />} />
                 <Route path="/events-registered" element={<EventsRegistered />} />
                 <Route path="/events/:eventId" element={<UserEventsPage />} />
-                <Route path="/proposals/:proposalId" element={<Proposal />} />
-                <Route path="/profile" element={<Profile />} />
+                <Route path="/submit-proposal" element={<ClubProposal />} />
                 <Route path="/clubs/:id" element={<ClubDetail />} />
                 <Route path="/clubs/:clubId" element={<ClubSinglePage />} />
-                <Route path="/clubs/:clubId/createevent" element={<CreateEventPage />} />
                 <Route path="/search" element={<SearchResults />} />
+                <Route path="/club-managed" element={<ClubsManaged />} />
+                <Route path="/clubs/:clubId/createevent" element={<CreateEventPage />} />
+                <Route path="/profile" element={<Profile />} />
                 <Route path="/notifications" element={<Notifications />} />
               </Routes>
             </Box>
