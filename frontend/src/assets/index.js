@@ -39,12 +39,18 @@ import Share from './Icons/share.svg';
 import UpDisabled from './Icons/up-disabled.svg';
 import Up from './Icons/up.svg';
 import Clock from './Icons/clock-icon.svg';
+import twitter from './Icons/twitter.svg';
+import instagram from './Icons/instagram.svg';
+import email from './Icons/email.svg';
 
 // Logos
 import LogoRectangle from './Logo/logo-rectangle.svg';
 
 // Images
-import LoginGirl from './Images/LoginGirl.jpg';
+// import LoginGirl from './Images/LoginGirl.jpg';
+import LoginGirl from './Images/LoginGirl.png';
+import profileCover from './Images/profileCover.png';
+// import LoginGirl from './Images/ivana-cajina-7JWXbeBB4gY-unsplash.jpg';
 
 export {
   AddMember,
@@ -88,5 +94,9 @@ export {
   Up,
   LogoRectangle,
   LoginGirl,
-  Clock
+  Clock,
+  profileCover,
+  instagram,
+  twitter,
+  email
 };
