@@ -13,11 +13,9 @@ axios.defaults.baseURL = 'https://clubspace.onrender.com/api/';
 axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
 
 root.render(
-  <React.StrictMode>
-    <Provider store={store}>
-      <Router>
-        <App />
-      </Router>
-    </Provider>
-  </React.StrictMode>
+  <Provider store={store}>
+    <Router>
+      <App />
+    </Router>
+  </Provider>
 );

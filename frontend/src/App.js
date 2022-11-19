@@ -1,7 +1,8 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 // import '@fontsource/raleway';
 import { useState, useEffect } from 'react';
-import { Routes, Route, useParams, useNavigate } from 'react-router-dom';
-import { Box, Grid } from '@mui/material';
+import { Routes, Route, useParams, useNavigate, useLocation } from 'react-router-dom';
+import { Box } from '@mui/material';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { Header, SideBar } from './components';
 import {
@@ -20,7 +21,9 @@ import {
   Proposal,
   Profile,
   ClubPage,
-  CreateEvent
+  CreateEvent,
+  NotFoundPage,
+  Notifications
 } from './views';
 import {
   HomeIcon,
@@ -38,11 +41,12 @@ import axios from 'axios';
 
 const App = () => {
   const pathname = window.location.pathname;
-  const { logoutUser } = useActions();
+  const { getUser, logoutUser } = useActions();
   const { data: userData } = useTypedSelector((state) => state.auth);
   const navigate = useNavigate();
   const token = JSON.parse(localStorage.getItem('userToken'));
   const [sideBarMenu, setSideBarMenu] = useState([]);
+  const location = useLocation();
 
   useEffect(() => {
     if (!token) {
@@ -51,21 +55,26 @@ const App = () => {
   }, [token]);
 
   useEffect(() => {
+    const token = JSON.parse(localStorage.getItem('userToken'));
+    if (location.pathname !== '/login' && token) {
+      getUser();
+    }
+  }, [location]);
+
+  useEffect(() => {
     let menuItems = [];
 
-    if (userData != null && userData.userRole.includes('hubAdmin')) {
+    if (
+      userData != null &&
+      userData.userRole !== undefined &&
+      userData.userRole.includes('hubAdmin')
+    ) {
       menuItems.push(
         {
           routeLink: '/admin-dashboard',
           icon: Dashboard,
           altText: 'Dashboard Icon',
           name: 'Dashboard'
-        },
-        {
-          routeLink: '/club-managed',
-          icon: ClubsManagedIcon,
-          altText: 'Clubs managed Icon',
-          name: 'Clubs Managed'
         },
         {
           routeLink: '/club-requests',
@@ -78,6 +87,7 @@ const App = () => {
 
     if (
       userData != null &&
+      userData.userRole !== undefined &&
       (userData.userRole.includes('clubAdmin') || userData.userRole.includes('member'))
     ) {
       menuItems.push(
@@ -108,12 +118,26 @@ const App = () => {
       );
     }
 
+    if (
+      userData != null &&
+      userData.userRole !== undefined &&
+      userData.userRole.includes('clubAdmin')
+    ) {
+      menuItems.push({
+        routeLink: '/club-managed',
+        icon: ClubsManagedIcon,
+        altText: 'Clubs managed Icon',
+        name: 'Clubs Managed'
+      });
+    }
+
     setSideBarMenu([...menuItems]);
   }, [userData]);
 
   axios.interceptors.request.use(
     (config) => {
       const token = JSON.parse(localStorage.getItem('userToken'));
+      //getUser();
       if (token) {
         config.headers['Authorization'] = 'Bearer ' + token;
       }
@@ -138,7 +162,14 @@ const App = () => {
       button: {
         textTransform: 'none',
         fontWeight: 500,
-        fontFamily: 'Raleway'
+        fontFamily: 'Raleway',
+        fontSize: '16px'
+      },
+      h4: {
+        fontFamily: 'Oswald'
+      },
+      h5: {
+        fontFamily: 'Oswald'
       }
     }
   });
@@ -169,47 +200,42 @@ const App = () => {
         </Routes>
       ) : (
         <Box sx={{ flexGrow: 1 }}>
-          <Grid container>
+          <Box sx={{ display: 'flex', flexFlow: 'row' }}>
             {pathname.includes('/proposal') ||
-            pathname.includes('/clubs') ||
+            pathname.includes('/submit-proposal') ||
+            pathname.includes('/clubs/') ||
+            pathname.includes('/profile') ||
             pathname.includes('/events/') ? (
               ''
             ) : (
-              <Grid item xs={2}>
+              <Box sx={{ display: { xs: 'none', md: 'block' }, flex: '0 0 231px' }}>
                 <SideBar sidebardata={sideBarMenu} />
-              </Grid>
+              </Box>
             )}
-            <Grid
-              item
-              xs={
-                pathname.includes('/proposal') ||
-                pathname.includes('/clubs') ||
-                pathname.includes('/events/')
-                  ? 12
-                  : 10
-              }
-            >
+            <Box sx={{ flexGrow: '1' }}>
               <Routes>
                 <Route exact path="/" element={<Home />} />
-                <Route path="/home" element={<Home />} />
                 <Route path="/admin-dashboard" element={<AdminDashboard />} />
-                <Route path="/submit-proposal" element={<ClubProposal />} />
-                <Route path="/all-proposal" element={<ProposalManagement />} />
                 <Route path="/club-requests" element={<ClubRequests />} />
-                <Route path="/clubs-joined" element={<ClubsJoined />} />
-                <Route path="/club-managed" element={<ClubsManaged />} />
+                <Route path="/all-proposal" element={<ProposalManagement />} />
+                <Route path="/proposals/:proposalId" element={<Proposal />} />
+                <Route path="/home" element={<Home />} />
                 <Route path="/discover-clubs" element={<DiscoverClubs />} />
+                <Route path="/clubs-joined" element={<ClubsJoined />} />
                 <Route path="/events-registered" element={<EventsRegistered />} />
                 <Route path="/events/:eventId" element={<UserEventsPage />} />
-                <Route path="/proposals/:proposalId" element={<Proposal />} />
-                <Route path="/profile" element={<Profile />} />
+                <Route path="/submit-proposal" element={<ClubProposal />} />
                 <Route path="/clubs/:id" element={<ClubDetail />} />
                 <Route path="/clubs/:clubId" element={<ClubSinglePage />} />
-                <Route path="/clubs/:clubId/createevent" element={<CreateEventPage />} />
                 <Route path="/search" element={<SearchResults />} />
+                <Route path="/404" element={<NotFoundPage />} />
+                <Route path="/club-managed" element={<ClubsManaged />} />
+                <Route path="/clubs/:clubId/createevent" element={<CreateEventPage />} />
+                <Route path="/profile" element={<Profile />} />
+                <Route path="/notifications" element={<Notifications />} />
               </Routes>
-            </Grid>
-          </Grid>
+            </Box>
+          </Box>
         </Box>
       )}
     </ThemeProvider>

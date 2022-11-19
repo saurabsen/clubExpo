@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect } from 'react';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
@@ -8,11 +9,10 @@ import ClubCard from '../../components/ClubCard/ClubCard';
 const ClubsManaged = () => {
   const { getClubsDataByUser } = useActions();
   const clubs = useTypedSelector((state) => state.clubs);
+  const { data: userData } = useTypedSelector((state) => state.auth);
 
   useEffect(() => {
-    const userID = JSON.parse(localStorage.getItem('user'));
-    getClubsDataByUser(userID._id);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    getClubsDataByUser(userData._id);
   }, []);
 
   return (
@@ -22,17 +22,21 @@ const ClubsManaged = () => {
         <br />
         <Box sx={{ flexGrow: 1 }}>
           <Grid container spacing={2} sx={{ p: 2 }}>
-            {clubs.data.map((clubData) => (
-              <Grid key={clubData.createdAt} item xs={4}>
-                <ClubCard
-                  key={clubData._id}
-                  clubImage={clubData.logoImage}
-                  clubName={clubData.name}
-                  clubNumMembers={clubData?.acceptedMembers?.length}
-                  clubId={clubData._id}
-                />
-              </Grid>
-            ))}
+            {clubs.data !== null && clubs.data !== undefined && clubs.data.length > 0
+              ? clubs.data.map((clubData) => (
+                  <Grid key={clubData.createdAt} item xs={4}>
+                    <ClubCard
+                      key={clubData._id}
+                      clubImage={clubData.logoImage}
+                      clubName={clubData.name}
+                      clubNumMembers={clubData?.acceptedMembers?.length}
+                      clubId={clubData._id}
+                    />
+                  </Grid>
+                ))
+              : !clubs.loading
+              ? ''
+              : ''}
           </Grid>
         </Box>
       </div>

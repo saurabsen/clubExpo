@@ -5,9 +5,7 @@ const UpcomingEvents = (props) => {
   const { events } = props;
   return (
     <>
-      <Typography variant="h5" component="h5" sx={{ pb: 1 }}>
-        Upcoming Events
-      </Typography>
+        { props.title !== '' ? <Typography variant="h5" component="h5" sx={{ pb: 1 }}>{ props.title }</Typography> : ''}
       {events.map((event) => {
         return (
           <EventsCard
