@@ -152,7 +152,8 @@ const Profile = () => {
             sx={{
               display: 'flex',
               alignItems: 'center',
-              gap: '1rem'
+              gap: '1rem',
+              flexFlow: 'row wrap'
             }}
           >
             {userClubs.map((club) => {
