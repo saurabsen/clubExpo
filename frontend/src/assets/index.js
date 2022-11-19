@@ -45,6 +45,7 @@ import LogoRectangle from './Logo/logo-rectangle.svg';
 
 // Images
 import LoginGirl from './Images/LoginGirl.jpg';
+import Base from './Images/Base.png';
 
 export {
   AddMember,
@@ -88,5 +89,6 @@ export {
   Up,
   LogoRectangle,
   LoginGirl,
-  Clock
+  Clock,
+  Base
 };
