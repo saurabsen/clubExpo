@@ -12,6 +12,7 @@ import Stack from '@mui/material/Stack';
 import Button from '../../components/Button/Button';
 import { purple } from '@mui/material/colors';
 import { twitter, instagram, email } from '../../assets';
+import './profile.css';
 
 const TabPanel = (props) => {
   const { children, value, index, ...other } = props;

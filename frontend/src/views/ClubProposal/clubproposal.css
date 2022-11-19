@@ -33,6 +33,12 @@
   filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#a6000000', endColorstr='#00000000',GradientType=0 ); /* IE6-9 */
 }
 
+.card-img {
+  background: no-repeat;
+  width: 100%;
+  max-height: 50rem;
+}
+
 .card-img img {
   position: relative;
   display: block;
