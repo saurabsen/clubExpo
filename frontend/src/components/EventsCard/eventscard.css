@@ -136,7 +136,7 @@
   display: none;
 }
 
-@media screen and (min-width: 481px) {
+@media screen and (min-width: 600px) {
   .eventscard {
     display: grid;
     grid-template-columns: 1fr 278px;

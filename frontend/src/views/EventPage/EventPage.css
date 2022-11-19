@@ -8,17 +8,22 @@
 }
 
 .event-container {
-  display: flex;
+  /* display: flex;
   flex-direction: column;
   flex-wrap: nowrap;
   width: 100%;
-  gap: 1em;
+  gap: 1em; */
   position: relative;
 };
 
 .event-container .event-details {
-  width: 70%;
-  border-right: 1px solid rgba(0, 0, 0, 0.1);
+  /* width: 70%;
+  border-right: 1px solid rgba(0, 0, 0, 0.1); */
+}
+
+.cardicon {
+  max-width: 20px;
+  max-height: 20px;
 }
 
 .club-admin-img {
@@ -27,11 +32,27 @@
 }
 
 .event-links {
-  border-top: 1px solid black;
+  border-top: 1px solid #E0E2E0;
   padding-top: 10px;
   width: 100%;
   position: fixed;
   bottom: 0;
+}
+
+.eventpage-buttons button {
+  padding: 16px 0;
+  font-size: 16px;
+  border-radius: 8px;
+}
+
+.eventpage-footer-line {
+  display: flex;
+  flex-flow: row;
+  justify-content: space-between;
+}
+
+.desktop-event-name {
+  display: none;
 }
 
 .event-comments {

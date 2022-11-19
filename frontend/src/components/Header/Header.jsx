@@ -2,12 +2,18 @@ import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Box, Avatar, Menu, MenuItem } from '@mui/material';
 import SearchBar from '../SearchBar/SearchBar';
-import { LogoRectangle, NotificationsOff, NotificationsOn } from '../../assets';
+import { LogoRectangle, NotificationsOff, NotificationsOn, Search } from '../../assets';
 import './header.css';
+import { useActions } from '../../hooks/useActions';
+import { useTypedSelector } from '../../hooks/useTypedSelector';
 
 const Header = ({ userIsLoggedIn, handleSearch, handleLogoutUser }) => {
   const [newNotification, setNewNotification] = useState(false);
   const [showProfileModal, setShowProfileModal] = useState(null);
+
+  const { getNotifications } = useActions();
+  const { data } = useTypedSelector((state) => state.auth);
+  const { notifications } = useTypedSelector((state) => state.notifications);
 
   const handleShowProfileModal = (e) => {
     setShowProfileModal(e.currentTarget);
@@ -23,10 +29,21 @@ const Header = ({ userIsLoggedIn, handleSearch, handleLogoutUser }) => {
   };
 
   useEffect(() => {
-    setNewNotification(newNotification);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+    setNewNotification(false);
 
+    if (data) {
+      getNotifications(data._id);
+    }
+
+    if (typeof notifications === 'object') {
+      notifications.map((notification) => {
+        if (!notification.read) {
+          setNewNotification(true);
+          return;
+        }
+      });
+    }
+  }, [notifications]);
   return (
     <>
       {!userIsLoggedIn ? (
@@ -54,22 +71,41 @@ const Header = ({ userIsLoggedIn, handleSearch, handleLogoutUser }) => {
             zIndex: 999,
             backgroundColor: '#fff',
             display: 'flex',
+            justifyContent: 'space-between',
             alignItems: 'center',
             gap: '6rem'
           }}
         >
-          <img src={LogoRectangle} style={{ width: '130px' }} alt="Clubspace Logo" />
-          <SearchBar handleSearch={handleSearch} />
+          <Box
+            sx={{
+              width: '100%',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '6rem'
+            }}
+          >
+            <Link to="/home">
+              <img src={LogoRectangle} style={{ width: '130px' }} alt="Clubspace Logo" />
+            </Link>
+            <Box className="desktopSearchbar" sx={{ width: '100%' }}>
+              <SearchBar handleSearch={handleSearch} />
+            </Box>
+          </Box>
           <Box
             sx={{
               display: 'flex',
               alignItems: 'center',
-              gap: '4rem'
+              gap: '2rem'
             }}
           >
+            <Box className="mobileSearchIcon">
+              <Link>
+                <img src={Search} style={{ width: '26px' }} alt="Search Icon" />
+              </Link>
+            </Box>
             <Box>
               {!newNotification ? (
-                <Link to="/notification">
+                <Link to="/notifications">
                   <img
                     src={NotificationsOff}
                     style={{ width: '24px' }}
@@ -77,7 +113,7 @@ const Header = ({ userIsLoggedIn, handleSearch, handleLogoutUser }) => {
                   />
                 </Link>
               ) : (
-                <Link to="/notification">
+                <Link to="/notifications">
                   <img src={NotificationsOn} style={{ width: '24px' }} alt="Notification Bell On" />
                 </Link>
               )}

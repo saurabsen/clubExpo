@@ -2,9 +2,12 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 import './EventPage.css';
 import { Location, Calender, Money, Clock } from '../../assets';
-// import { ReactComponent as DefaultBannerSvg } from '../../assets/banners/default.svg';
+import { Link, useNavigate } from 'react-router-dom';
 import { ReactComponent as Share } from '../../assets/Icons/share.svg';
-import { Button } from '@mui/material';
+import { Button, Card, Grid, Box, CardMedia, TextField, Typography } from '@mui/material';
+import { BackButton } from '../../components';
+import { useTypedSelector } from '../../hooks/useTypedSelector';
+import { useActions } from '../../hooks/useActions';
 
 const EventPage = (props) => {
   const [event, setEvent] = useState({});
@@ -12,27 +15,18 @@ const EventPage = (props) => {
   const [adminInfo, setAdminInfo] = useState();
   const [userInfo, setUserInfo] = useState();
   const [mainButton, setMainButton] = useState();
-  // const event = useRef({});
-  // const clubInfo = useRef({});
-  // const clubInfo = useRef({});
+  const { data: userData } = useTypedSelector((state) => state.auth);
+  const { getUser, addUserToEventModel, removeUserFromEventModel, addEventToUserModel, removeEventFromUserModel } = useActions();
 
-  // const userInfo = {
-  //   _id: '6359ac5abd38379ca3d35aa9',
-  //   eventsAttended: [],
-  //   clubsJoined: [
-  //     "63573f4a54aef5c865de7107"
-  //   ]
-  // };
+  console.log("userData", userData);
+  // getUser();
+
+  const navigate = useNavigate();
 
   const getEvent = async (eventId) => {
     const config = {
       method: 'get',
       url: `events/${eventId}`,
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization:
-          'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MzUwMmRiMzRhMjcwYmY0ZDFhMjc5MWIiLCJpYXQiOjE2NjYxOTg5NjMsImV4cCI6MTY2ODc5MDk2M30.lPOmtB9fdmlIhDIj_R4yAvnt04ZWmuReNPNESVAak_8'
-      }
     };
     const res = await axios(config);
     return res.data;
@@ -42,16 +36,12 @@ const EventPage = (props) => {
     const config = {
       method: 'get',
       url: 'clubs/',
-      headers: {
-        Authorization:
-          'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MzU5YWQ0MmJkMzgzNzljYTNkMzViZDAiLCJpYXQiOjE2NjY4MjE0NDIsImV4cCI6MTY2OTQxMzQ0Mn0._SaFCeAaa-BQVmC-tGPcczEcoad_3XOfONKzMFqeqRY'
-      }
     };
     const res = await axios(config);
     return res.data;
   };
 
-  const getUser = async (userEmail) => {
+  const getUserByEmail = async (userEmail) => {
     const data = JSON.stringify({
       email: userEmail
     });
@@ -69,104 +59,47 @@ const EventPage = (props) => {
     return res.data[0];
   };
 
-  const addEventToUserModel = () => {
-    const config = {
-      method: 'post',
-      url: `users/${userInfo._id}/attend/${event._id}`,
-      headers: {}
-    };
-    axios(config);
-  };
-
-  const addUserToEventModel = () => {
-    const config = {
-      method: 'post',
-      url: `events/${event._id}/attendedby/${userInfo._id}`,
-      headers: {}
-    };
-    axios(config);
-  };
-
-  const removeEventFromUserModel = () => {
-    const config = {
-      method: 'post',
-      url: `users/${userInfo._id}/unattend/${event._id}`,
-      headers: {}
-    };
-    axios(config);
-  };
-
-  const removeUserFromEventModel = () => {
-    const config = {
-      method: 'post',
-      url: `events/${event._id}/unattendedby/${userInfo._id}`,
-      headers: {}
-    };
-    axios(config);
-  };
-
   const getMatchingClub = (clubObjs, clubId) => {
     const matchingClubs = clubObjs.filter((clubObj) => clubObj._id === clubId);
     return matchingClubs[0];
   };
 
   const updateClubInfo = async () => {
-    console.log('updateClubInfo called');
     rawClubs = await getClubs();
     setClubInfo(getMatchingClub(rawClubs, event.clubId));
   };
 
   const updateAdminInfo = async () => {
-    if (clubInfo) {
-      console.log('>>>>clubinfo', clubInfo);
-      rawAdminInfo = await getUser(clubInfo.admins[0]);
-      console.log('>>>>rawAdminInfo', rawAdminInfo);
-      await setAdminInfo(rawAdminInfo);
-      console.log('>>>>adminInfo', adminInfo);
-    }
+    rawAdminInfo = await getUserByEmail(clubInfo.admins[0]);
+    setAdminInfo(rawAdminInfo);
   };
 
   const registerUser = () => {
-    addEventToUserModel();
-    addUserToEventModel();
-    let newEventsAttended = userInfo.eventsAttended;
-    newEventsAttended.push(event._id);
-    setUserInfo({
-      ...userInfo,
-      eventsAttended: newEventsAttended
-    });
+    addUserToEventModel(event._id, userData._id);
+    addEventToUserModel(userData._id, event._id);
   };
 
   const unregisterUser = () => {
-    removeEventFromUserModel();
-    removeUserFromEventModel();
-    let newEventsAttended = userInfo.eventsAttended;
-    const targetIndex = newEventsAttended.indexOf(event._id);
-    newEventsAttended.splice(targetIndex, 1);
-    setUserInfo({
-      ...userInfo,
-      eventsAttended: newEventsAttended
-    });
+    removeUserFromEventModel(event._id, userData._id);
+    removeEventFromUserModel(userData._id, event._id);
   };
 
   let rawClubs;
   let rawAdminInfo;
 
   const initEvent = async () => {
-    console.log('initEvent called');
     try {
       const { eventId } = props;
       const rawEvent = await getEvent(eventId);
       setEvent(rawEvent);
-      console.log('event', event);
-      // const userInfo = await getUser('nhugnin2@studiopress.com');
     } catch (error) {
       console.log("'", 'failed to load component Event Page:' + error.message);
     }
   };
 
   const selectButton = () => {
-    const eventLoc = userInfo.eventsAttended.indexOf(event._id);
+    // console.log('userData in selectButton', userData);
+    const eventLoc = userData.eventsAttended.indexOf(event._id);
     if (eventLoc !== -1) {
       return (
         <Button style={{ width: '100%' }} variant="outlined" onClick={unregisterUser}>
@@ -184,58 +117,65 @@ const EventPage = (props) => {
 
   useEffect(() => {
     initEvent();
+    console.log('*** initEvent completed');
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [props]);
-
+  }, []);
+      
   useEffect(() => {
-    console.log('>>>event', event);
-    (async () => {
-      setUserInfo(await getUser('nhugnin2@studiopress.com'));
-    })();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [event]);
-
-  useEffect(() => {
-    console.log('>>>userInfo', userInfo);
-    if (userInfo) {
+    if (userData) {
       setMainButton(selectButton());
     }
-    console.log('>>>mainButton', mainButton);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [event, userInfo]);
+  }, [event, userData]);
 
   useEffect(() => {
     updateClubInfo();
+    console.log('*** updateClubInfo completed');
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [event]);
 
   useEffect(() => {
-    updateAdminInfo();
+    if (clubInfo) {
+      updateAdminInfo();
+      // (async () => {updateAdminInfo();})();
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [clubInfo]);
 
   const renderEventLinks = () => {
     return (
-      <div className="eventscard-buttons">
-        <Button variant="outlined">
+      <Box className="eventpage-buttons" sx={{
+        display: 'flex',
+        flexFlow: 'row',
+        gap: '20px'
+      }}>
+        <Button variant="outlined" sx={{width: '100px'}}>
           <Share />
         </Button>
         {mainButton ? mainButton : null}
-      </div>
+      </Box>
     );
   };
 
   const renderEventDetails = () => {
     return (
-      <>
+      <Box sx={{
+        mb: '40px',
+      }}>
         <div>
-          <h4 className="desktop-event-name">{event.name}</h4>
+          <h4 className="event-name">{event.name}</h4>
         </div>
         <div className="eventscard-main">
-          <p>{event.desc}</p>
+          <Typography sx={{
+            fontColor: '#666666',
+          }}>{event.desc}</Typography>
         </div>
-        <div className="eventscard-footer">
-          <div className="eventscard-footer-line">
+        <Box className="eventscard-footer" sx={{
+          display: 'flex',
+          flexFlow: 'column',
+          gap: '24px'
+        }}>
+          <div className="eventpage-footer-line">
             <p>
               <span>
                 <img src={Calender} alt="Date" className="cardicon" />
@@ -249,7 +189,7 @@ const EventPage = (props) => {
               {event.time ?? '6:00PM'}
             </p>
           </div>
-          <div className="eventscard-footer-line">
+          <div className="eventpage-footer-line">
             <p>
               <span>
                 <img src={Location} alt="Location" className="cardicon" />
@@ -263,37 +203,72 @@ const EventPage = (props) => {
               {event.price ?? 'FREE'}
             </p>
           </div>
-          <div>
-            <h4 className="desktop-event-name">About Event</h4>
+          <Box sx={{display: 'flex', flexFlow: 'column', gap: '16px'}}>
+            <Box sx={{display: {xs: 'none', md: 'inline'}}}>
+              <h4>About Event</h4>
+            </Box>
             <p>{event.description ?? ''}</p>
-          </div>
-        </div>
-      </>
+          </Box>
+        </Box>
+      </Box>
     );
   };
 
   const renderClubInfo = () => {
     const styleClubAdminImg = {
       backgroundImage: `url("${adminInfo.profileImage}")`,
-      backgroundSize: 'cover'
+      backgroundSize: 'cover',
+      borderRadius: '8px'
     };
 
     return (
-      <div className="event-club-info">
-        <h1>Club Info</h1>
-        <div className="club-admin-img" style={styleClubAdminImg}></div>
-        <p>{clubInfo.name}</p>
-        <p>{adminInfo.firstName + ' ' + adminInfo.lastName}</p>
-      </div>
+      <Link to={`/clubs/${clubInfo._id}`}>
+        <Box className="event-club-info" sx={{
+          mb: '24px'
+        }}>
+          <Card sx={{p: '24px',
+            borderRadius: '8px',
+            boxShadow: 'unset',
+            border: {xs: 'solid 1px #E0E2E0', md: 'solid 1px #F3EFFB'},
+            backgroundColor: {md: '#F3EFFB'},
+            display: 'flex',
+            flexFlow: 'row',
+            justifyContent: 'flex-start',
+            alignItems: 'center',
+            gap: '16px'
+          }}>
+            <Box sx={{maxWidth: 'fit-content', padding: '0'}}>
+              <Box className="club-admin-img" sx={styleClubAdminImg}></Box>
+            </Box>
+            <Box sx={{display: 'flex', flexFlow: 'column', gap: '8px'}}>
+              <h5>{adminInfo.firstName + ' ' + adminInfo.lastName}</h5>
+              <h6>{clubInfo.name}</h6>
+            </Box>
+          </Card>
+        </Box>
+      </Link>
     );
   };
 
   const renderEventComments = () => {
     return (
-      <div className="event-comments">
+      <Box className="event-comments">
         <div>
-          <h4 className="desktop-event-name">Write Comments</h4>
-          <textarea className="comment-textarea" placeholder="Write Comment" />
+          <Box sx={{display: {xs: 'none', md: 'block'}, mb: '16px'}}>
+            <h4>Write Comments</h4>
+          </Box>
+          <TextField
+            id="outlined-textarea"
+            label="Write your comment here"
+            fullWidth
+            multiline
+            sx={{
+              width: 'auto',
+              display: 'block',
+              mb: '16px',
+              zIndex: '5'
+            }}
+          />
           <Button variant="contained" color="secondary">
             Comment
           </Button>
@@ -301,39 +276,78 @@ const EventPage = (props) => {
         <div>
           <h4 className="desktop-event-name">Comments (4)</h4>
         </div>
-      </div>
+      </Box>
     );
   };
 
   const renderEventContainer = () => {
     return (
-      <div className="event-container">
-        <div
-          className="event-details"
-          style={{ width: '70%', borderRight: '1px solid rgba(0, 0, 0, 0.1)' }}
-        >
-          {renderEventDetails()}
-          {adminInfo ? renderClubInfo() : 'adminInfor is empty'}
-          {renderEventComments()}
-        </div>
-        <div className="event-links">{renderEventLinks()}</div>
-      </div>
+      <>
+        <Grid container className="event-container" 
+          direction='row'
+          xs={12} 
+          sx={{
+            p: '20px',
+        }}>
+          <Grid item className="event-details"
+            xs={12}
+            md={8}
+            sx={{
+              pr: {md: '54px'},
+              borderRight: {md: '1px solid hsla(0,0%,0%,.1)'}
+          }}>
+            {renderEventDetails()}
+            <Box display={{md: 'none'}}>
+              {adminInfo ? renderClubInfo() : 'adminInfo is empty'}
+            </Box>
+            {renderEventComments()}
+          </Grid>
+          <Grid item xs={0} md={4} display={{xs: 'none', md: 'block'}} 
+            sx={{
+              pl: '24px'
+          }}>
+            {renderEventLinks()}
+            <Box sx={{mt: '92px',display: 'flex', flexFlow: 'column', gap: '16px'}}>
+              <h4>Admin</h4>
+              {adminInfo ? renderClubInfo() : 'adminInfo is empty'}
+            </Box>
+          </Grid>
+        </Grid>
+        <Box className="event-links" sx={{
+          px: '18px',
+          py: '24px',
+          display: {xs: 'block', md: 'none'},
+          background: 'white',
+          boxShadow: '2px -2px 4px rgba(0, 0, 0, 0.08)',
+          zIndex: '2000'
+        }}>
+          {renderEventLinks()}
+        </Box>
+      </>
     );
   };
 
   const renderBanner = () => {
-    return {
-      backgroundImage: `url(${event.featureImage})`,
-      backgroundSize: 'cover',
-      height: 300
-    };
+
+    return (
+      <Box sx={{position: 'relative'}}>
+        <CardMedia
+          component='img'
+          image={event.featureImage}
+          sx={{height: {xs: '211px', md: '462px'}}}
+        />
+        <Box onClick={() => {navigate(-1);}} sx={{position: 'absolute', top: '30px', left: '30px'}}>
+          <BackButton />
+        </Box>
+      </Box>
+    );
   };
 
   return (
-    <>
-      <div className="hero-container" style={renderBanner()}></div>
+    <Card sx={{width: '100%', border: 'unset', boxShadow: 'unset'}}>
+      {renderBanner()}
       {event ? renderEventContainer() : ''}
-    </>
+    </Card>
   );
 };
 

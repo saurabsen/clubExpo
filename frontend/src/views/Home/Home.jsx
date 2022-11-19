@@ -1,27 +1,28 @@
 import EventsCard from '../../components/EventsCard/EventsCard';
 import UpcomingEvents from '../../components/UpcomingEvents/UpcomingEvents';
-import Grid from '@mui/material/Grid';
-import { Typography } from '@mui/material';
+import { Typography, Grid, Box, Button } from '@mui/material';
 import axios from 'axios';
-import { useState } from 'react';
-import { useEffect } from 'react';
+import { useState, useEffect } from 'react';
+import { useTypedSelector } from '../../hooks/useTypedSelector';
+import { useNavigate } from 'react-router-dom';
 
 const Home = () => {
   const [events, setEvents] = useState([]);
   const [upcomingEvs, setUpcomingEvs] = useState([]);
   const [clubList, setClubList] = useState([]);
-
+  const { data: userData } = useTypedSelector((state) => state.auth);
+  const [feedView, setFeedView] = useState(true);
+  const navigate = useNavigate();
+  
   const getEvents = async () => {
     const data = JSON.stringify({
-      clubIds: ['1234', '2345', '63573f4a54aef5c865de7107', '635cc70ca5cc5e9114f2d03e']
+      clubIds: userData.clubsJoined
     });
     const config = {
       method: 'post',
       url: 'events/latestfromclubs',
       headers: {
         'Content-Type': 'application/json',
-        Authorization:
-          'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MzUwMmRiMzRhMjcwYmY0ZDFhMjc5MWIiLCJpYXQiOjE2NjYxOTg5NjMsImV4cCI6MTY2ODc5MDk2M30.lPOmtB9fdmlIhDIj_R4yAvnt04ZWmuReNPNESVAak_8'
       },
       data: data
     };
@@ -33,10 +34,6 @@ const Home = () => {
     const config = {
       method: 'get',
       url: 'clubs/',
-      headers: {
-        Authorization:
-          'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MzU5YWQ0MmJkMzgzNzljYTNkMzViZDAiLCJpYXQiOjE2NjY4MjE0NDIsImV4cCI6MTY2OTQxMzQ0Mn0._SaFCeAaa-BQVmC-tGPcczEcoad_3XOfONKzMFqeqRY'
-      }
     };
 
     const res = await axios(config);
@@ -46,11 +43,10 @@ const Home = () => {
   const initComponent = async () => {
     try {
       const formattedEvents = [];
+      const updatedUser = userData;
       const rawClubs = await getClubs();
       const rawEvents = await getEvents();
       setClubList(rawClubs);
-
-      console.log(clubList); //need to remove it added just to remove warning
 
       const clubDict = [];
       rawClubs.forEach((club) => {
@@ -69,74 +65,114 @@ const Home = () => {
           eventLoc: event.location,
           eventPrice: event.price,
           eventImgUrl: event.featureImage,
-          numberOfAttendees: 100,
+          numberOfAttendees: event.attendees.length,
           eventId: event._id,
           registerClickHandler: '',
           shareClickHandler: '',
-          attendeeImgUrlList: [
-            'https://picsum.photos/200/300?random=1',
-            'https://picsum.photos/200/300?random=2',
-            'https://picsum.photos/200/300?random=3',
-            'https://picsum.photos/200/300?random=4',
-            'https://picsum.photos/200/300?random=5'
-          ],
           withinClub: false,
-          registered: event.registered,
+          registered: (updatedUser.eventsAttended.indexOf(event._id) !== -1 ? true : false),
           clubAdminView: false
         };
-        formattedEvents.push(eventObj);
+        if (dayStart >= new Date()) {
+          formattedEvents.push(eventObj);
+        }
       });
       setEvents(formattedEvents);
-      console.log(events, 'events');
       setUpcomingEvs(formattedEvents);
     } catch (error) {
-      console.log('failed to initialize component Home');
     }
   };
 
   useEffect(() => {
     initComponent();
+    console.log(events.length);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  const renderEventCards = (event) => {
+    return (
+      <EventsCard
+        clubName={event.clubName}
+        clubLogoUrl={event.clubLogoUrl}
+        eventName={event.eventName}
+        eventDesc={event.eventDesc}
+        eventDate={event.eventDate}
+        eventTime={event.eventTime}
+        eventLoc={event.eventLoc}
+        eventPrice={event.eventPrice}
+        eventImgUrl={event.eventImgUrl}
+        numberOfAttendees={event.numberOfAttendees}
+        registerClickHandler={event.registerClickHandler}
+        eventId={event.eventId}
+        shareClickHandler={event.shareClickHandler}
+        attendeeImgUrlList={event.attendeeImgUrlList}
+        withinClub={event.withinClub}
+        registered={event.registered}
+        clubAdminView={event.clubAdminView}
+      />
+    );
+  };
+
+  const renderNoEvents = () => {
+    return (
+      <>
+        <Box sx={{textAlign: 'center'}}>
+          <br/>
+          <Typography sx={{color: '#808780', fontFamily: 'Raleway, sans-serif'}}>
+            Looks like you haven't joined any clubs. Try joining clubs <br/>
+            to see events happening.
+          </Typography>
+          <br/>
+          <Button variant='contained' onClick={() => {navigate('/discover-clubs');}} 
+          sx={{
+            fontSize: '16px', 
+            px: '40px', 
+            py: '16px', 
+            borderRadius: '8px',
+            boxShadow: 'unset'}}>
+            Discover clubs
+          </Button>
+        </Box>
+      </>
+    );
+  };
+
+  const renderTabs = () => {
+    const tabButtonStyles = {flexGrow: '1', boxShadow: 'unset', py: '13px'};
+    return (
+      <>
+        <Button onClick={() => setFeedView(true)} variant={feedView ? 'contained' : 'text'} sx={tabButtonStyles}>My feed</Button>
+        <Button onClick={() => setFeedView(false)} variant={feedView ? 'text' : 'contained'} sx={tabButtonStyles}>Calendar</Button>
+      </>
+    );
+  };
 
   const styleLatestEvents = {
     fontFamily: 'Oswald',
     fontWeight: 400,
     fontSize: 18,
     opacity: 0.4,
-    mb: 2
+    mb: 2,
+    display: {xs: 'none', lg: 'inline'}
   };
+
+  window.addEventListener('resize', () => {
+    if (window.innerWidth >= 1200 && !feedView) {setFeedView(true);}
+  });
 
   return (
     <>
-      <Grid container xs={12} columnSpacing={{ xs: 3 }}>
-        <Grid item xs={9} sx={{ mt: 4 }}>
+      <Box sx={{display: {xs: 'flex', lg: 'none'}, gap: '26px', borderBottom: '1px solid #E0E2E0', px: '24px', py: '12px', boxShadow: '2px 2px 4px rgba(0, 0, 0, 0.08)'}}>
+        {renderTabs()}
+      </Box>
+      <Grid container xs={12} columnSpacing={{ xs: 3 }} sx={{pl: '24px'}}>
+        <Grid item xs={12} lg={9} sx={{ mt: 4 }}>
           <Typography sx={styleLatestEvents}>Latest Events</Typography>
-          {events.map((event) => {
-            return (
-              <EventsCard
-                clubName={event.clubName}
-                clubLogoUrl={event.clubLogoUrl}
-                eventName={event.eventName}
-                eventDesc={event.eventDesc}
-                eventDate={event.eventDate}
-                eventTime={event.eventTime}
-                eventLoc={event.eventLoc}
-                eventPrice={event.eventPrice}
-                eventImgUrl={event.eventImgUrl}
-                numberOfAttendees={event.numberOfAttendees}
-                registerClickHandler={event.registerClickHandler}
-                eventId={event.eventId}
-                shareClickHandler={event.shareClickHandler}
-                attendeeImgUrlList={event.attendeeImgUrlList}
-                withinClub={event.withinClub}
-                registered={event.registered}
-                clubAdminView={event.clubAdminView}
-              />
-            );
-          })}
+          {(feedView) ? 
+            ( (events.length !== 0) ? events.map((event) => renderEventCards(event)) : renderNoEvents() ) : 
+            <UpcomingEvents upcomingEvents={upcomingEvs} />}
         </Grid>
-        <Grid item xs={3} sx={{ mt: 4 }}>
+        <Grid item xs={0} lg={3} sx={{ mt: 4, display: {xs: 'none', lg: 'block'} }}>
           <UpcomingEvents upcomingEvents={upcomingEvs} />
         </Grid>
       </Grid>

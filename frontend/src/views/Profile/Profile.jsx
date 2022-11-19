@@ -3,6 +3,7 @@ import axios from 'axios';
 import PropTypes from 'prop-types';
 import { Box, Card, Tabs, Tab, Typography } from '@mui/material';
 import { useEffect } from 'react';
+import { useTypedSelector } from '../../hooks/useTypedSelector';
 
 const TabPanel = (props) => {
   const { children, value, index, ...other } = props;
@@ -47,20 +48,21 @@ const Profile = () => {
 
   useEffect(() => {
     getClubs();
-  },[]);
+  }, []);
 
   const getClubs = async () => {
-    const user = JSON.parse(localStorage.getItem('user'));
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    const { data: userData } = useTypedSelector((state) => state.auth);
     const data = await axios.get(`clubs/`);
 
     if (data) {
-      const userClubs = data.data.filter((club) => club.createdBy === user._id);
+      const userClubs = data.data.filter((club) => club.createdBy === userData._id);
       setUserClubs(userClubs);
     }
   };
 
   return (
-    <Box sx={{ width: '1400px', padding: '2rem 0' }}>
+    <Box sx={{ maxWidth: '100%', padding: '2rem' }}>
       <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
         <Tabs value={value} onChange={handleChange} aria-label="profile tabs">
           <Tab label="About" {...a11yProps(0)} />
