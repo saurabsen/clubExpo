@@ -3,6 +3,7 @@ import { styled, alpha } from '@mui/material/styles';
 import Button from '../Button/Button';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
+import { useNavigate } from 'react-router-dom';
 
 const StyledMenu = styled((props) => (
   <Menu
@@ -45,7 +46,8 @@ const StyledMenu = styled((props) => (
   },
 }));
 
-export default function CustomizedMenus() {
+export default function CustomizedMenus(props) {
+  const navigate = useNavigate();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
@@ -79,10 +81,10 @@ export default function CustomizedMenus() {
         open={open}
         onClose={handleClose}
       >
-        <MenuItem onClick={handleClose} disableRipple sx={dropMenuStyling}>
+        <MenuItem onClick={() => {handleClose(); navigate(`/events/${props.eventId}`);}} disableRipple sx={dropMenuStyling}>
           Registered
         </MenuItem>
-        <MenuItem onClick={handleClose} disableRipple sx={dropMenuStyling}>
+        <MenuItem onClick={() => {handleClose(); navigate(`/events/${props.eventId}`);}} disableRipple sx={dropMenuStyling}>
           Not Interested
         </MenuItem>
       </StyledMenu>

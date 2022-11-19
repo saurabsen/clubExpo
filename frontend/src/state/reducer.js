@@ -5,6 +5,7 @@ import proposalReducer from './proposals/reducer';
 import clubMemberReducer from './clubsMembers/reducer';
 import authReducer from './auth/reducer';
 import searchReducer from './search/reducer';
+import notificationsReducer from './notifications/reducer';
 
 const rootReducer = combineReducers({
   events: eventReducer,
@@ -12,7 +13,8 @@ const rootReducer = combineReducers({
   proposals: proposalReducer,
   auth: authReducer,
   clubMember: clubMemberReducer,
-  search: searchReducer
+  search: searchReducer,
+  notifications: notificationsReducer
 });
 
 export default rootReducer;

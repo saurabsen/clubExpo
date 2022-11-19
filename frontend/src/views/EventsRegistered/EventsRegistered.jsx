@@ -9,10 +9,9 @@ import { useActions } from '../../hooks/useActions';
 const EventsRegistered = () => {
   const { getAllEventsData } = useActions();
   // const allEventsData = useTypedSelector((state) => state.events);
-  const userData = JSON.parse(localStorage.getItem('user'));
 
   useEffect(() => {
-    getAllEventsData('latestfromclubs', { clubIds: userData.clubsJoined });
+   // getAllEventsData('latestfromclubs', { clubIds: userData.clubsJoined });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

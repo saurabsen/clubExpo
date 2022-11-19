@@ -21,38 +21,123 @@ import {
   Profile,
   ClubPage,
   CreateEvent,
-  NotFoundPage
+  NotFoundPage,
+  Notifications
 } from './views';
+import {
+  HomeIcon,
+  Discover,
+  ClubsJoined as ClubsJoinedIcon,
+  EventRegistered,
+  ClubsManaged as ClubsManagedIcon,
+  Dashboard,
+  Request
+} from './assets';
 import { useActions } from './hooks/useActions';
 import { useTypedSelector } from './hooks/useTypedSelector';
-import axios from 'axios';
 import SearchResults from './views/SearchResults/SearchResults';
+import axios from 'axios';
 
 const App = () => {
   const pathname = window.location.pathname;
-  const [userIsLoggedIn, setUserIsLoggedIn] = useState(false);
-
+  const { getUser, logoutUser } = useActions();
+  const { data: userData } = useTypedSelector((state) => state.auth);
   const navigate = useNavigate();
-
-  const { logoutUser } = useActions();
-  const { data } = useTypedSelector((state) => state.auth);
+  const token = JSON.parse(localStorage.getItem('userToken'));
+  const [sideBarMenu, setSideBarMenu] = useState([]);
 
   useEffect(() => {
-    if (data) {
-      setUserIsLoggedIn(true);
-      const token = JSON.parse(localStorage.getItem('userToken'));
-      axios.defaults.headers['Authorization'] = `Bearer ${token}`;
-      if (data.userRole === 'member' || data.userRole === 'clubAdmin') {
-        navigate('/home');
-      } else if (data.userRole === 'hubAdmin') {
-        navigate('/admin-dashboard');
-      }
-    } else {
-      setUserIsLoggedIn(false);
+    if (!token) {
       navigate('/login');
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [data]);
+  }, [token]);
+
+  useEffect(() => {
+    let menuItems = [];
+
+    if (
+      userData != null &&
+      userData.userRole !== undefined &&
+      userData.userRole.includes('hubAdmin')
+    ) {
+      menuItems.push(
+        {
+          routeLink: '/admin-dashboard',
+          icon: Dashboard,
+          altText: 'Dashboard Icon',
+          name: 'Dashboard'
+        },
+        {
+          routeLink: '/club-requests',
+          icon: Request,
+          altText: 'Club Requests Icon',
+          name: 'Club Requests'
+        }
+      );
+    }
+
+    if (
+      userData != null &&
+      userData.userRole !== undefined &&
+      (userData.userRole.includes('clubAdmin') || userData.userRole.includes('member'))
+    ) {
+      menuItems.push(
+        {
+          routeLink: '/home',
+          icon: HomeIcon,
+          altText: 'Home Icon',
+          name: 'Home'
+        },
+        {
+          routeLink: '/discover-clubs',
+          icon: Discover,
+          altText: 'Discover Clubs Icon',
+          name: 'Discover Clubs'
+        },
+        {
+          routeLink: '/clubs-joined',
+          icon: ClubsJoinedIcon,
+          altText: 'Clubs Joined Icon',
+          name: 'Clubs Joined'
+        },
+        {
+          routeLink: '/events-registered',
+          icon: EventRegistered,
+          altText: 'Event Registered Icon',
+          name: 'Events Registered'
+        }
+      );
+    }
+
+    if (
+      userData != null &&
+      userData.userRole !== undefined &&
+      userData.userRole.includes('clubAdmin')
+    ) {
+      menuItems.push({
+        routeLink: '/club-managed',
+        icon: ClubsManagedIcon,
+        altText: 'Clubs managed Icon',
+        name: 'Clubs Managed'
+      });
+    }
+
+    setSideBarMenu([...menuItems]);
+  }, [userData]);
+
+  axios.interceptors.request.use(
+    (config) => {
+      const token = JSON.parse(localStorage.getItem('userToken'));
+      //getUser();
+      if (token) {
+        config.headers['Authorization'] = 'Bearer ' + token;
+      }
+      return config;
+    },
+    (error) => {
+      Promise.reject(error);
+    }
+  );
 
   const theme = createTheme({
     palette: {
@@ -92,30 +177,33 @@ const App = () => {
 
   return (
     <ThemeProvider theme={theme}>
-      <Header userIsLoggedIn={userIsLoggedIn} handleLogoutUser={handleLogoutUser} />
-      {!userIsLoggedIn ? (
+      <Header userIsLoggedIn={token} handleLogoutUser={handleLogoutUser} />
+      {!token ? (
         <Routes>
           <Route path="/login" element={<Login />} />
         </Routes>
       ) : (
         <Box sx={{ flexGrow: 1 }}>
-          <Grid container>
-            {pathname === '/proposal' || pathname.includes('/clubs') ? (
+          <Box sx={{ display: 'flex', flexFlow: 'row' }}>
+            {pathname.includes('/proposal') ||
+            pathname.includes('/clubs/') ||
+            pathname.includes('/events/') ? (
               ''
             ) : (
-              <Grid item xs={2}>
-                <SideBar />
-              </Grid>
+              <Box sx={{ display: { xs: 'none', md: 'block' }, flex: '0 0 231px' }}>
+                <SideBar sidebardata={sideBarMenu} />
+              </Box>
             )}
-            <Grid item xs={pathname.includes('/proposal') || pathname.includes('/clubs') ? 12 : 10}>
+            <Box sx={{ flexGrow: '1' }}>
               <Routes>
+                <Route exact path="/" element={<Home />} />
                 <Route path="/home" element={<Home />} />
                 <Route path="/admin-dashboard" element={<AdminDashboard />} />
                 <Route path="/submit-proposal" element={<ClubProposal />} />
                 <Route path="/all-proposal" element={<ProposalManagement />} />
                 <Route path="/club-requests" element={<ClubRequests />} />
                 <Route path="/clubs-joined" element={<ClubsJoined />} />
-                <Route path="/clubs-managed" element={<ClubsManaged />} />
+                <Route path="/club-managed" element={<ClubsManaged />} />
                 <Route path="/discover-clubs" element={<DiscoverClubs />} />
                 <Route path="/events-registered" element={<EventsRegistered />} />
                 <Route path="/events/:eventId" element={<UserEventsPage />} />
@@ -126,9 +214,10 @@ const App = () => {
                 <Route path="/clubs/:clubId/createevent" element={<CreateEventPage />} />
                 <Route path="/search" element={<SearchResults />} />
                 <Route path="/404" element={<NotFoundPage />} />
+                <Route path="/notifications" element={<Notifications />} />
               </Routes>
-            </Grid>
-          </Grid>
+            </Box>
+          </Box>
         </Box>
       )}
     </ThemeProvider>

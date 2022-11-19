@@ -7,23 +7,32 @@ const User = require('../models/userModel');
 // @route POST /api/users
 // @access Public
 const registerUser = asyncHandler(async (req, res) => {
-  const { 
+  const {
     firstName,
-    lastName, 
+    lastName,
     phoneNumber,
-    email, 
+    email,
     gender,
     userRole,
-    address, 
-    zipcode, 
-    country, 
+    address,
+    zipcode,
+    country,
     badges,
     clubsJoined,
     eventsAttended,
     profileImage,
-    password } = req.body;
+    password,
+  } = req.body;
 
-  if (!firstName || !lastName || !email || !address || !zipcode || !country || !password) {
+  if (
+    !firstName ||
+    !lastName ||
+    !email ||
+    !address ||
+    !zipcode ||
+    !country ||
+    !password
+  ) {
     res.status(400);
     throw new Error('Please enter all the required details');
   }
@@ -117,7 +126,7 @@ const getUsers = asyncHandler(async (req, res) => {
   // let matchingUsers = [];
 
   // const unwrap = ({id, profileImage}) => ({id, profileImage});
-  
+
   // users.forEach((userObj) => {
   //   const newUserObj = unwrap(userObj);
   //   matchingUsers.push(newUserObj);
@@ -140,28 +149,29 @@ const addClubToUser = asyncHandler(async (req, res) => {
     throw new Error('User not found');
   }
 
-  let clubArray = existUser.clubsJoined
+  let clubArray = existUser.clubsJoined;
 
   if (clubArray.indexOf(clubid) === -1) {
-    clubArray.push(clubid)
+    clubArray.push(clubid);
   } else {
     res.status(400);
     throw new Error('User is already part of club');
   }
 
-  const updatedUser = await User.findByIdAndUpdate(userid, {clubsJoined: clubArray}) 
+  const updatedUser = await User.findByIdAndUpdate(userid, {
+    clubsJoined: clubArray,
+  });
 
   if (updatedUser) {
     res.status(200).json({
       id: updatedUser.id,
-      clubsJoined: clubArray
-    })
+      clubsJoined: clubArray,
+    });
   } else {
     res.status(400);
-    throw new Error("Something went wrong")
+    throw new Error('Something went wrong');
   }
-
-})
+});
 
 // @desc Remove club from User
 // @route POST /api/users/:userid/remove/:clubid
@@ -180,27 +190,27 @@ const removeClubFromUser = asyncHandler(async (req, res) => {
   let clubArray = existUser.clubsJoined;
   const targetIndex = clubArray.indexOf(clubid);
 
-
   if (targetIndex === -1) {
     res.status(400);
     throw new Error('User is not part of this club');
   } else {
-    clubArray.splice(targetIndex, 1)
+    clubArray.splice(targetIndex, 1);
   }
 
-  const updatedUser = await User.findByIdAndUpdate(userid, {clubsJoined: clubArray}) 
+  const updatedUser = await User.findByIdAndUpdate(userid, {
+    clubsJoined: clubArray,
+  });
 
   if (updatedUser) {
     res.status(200).json({
       id: updatedUser.id,
-      clubsJoined: clubArray
-    })
+      clubsJoined: clubArray,
+    });
   } else {
     res.status(400);
-    throw new Error("Something went wrong")
+    throw new Error('Something went wrong');
   }
-
-})
+});
 
 // @desc Add event to User
 // @route POST /api/users/:userid/attend/:eventid
@@ -219,27 +229,27 @@ const addEventToUser = asyncHandler(async (req, res) => {
   let eventsArray = existUser.eventsAttended;
   const targetIndex = eventsArray.indexOf(eventid);
 
-
   if (targetIndex === -1) {
-    eventsArray.push(eventid)
+    eventsArray.push(eventid);
   } else {
     res.status(400);
     throw new Error('User is already part of event');
   }
 
-  const updatedUser = await User.findByIdAndUpdate(userid, {eventsAttended: eventsArray}) 
+  const updatedUser = await User.findByIdAndUpdate(userid, {
+    eventsAttended: eventsArray,
+  });
 
   if (updatedUser) {
     res.status(200).json({
       id: updatedUser.id,
-      eventsAttended: eventsArray
-    })
+      eventsAttended: eventsArray,
+    });
   } else {
     res.status(400);
-    throw new Error("Something went wrong")
+    throw new Error('Something went wrong');
   }
-
-})
+});
 
 // @desc Remove event from User
 // @route POST /api/users/:userid/attend/:eventid
@@ -262,23 +272,23 @@ const removeEventFromUser = asyncHandler(async (req, res) => {
     res.status(400);
     throw new Error('User is not part of this event');
   } else {
-    eventsArray.splice(targetIndex, 1)
+    eventsArray.splice(targetIndex, 1);
   }
 
-  const updatedUser = await User.findByIdAndUpdate(userid, {eventsAttended: eventsArray}) 
+  const updatedUser = await User.findByIdAndUpdate(userid, {
+    eventsAttended: eventsArray,
+  });
 
   if (updatedUser) {
     res.status(200).json({
       id: updatedUser.id,
-      eventsAttended: eventsArray
-    })
+      eventsAttended: eventsArray,
+    });
   } else {
     res.status(400);
-    throw new Error("Something went wrong")
+    throw new Error('Something went wrong');
   }
-
-})
-
+});
 
 // @desc Add badge to User
 // @route POST /api/users/:userid/attend/:eventid
@@ -297,27 +307,27 @@ const addBadgeToUser = asyncHandler(async (req, res) => {
   let badgeArray = existUser.badges;
   const targetIndex = badgeArray.indexOf(badgeid);
 
-
   if (targetIndex === -1) {
-    badgeArray.push(badgeid)
+    badgeArray.push(badgeid);
   } else {
     res.status(400);
     throw new Error('User already has this badge');
   }
 
-  const updatedUser = await User.findByIdAndUpdate(userid, {badges: badgeArray}) 
+  const updatedUser = await User.findByIdAndUpdate(userid, {
+    badges: badgeArray,
+  });
 
   if (updatedUser) {
     res.status(200).json({
       id: updatedUser.id,
-      badges: badgeArray
-    })
+      badges: badgeArray,
+    });
   } else {
     res.status(400);
-    throw new Error("Something went wrong")
+    throw new Error('Something went wrong');
   }
-
-})
+});
 
 // @desc Remove event from User
 // @route POST /api/users/:userid/attend/:eventid
@@ -340,22 +350,23 @@ const removeBadgeFromUser = asyncHandler(async (req, res) => {
     res.status(400);
     throw new Error('User is not part of this event');
   } else {
-    badgesArray.splice(targetIndex, 1)
+    badgesArray.splice(targetIndex, 1);
   }
 
-  const updatedUser = await User.findByIdAndUpdate(userid, {badges: badgesArray}) 
+  const updatedUser = await User.findByIdAndUpdate(userid, {
+    badges: badgesArray,
+  });
 
   if (updatedUser) {
     res.status(200).json({
       id: updatedUser.id,
-      badges: badgesArray
-    })
+      badges: badgesArray,
+    });
   } else {
     res.status(400);
-    throw new Error("Something went wrong")
+    throw new Error('Something went wrong');
   }
-
-})
+});
 
 // @desc Delete User
 // @route DELETE /api/users/me/:id
@@ -363,7 +374,7 @@ const removeBadgeFromUser = asyncHandler(async (req, res) => {
 const deleteUser = asyncHandler(async (req, res) => {
   const { id } = req.params;
 
-  const deleteMsg = await User.deleteOne({id: id});
+  const deleteMsg = await User.deleteOne({ id: id });
 
   res.status(200).json(deleteMsg);
 });
