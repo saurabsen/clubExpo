@@ -1,7 +1,8 @@
-const jwt = require('jsonwebtoken');
-const bcrypt = require('bcryptjs');
-const asyncHandler = require('express-async-handler');
-const User = require('../models/userModel');
+const jwt = require("jsonwebtoken");
+const bcrypt = require("bcryptjs");
+const asyncHandler = require("express-async-handler");
+const User = require("../models/userModel");
+const profileBg = require("../assets/index");
 
 // @desc Register User
 // @route POST /api/users
@@ -21,6 +22,7 @@ const registerUser = asyncHandler(async (req, res) => {
     clubsJoined,
     eventsAttended,
     profileImage,
+    description,
     password,
   } = req.body;
 
@@ -34,7 +36,7 @@ const registerUser = asyncHandler(async (req, res) => {
     !password
   ) {
     res.status(400);
-    throw new Error('Please enter all the required details');
+    throw new Error("Please enter all the required details");
   }
 
   //check if user exist
@@ -42,7 +44,7 @@ const registerUser = asyncHandler(async (req, res) => {
 
   if (existUser) {
     res.status(400);
-    throw new Error('User alreday exists');
+    throw new Error("User alreday exists");
   }
 
   //hash password
@@ -64,7 +66,8 @@ const registerUser = asyncHandler(async (req, res) => {
     badges,
     clubsJoined,
     eventsAttended,
-    profileImage,
+    description,
+    profileImage: profileBg.profileBg,
     password: hashedPassword,
   });
 
@@ -78,7 +81,7 @@ const registerUser = asyncHandler(async (req, res) => {
     });
   } else {
     res.status(400);
-    throw new Error('Invalid User');
+    throw new Error("Invalid User");
   }
 });
 
@@ -90,7 +93,7 @@ const loginUser = asyncHandler(async (req, res) => {
 
   if (!email || !password) {
     res.status(400);
-    throw new Error('Please enter all the required details');
+    throw new Error("Please enter all the required details");
   }
 
   const user = await User.findOne({ email });
@@ -105,7 +108,7 @@ const loginUser = asyncHandler(async (req, res) => {
     });
   } else {
     res.status(400);
-    throw new Error('Invalid User');
+    throw new Error("Invalid User");
   }
 });
 
@@ -146,7 +149,7 @@ const addClubToUser = asyncHandler(async (req, res) => {
 
   if (!existUser) {
     res.status(400);
-    throw new Error('User not found');
+    throw new Error("User not found");
   }
 
   let clubArray = existUser.clubsJoined;
@@ -155,7 +158,7 @@ const addClubToUser = asyncHandler(async (req, res) => {
     clubArray.push(clubid);
   } else {
     res.status(400);
-    throw new Error('User is already part of club');
+    throw new Error("User is already part of club");
   }
 
   const updatedUser = await User.findByIdAndUpdate(userid, {
@@ -169,7 +172,7 @@ const addClubToUser = asyncHandler(async (req, res) => {
     });
   } else {
     res.status(400);
-    throw new Error('Something went wrong');
+    throw new Error("Something went wrong");
   }
 });
 
@@ -184,7 +187,7 @@ const removeClubFromUser = asyncHandler(async (req, res) => {
 
   if (!existUser) {
     res.status(400);
-    throw new Error('User not found');
+    throw new Error("User not found");
   }
 
   let clubArray = existUser.clubsJoined;
@@ -192,7 +195,7 @@ const removeClubFromUser = asyncHandler(async (req, res) => {
 
   if (targetIndex === -1) {
     res.status(400);
-    throw new Error('User is not part of this club');
+    throw new Error("User is not part of this club");
   } else {
     clubArray.splice(targetIndex, 1);
   }
@@ -208,7 +211,7 @@ const removeClubFromUser = asyncHandler(async (req, res) => {
     });
   } else {
     res.status(400);
-    throw new Error('Something went wrong');
+    throw new Error("Something went wrong");
   }
 });
 
@@ -223,7 +226,7 @@ const addEventToUser = asyncHandler(async (req, res) => {
 
   if (!existUser) {
     res.status(400);
-    throw new Error('User not found');
+    throw new Error("User not found");
   }
 
   let eventsArray = existUser.eventsAttended;
@@ -233,7 +236,7 @@ const addEventToUser = asyncHandler(async (req, res) => {
     eventsArray.push(eventid);
   } else {
     res.status(400);
-    throw new Error('User is already part of event');
+    throw new Error("User is already part of event");
   }
 
   const updatedUser = await User.findByIdAndUpdate(userid, {
@@ -247,7 +250,7 @@ const addEventToUser = asyncHandler(async (req, res) => {
     });
   } else {
     res.status(400);
-    throw new Error('Something went wrong');
+    throw new Error("Something went wrong");
   }
 });
 
@@ -262,7 +265,7 @@ const removeEventFromUser = asyncHandler(async (req, res) => {
 
   if (!existUser) {
     res.status(400);
-    throw new Error('User not found');
+    throw new Error("User not found");
   }
 
   let eventsArray = existUser.eventsAttended;
@@ -270,7 +273,7 @@ const removeEventFromUser = asyncHandler(async (req, res) => {
 
   if (targetIndex === -1) {
     res.status(400);
-    throw new Error('User is not part of this event');
+    throw new Error("User is not part of this event");
   } else {
     eventsArray.splice(targetIndex, 1);
   }
@@ -286,7 +289,7 @@ const removeEventFromUser = asyncHandler(async (req, res) => {
     });
   } else {
     res.status(400);
-    throw new Error('Something went wrong');
+    throw new Error("Something went wrong");
   }
 });
 
@@ -301,7 +304,7 @@ const addBadgeToUser = asyncHandler(async (req, res) => {
 
   if (!existUser) {
     res.status(400);
-    throw new Error('User not found');
+    throw new Error("User not found");
   }
 
   let badgeArray = existUser.badges;
@@ -311,7 +314,7 @@ const addBadgeToUser = asyncHandler(async (req, res) => {
     badgeArray.push(badgeid);
   } else {
     res.status(400);
-    throw new Error('User already has this badge');
+    throw new Error("User already has this badge");
   }
 
   const updatedUser = await User.findByIdAndUpdate(userid, {
@@ -325,7 +328,7 @@ const addBadgeToUser = asyncHandler(async (req, res) => {
     });
   } else {
     res.status(400);
-    throw new Error('Something went wrong');
+    throw new Error("Something went wrong");
   }
 });
 
@@ -340,7 +343,7 @@ const removeBadgeFromUser = asyncHandler(async (req, res) => {
 
   if (!existUser) {
     res.status(400);
-    throw new Error('User not found');
+    throw new Error("User not found");
   }
 
   let badgesArray = existUser.badges;
@@ -348,7 +351,7 @@ const removeBadgeFromUser = asyncHandler(async (req, res) => {
 
   if (targetIndex === -1) {
     res.status(400);
-    throw new Error('User is not part of this event');
+    throw new Error("User is not part of this event");
   } else {
     badgesArray.splice(targetIndex, 1);
   }
@@ -364,7 +367,7 @@ const removeBadgeFromUser = asyncHandler(async (req, res) => {
     });
   } else {
     res.status(400);
-    throw new Error('Something went wrong');
+    throw new Error("Something went wrong");
   }
 });
 
@@ -381,8 +384,35 @@ const deleteUser = asyncHandler(async (req, res) => {
 
 // Generate a JWT Token
 const generateJWT = (userId) => {
-  return jwt.sign({ userId }, process.env.JWT_SECRET, { expiresIn: '30d' });
+  return jwt.sign({ userId }, process.env.JWT_SECRET, { expiresIn: "30d" });
 };
+
+const updateUser = asyncHandler(async (req, res) => {
+  const { id } = req.params;
+
+  // Check if user exist
+  const user = await User.findOne({ _id: userid });
+
+  if (!user) {
+    res.status(400);
+    throw new Error("User not found");
+  }
+
+  const updatedUser = await User.findByIdAndUpdate(id, req.body, {
+    new: true,
+  });
+
+  if (updatedUser) {
+    res.status(201).json({
+      id: updatedUser.id,
+      name: updatedUser.name,
+      description: updatedUser.description,
+    });
+  } else {
+    res.status(400);
+    throw new Error("Club not found");
+  }
+});
 
 module.exports = {
   registerUser,
@@ -396,4 +426,5 @@ module.exports = {
   removeEventFromUser,
   addBadgeToUser,
   removeBadgeFromUser,
+  updateUser,
 };
