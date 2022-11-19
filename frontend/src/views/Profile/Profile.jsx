@@ -12,6 +12,7 @@ import Stack from '@mui/material/Stack';
 import Button from '../../components/Button/Button';
 import { purple } from '@mui/material/colors';
 import { twitter, instagram, email } from '../../assets';
+import { useActions } from '../../hooks/useActions';
 
 const TabPanel = (props) => {
   const { children, value, index, ...other } = props;
@@ -49,10 +50,10 @@ function a11yProps(index) {
 const Profile = () => {
   const [value, setValue] = React.useState(0);
   const [userClubs, setUserClubs] = React.useState([]);
-  // const [userData, setUserData] = React.useState([]);
+  const userData = JSON.parse(localStorage.getItem('user'));
   const navigate = useNavigate();
   // eslint-disable-next-line react-hooks/rules-of-hooks
-  const { data: userData } = useTypedSelector((state) => state.auth);
+  // const { data: userData } = useTypedSelector((state) => state.auth);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -63,8 +64,6 @@ const Profile = () => {
   }, []);
 
   const getClubs = async () => {
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    const { data: userData } = useTypedSelector((state) => state.auth);
     const data = await axios.get(`clubs/`);
 
     if (data) {
