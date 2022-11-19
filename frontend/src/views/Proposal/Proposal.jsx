@@ -3,7 +3,6 @@ import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { ProposalDetailCard } from '../../components';
 import { Button, Modal, Box } from '@mui/material';
-import { useActions } from '../../hooks/useActions';
 import { useTypedSelector } from '../../hooks/useTypedSelector';
 
 const Proposal = () => {
