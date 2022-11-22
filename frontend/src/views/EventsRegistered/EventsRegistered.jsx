@@ -1,4 +1,5 @@
-import { useEffect,useState } from 'react';
+/* eslint-disable react-hooks/exhaustive-deps */
+import { useEffect, useState } from 'react';
 import './eventsregistered.css';
 import { useActions } from '../../hooks/useActions';
 import { useTypedSelector } from '../../hooks/useTypedSelector';
@@ -17,7 +18,7 @@ const EventsRegistered = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    getAllEventsData('user',{ userid: userData._id});
+    getAllEventsData('user', { userid: userData._id });
   }, []);
 
   useEffect(() => {
@@ -59,32 +60,41 @@ const EventsRegistered = () => {
       <Box sx={{ flexGrow: 1 }}>
         <Grid container spacing={3} sx={{ p: 2 }}>
           <Grid item xs={12} md={12}>
-          <h3>Events Registered</h3> 
+            <h3>Events Registered</h3>
           </Grid>
-          { events.length > 0 ? <Grid item xs={12} md={12}><UpcomingEvents title={''} events={events} /></Grid> : (
-              <Grid item xs={12} md={12}>
-              <Box sx={{textAlign: 'center'}}>
-              <br/>
-              <Typography sx={{color: '#808780', fontFamily: 'Raleway, sans-serif'}}>
-                Looks like you haven't registered in any events. Try joining clubs <br/>
-                to see events happening.
-              </Typography>
-              <br/>
-              <Button variant='contained' onClick={() => {navigate('/discover-clubs');}} 
-              sx={{
-                fontSize: '16px', 
-                px: '40px', 
-                py: '16px', 
-                borderRadius: '8px',
-                boxShadow: 'unset'}}>
-                Discover clubs
-              </Button>
-            </Box>
+          {events.length > 0 ? (
+            <Grid item xs={12} md={12}>
+              <UpcomingEvents title={''} events={events} />
+            </Grid>
+          ) : (
+            <Grid item xs={12} md={12}>
+              <Box sx={{ textAlign: 'center' }}>
+                <br />
+                <Typography sx={{ color: '#808780', fontFamily: 'Raleway, sans-serif' }}>
+                  Looks like you haven't registered in any events. Try joining clubs <br />
+                  to see events happening.
+                </Typography>
+                <br />
+                <Button
+                  variant="contained"
+                  onClick={() => {
+                    navigate('/discover-clubs');
+                  }}
+                  sx={{
+                    fontSize: '16px',
+                    px: '40px',
+                    py: '16px',
+                    borderRadius: '8px',
+                    boxShadow: 'unset'
+                  }}
+                >
+                  Discover clubs
+                </Button>
+              </Box>
             </Grid>
           )}
-          </Grid>
-          </Box>
-
+        </Grid>
+      </Box>
     </>
   );
 };

@@ -1,7 +1,9 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable react-hooks/exhaustive-deps */
 // import '@fontsource/raleway';
 import { useState, useEffect } from 'react';
 import { Routes, Route, useParams, useNavigate, useLocation } from 'react-router-dom';
-import { Box, Grid } from '@mui/material';
+import { Box } from '@mui/material';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { Header, SideBar } from './components';
 import {
@@ -74,13 +76,13 @@ const App = () => {
           icon: Dashboard,
           altText: 'Dashboard Icon',
           name: 'Dashboard'
-        },
-        {
-          routeLink: '/club-requests',
-          icon: Request,
-          altText: 'Club Requests Icon',
-          name: 'Club Requests'
         }
+        // {
+        //   routeLink: '/club-requests',
+        //   icon: Request,
+        //   altText: 'Club Requests Icon',
+        //   name: 'Club Requests'
+        // }
       );
     }
 
@@ -214,7 +216,8 @@ const App = () => {
             <Box sx={{ flexGrow: '1' }}>
               <Routes>
                 <Route exact path="/" element={<Home />} />
-                <Route path="/admin-dashboard" element={<AdminDashboard />} />
+                {/* <Route path="/admin-dashboard" element={<AdminDashboard />} /> */}
+                <Route path="/admin-dashboard" element={<ClubRequests />} />
                 <Route path="/club-requests" element={<ClubRequests />} />
                 <Route path="/all-proposal" element={<ProposalManagement />} />
                 <Route path="/proposals/:proposalId" element={<Proposal />} />

@@ -1,9 +1,9 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import * as React from 'react';
 import axios from 'axios';
 import PropTypes from 'prop-types';
 import { Box, Card, Tabs, Tab, Typography, CardMedia } from '@mui/material';
 import { useEffect } from 'react';
-import { useTypedSelector } from '../../hooks/useTypedSelector';
 import { BackButton } from '../../components';
 import { profileCover } from '../../assets';
 import { useNavigate } from 'react-router-dom';
@@ -12,6 +12,7 @@ import Stack from '@mui/material/Stack';
 import Button from '../../components/Button/Button';
 import { purple } from '@mui/material/colors';
 import { twitter, instagram, email } from '../../assets';
+import './profile.css';
 
 const TabPanel = (props) => {
   const { children, value, index, ...other } = props;

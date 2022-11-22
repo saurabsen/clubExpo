@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import EventsCard from '../../components/EventsCard/EventsCard';
 import UpcomingEvents from '../../components/UpcomingEvents/UpcomingEvents';
 import { Typography, Grid, Box, Button } from '@mui/material';
@@ -5,7 +6,6 @@ import axios from 'axios';
 import { useState, useEffect } from 'react';
 import { useTypedSelector } from '../../hooks/useTypedSelector';
 import Calendar from '../../components/Calendar/Calendar';
-import Card from '@mui/material/Card';
 import { useNavigate } from 'react-router-dom';
 
 const Home = () => {
@@ -15,13 +15,13 @@ const Home = () => {
   const { data: userData } = useTypedSelector((state) => state.auth);
   const [feedView, setFeedView] = useState(true);
   const navigate = useNavigate();
-  
+
   const getEvents = async () => {
     const config = {
       method: 'post',
       url: 'events/latestfromclubs',
       headers: {
-        'Content-Type': 'application/json',
+        'Content-Type': 'application/json'
       },
       data: {
         clubIds: userData.clubsJoined
@@ -34,7 +34,7 @@ const Home = () => {
   const getClubs = async () => {
     const config = {
       method: 'get',
-      url: 'clubs/',
+      url: 'clubs/'
     };
 
     const res = await axios(config);
@@ -71,7 +71,7 @@ const Home = () => {
           registerClickHandler: '',
           shareClickHandler: '',
           withinClub: false,
-          registered: (updatedUser.eventsAttended.indexOf(event._id) !== -1 ? true : false),
+          registered: updatedUser.eventsAttended.indexOf(event._id) !== -1 ? true : false,
           clubAdminView: false
         };
         if (dayStart >= new Date()) {
@@ -80,8 +80,7 @@ const Home = () => {
       });
       setEvents(formattedEvents);
       setUpcomingEvs(formattedEvents);
-    } catch (error) {
-    }
+    } catch (error) {}
   };
 
   useEffect(() => {
@@ -117,20 +116,26 @@ const Home = () => {
   const renderNoEvents = () => {
     return (
       <>
-        <Box sx={{textAlign: 'center'}}>
-          <br/>
-          <Typography sx={{color: '#808780', fontFamily: 'Raleway, sans-serif'}}>
-            Looks like you haven't joined any clubs. Try joining clubs <br/>
+        <Box sx={{ textAlign: 'center' }}>
+          <br />
+          <Typography sx={{ color: '#808780', fontFamily: 'Raleway, sans-serif' }}>
+            Looks like you haven't joined any clubs. Try joining clubs <br />
             to see events happening.
           </Typography>
-          <br/>
-          <Button variant='contained' onClick={() => {navigate('/discover-clubs');}} 
-          sx={{
-            fontSize: '16px', 
-            px: '40px', 
-            py: '16px', 
-            borderRadius: '8px',
-            boxShadow: 'unset'}}>
+          <br />
+          <Button
+            variant="contained"
+            onClick={() => {
+              navigate('/discover-clubs');
+            }}
+            sx={{
+              fontSize: '16px',
+              px: '40px',
+              py: '16px',
+              borderRadius: '8px',
+              boxShadow: 'unset'
+            }}
+          >
             Discover clubs
           </Button>
         </Box>
@@ -139,11 +144,23 @@ const Home = () => {
   };
 
   const renderTabs = () => {
-    const tabButtonStyles = {flexGrow: '1', boxShadow: 'unset', py: '13px'};
+    const tabButtonStyles = { flexGrow: '1', boxShadow: 'unset', py: '13px' };
     return (
       <>
-        <Button onClick={() => setFeedView(true)} variant={feedView ? 'contained' : 'text'} sx={tabButtonStyles}>My feed</Button>
-        <Button onClick={() => setFeedView(false)} variant={feedView ? 'text' : 'contained'} sx={tabButtonStyles}>Calendar</Button>
+        <Button
+          onClick={() => setFeedView(true)}
+          variant={feedView ? 'contained' : 'text'}
+          sx={tabButtonStyles}
+        >
+          My feed
+        </Button>
+        <Button
+          onClick={() => setFeedView(false)}
+          variant={feedView ? 'text' : 'contained'}
+          sx={tabButtonStyles}
+        >
+          Calendar
+        </Button>
       </>
     );
   };
@@ -154,28 +171,45 @@ const Home = () => {
     fontSize: 18,
     opacity: 0.4,
     mb: 2,
-    display: {xs: 'none', lg: 'inline'}
+    display: { xs: 'none', lg: 'inline' }
   };
 
   window.addEventListener('resize', () => {
-    if (window.innerWidth >= 1200 && !feedView) {setFeedView(true);}
+    if (window.innerWidth >= 1200 && !feedView) {
+      setFeedView(true);
+    }
   });
 
   return (
     <>
-      <Box sx={{display: {xs: 'flex', lg: 'none'}, gap: '26px', borderBottom: '1px solid #E0E2E0', px: '24px', py: '12px', boxShadow: '2px 2px 4px rgba(0, 0, 0, 0.08)'}}>
+      <Box
+        sx={{
+          display: { xs: 'flex', lg: 'none' },
+          gap: '26px',
+          borderBottom: '1px solid #E0E2E0',
+          px: '24px',
+          py: '12px',
+          boxShadow: '2px 2px 4px rgba(0, 0, 0, 0.08)'
+        }}
+      >
         {renderTabs()}
       </Box>
-      <Grid container xs={12} columnSpacing={{ xs: 3 }} sx={{pl: '24px'}}>
+      <Grid container xs={12} columnSpacing={{ xs: 3 }} sx={{ pl: '24px' }}>
         <Grid item xs={12} lg={9} sx={{ mt: 4 }}>
           <Typography sx={styleLatestEvents}>Latest Events</Typography>
-          {(feedView) ? 
-            ( (events.length !== 0) ? events.map((event) => renderEventCards(event)) : renderNoEvents() ) : 
-            <UpcomingEvents title={'Upcoming Events'} upcomingEvents={upcomingEvs} />}
+          {feedView ? (
+            events.length !== 0 ? (
+              events.map((event) => renderEventCards(event))
+            ) : (
+              renderNoEvents()
+            )
+          ) : (
+            <UpcomingEvents title={'Upcoming Events'} upcomingEvents={upcomingEvs} />
+          )}
         </Grid>
-        <Grid item xs={12} lg={2} sx={{ mt: 4, display: {xs: 'none', lg: 'block'} }}>
+        <Grid item xs={12} lg={2} sx={{ mt: 4, display: { xs: 'none', lg: 'block' } }}>
           <UpcomingEvents upcomingEvents={upcomingEvs} />
-            <Calendar />
+          <Calendar />
         </Grid>
       </Grid>
     </>
