@@ -195,32 +195,32 @@ const EventPage = (props) => {
           }}
         >
           <div className="eventpage-footer-line">
-            <p>
+            <div className='detail date-detail' style={{display: 'flex', gap: '8px'}}>
               <span>
                 <img src={Calender} alt="Date" className="cardicon" />
               </span>{' '}
-              {event.startDate ? new Date(event.startDate).toISOString().substring(0, 10) : ''}
-            </p>
-            <p>
+              <p>{event.startDate ? new Date(event.startDate).toISOString().substring(0, 10) : ''}</p>
+            </div>
+            <div className='detail time-detail'>
               <span>
                 <img src={Clock} alt="Time" className="cardicon" />
               </span>{' '}
-              {event.time ?? '6:00PM'}
-            </p>
+              <p>{event.time ?? '6:00PM'}</p>
+            </div>
           </div>
           <div className="eventpage-footer-line">
-            <p>
+            <div className='detail detail-location'>
               <span>
                 <img src={Location} alt="Location" className="cardicon" />
               </span>{' '}
-              {event.location}
-            </p>
-            <p>
+              <p>{event.location}</p>
+            </div>
+            <div className='detail detail-price'>
               <span>
                 <img src={Money} alt="Price" className="cardicon" />
               </span>{' '}
-              {event.price ?? 'FREE'}
-            </p>
+              <p>{event.price ?? 'FREE'}</p>
+            </div>
           </div>
           <Box sx={{ display: 'flex', flexFlow: 'column', gap: '16px' }}>
             <Box sx={{ display: { xs: 'none', md: 'inline' } }}>
@@ -314,7 +314,9 @@ const EventPage = (props) => {
           direction="row"
           xs={12}
           sx={{
-            p: '20px'
+            p: '20px',
+            maxWidth: '1200px !important',
+            mx: 'auto'
           }}
         >
           <Grid
@@ -372,7 +374,7 @@ const EventPage = (props) => {
         <CardMedia
           component="img"
           image={event.featureImage}
-          sx={{ height: { xs: '211px', md: '462px' } }}
+          sx={{ height: { xs: '105px', md: '231px' } }}
         />
         <Box
           onClick={() => {

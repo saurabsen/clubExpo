@@ -51,6 +51,12 @@
   justify-content: space-between;
 }
 
+.eventpage-footer-line .detail {
+  display: flex;
+  flex-flow: row;
+  gap: 8px;
+}
+
 .desktop-event-name {
   display: none;
 }
