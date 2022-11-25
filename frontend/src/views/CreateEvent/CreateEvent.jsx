@@ -99,7 +99,7 @@ const CreateEvent = (props) => {
         <Box sx={{ position: 'relative' }}>
           <CardMedia
             component="img"
-            height={{ xs: '194px', md: '462px' }}
+            sx={{height: { xs: '97px', md: '231px' }}}
             image={'https://picsum.photos/id/910/800/200'}
           />
           <Box
