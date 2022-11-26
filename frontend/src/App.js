@@ -65,74 +65,76 @@ const App = () => {
   useEffect(() => {
     let menuItems = [];
 
-    if (
-      userData != null &&
-      userData.userRole !== undefined &&
-      userData.userRole.includes('hubAdmin')
-    ) {
-      menuItems.push(
-        {
-          routeLink: '/admin-dashboard',
-          icon: Dashboard,
-          altText: 'Dashboard Icon',
-          name: 'Dashboard'
-        }
-        // {
-        //   routeLink: '/club-requests',
-        //   icon: Request,
-        //   altText: 'Club Requests Icon',
-        //   name: 'Club Requests'
-        // }
-      );
-    }
+    if (sideBarMenu.length === 0) {
+      if (
+        userData != null &&
+        userData.userRole !== undefined &&
+        userData.userRole.includes('hubAdmin')
+      ) {
+        menuItems.push(
+          {
+            routeLink: '/admin-dashboard',
+            icon: Dashboard,
+            altText: 'Dashboard Icon',
+            name: 'Dashboard'
+          }
+          // {
+          //   routeLink: '/club-requests',
+          //   icon: Request,
+          //   altText: 'Club Requests Icon',
+          //   name: 'Club Requests'
+          // }
+        );
+      }
 
-    if (
-      userData != null &&
-      userData.userRole !== undefined &&
-      (userData.userRole.includes('clubAdmin') || userData.userRole.includes('member'))
-    ) {
-      menuItems.push(
-        {
-          routeLink: '/home',
-          icon: HomeIcon,
-          altText: 'Home Icon',
-          name: 'Home'
-        },
-        {
-          routeLink: '/discover-clubs',
-          icon: Discover,
-          altText: 'Discover Clubs Icon',
-          name: 'Discover Clubs'
-        },
-        {
-          routeLink: '/clubs-joined',
-          icon: ClubsJoinedIcon,
-          altText: 'Clubs Joined Icon',
-          name: 'Clubs Joined'
-        },
-        {
-          routeLink: '/events-registered',
-          icon: EventRegistered,
-          altText: 'Event Registered Icon',
-          name: 'Events Registered'
-        }
-      );
-    }
+      if (
+        userData != null &&
+        userData.userRole !== undefined &&
+        (userData.userRole.includes('clubAdmin') || userData.userRole.includes('member'))
+      ) {
+        menuItems.push(
+          {
+            routeLink: '/home',
+            icon: HomeIcon,
+            altText: 'Home Icon',
+            name: 'Home'
+          },
+          {
+            routeLink: '/discover-clubs',
+            icon: Discover,
+            altText: 'Discover Clubs Icon',
+            name: 'Discover Clubs'
+          },
+          {
+            routeLink: '/clubs-joined',
+            icon: ClubsJoinedIcon,
+            altText: 'Clubs Joined Icon',
+            name: 'Clubs Joined'
+          },
+          {
+            routeLink: '/events-registered',
+            icon: EventRegistered,
+            altText: 'Event Registered Icon',
+            name: 'Events Registered'
+          }
+        );
+      }
 
-    if (
-      userData != null &&
-      userData.userRole !== undefined &&
-      userData.userRole.includes('clubAdmin')
-    ) {
-      menuItems.push({
-        routeLink: '/club-managed',
-        icon: ClubsManagedIcon,
-        altText: 'Clubs managed Icon',
-        name: 'Clubs Managed'
-      });
-    }
+      if (
+        userData != null &&
+        userData.userRole !== undefined &&
+        userData.userRole.includes('clubAdmin')
+      ) {
+        menuItems.push({
+          routeLink: '/club-managed',
+          icon: ClubsManagedIcon,
+          altText: 'Clubs managed Icon',
+          name: 'Clubs Managed'
+        });
+      }
 
-    setSideBarMenu([...menuItems]);
+      setSideBarMenu([...menuItems]);
+    }
   }, [userData]);
 
   axios.interceptors.request.use(
