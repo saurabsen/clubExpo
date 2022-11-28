@@ -240,7 +240,7 @@ const ClubDetail = () => {
             alt="green iguana"
           />
         </Card>
-        <Grid spacing={4} sx={{ pt: 4, pl: 4, pr: 4, pb: 4 }} container>
+        <Grid spacing={4} sx={{ mx:'auto', pt: 4, pl: 4, pr: 4, pb: 4, maxWidth: '1200px'}} container>
           <Grid item xs={12} md={8}>
             <Typography variant="h4" component="h4" sx={{ pb: 1 }}>
               {clubsDetailData.name}
@@ -274,7 +274,7 @@ const ClubDetail = () => {
         </Grid>
         <Divider />
 
-        <Grid spacing={4} sx={{ pt: 4, pl: 4, pr: 4 }} container>
+        <Grid spacing={4} sx={{ mx:'auto', pt: 4, pl: 4, pr: 4, maxWidth: '1200px' }} container>
           {userData !== null &&
           clubsDetailData !== null &&
           userData.userRole !== undefined &&
@@ -401,6 +401,8 @@ const ClubDetail = () => {
                     ) : (
                       ''
                     )}
+                    {/* <Box sx={{display: 'grid', maxWidth: '1200px', }}>
+                    </Box> */}
                   </TabPanel>
                   <TabPanel value="2">
                     <Grid spacing={4} sx={{ pt: 2 }} container>
