@@ -316,10 +316,11 @@ const ClubDetail = () => {
                       sx={{
                         width: '100%',
                         backgroundColor: '#F3EFFB',
-                        padding: '15px 10px 15px 10px'
+                        padding: '15px 10px 15px 10px',
+                        borderRadius: '8px'
                       }}
                     >
-                      <ListItem alignItems="flex-start">
+                      <ListItem alignItems="center">
                         <ListItemAvatar>
                           <Avatar
                             sx={{ border: '8px' }}
@@ -513,10 +514,10 @@ const ClubDetail = () => {
                             width: '100%',
                             backgroundColor: '#F3EFFB',
                             padding: '15px 10px 15px 10px',
-                            borderRadius: '4%'
+                            borderRadius: '8px'
                           }}
                         >
-                          <ListItem alignItems="flex-start">
+                          <ListItem alignItems="center">
                             <ListItemAvatar>
                               <Avatar
                                 alt="Remy Sharp"
