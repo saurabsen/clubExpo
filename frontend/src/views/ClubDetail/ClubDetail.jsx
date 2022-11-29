@@ -363,19 +363,20 @@ const ClubDetail = () => {
                           borderRadius: '4%'
                         }}
                       >
-                        <ImageList sx={{ width: 400, height: 150 }} cols={5} rowHeight={70}>
+                        <ImageList cols={5}>
                           {clubMembersData.data !== null &&
                             clubMembersData.data !== undefined &&
                             clubMembersData.data.length > 0 &&
                             clubMembersData.data
                               .filter((data) => data.status)
                               .map((item) => (
-                                <ImageListItem key={item._id}>
+                                <ImageListItem key={item._id} sx={{height: '56px', width: '56px', borderRadius: '8px'}}>
                                   <img
                                     src={`${item.profileImage}?w=164&h=164&fit=crop&auto=format`}
                                     srcSet={`${item.profileImage}?w=164&h=164&fit=crop&auto=format&dpr=2 2x`}
                                     alt={item.firstName}
                                     loading="lazy"
+                                    style={{borderRadius: '8px'}}
                                   />
                                 </ImageListItem>
                               ))}
@@ -458,7 +459,7 @@ const ClubDetail = () => {
                         item
                         xs={12}
                         md={6}
-                        sx={{ display: 'flex', flexFlow: 'wrap', gap: '1rem' }}
+                        sx={{ display: 'flex', flexFlow: 'wrap', gap: '1rem', height: 'fit-content' }}
                       >
                         {userData !== null &&
                           userData.userRole !== undefined &&
