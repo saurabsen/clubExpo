@@ -62,7 +62,7 @@ const Header = ({ userIsLoggedIn, handleSearch, handleLogoutUser }) => {
             backgroundColor: '#fff'
           }}
         >
-          <img src={LogoRectangle} style={{ width: '130px' }} alt="Clubspace Logo" />
+          {/* <img src={LogoRectangle} style={{ width: '130px' }} alt="Clubspace Logo" /> */}
         </Box>
       ) : (
         <Box
@@ -88,9 +88,9 @@ const Header = ({ userIsLoggedIn, handleSearch, handleLogoutUser }) => {
               gap: '6rem'
             }}
           >
-            <Link to="/home">
+            {/* <Link to="/home">
               <img src={LogoRectangle} style={{ width: '130px' }} alt="Clubspace Logo" />
-            </Link>
+            </Link> */}
             <Box className="desktopSearchbar" sx={{ width: '100%' }}>
               <SearchBar handleSearch={handleSearch} />
             </Box>
