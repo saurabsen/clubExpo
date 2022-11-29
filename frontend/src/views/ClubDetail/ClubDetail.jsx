@@ -26,13 +26,15 @@ import ImageListItem from '@mui/material/ImageListItem';
 import CardMedia from '@mui/material/CardMedia';
 import Button from '@mui/material/Button';
 import Divider from '@mui/material/Divider';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { styled } from '@mui/material/styles';
 import Charts from '../../components/Charts/Charts';
 import ClubMembers from './ClubMembers';
 import Modal from '@mui/material/Modal';
 import { format } from 'date-fns';
+import { BackButton } from '../../components';
+import { nominalTypeHack } from 'prop-types';
 
 const Demo = styled('div')(({ theme }) => ({
   backgroundColor: theme.palette.background.paper
@@ -67,6 +69,7 @@ const ClubDetail = () => {
     setValue(newValue);
   };
   const { id } = useParams();
+  const navigate = useNavigate();
   const [openModal, setOpenModal] = useState(false);
   const handleOpenModal = () => {
     getClubMembersData('', { clubid: id }).then((resp) => {
@@ -181,7 +184,7 @@ const ClubDetail = () => {
     clubEventsData.data.forEach((event) => {
       const dayStart = new Date(event.startDate);
       const eventObj = {
-        clubName: 'Random name',
+        clubName: `HR Events Club`,
         clubLogoUrl: 'https://picsum.photos/200/200',
         eventName: event.name,
         eventDesc: event.description,
@@ -190,7 +193,7 @@ const ClubDetail = () => {
         eventLoc: event.location,
         eventPrice: event.price,
         eventImgUrl: event.featureImage,
-        numberOfAttendees: 100,
+        numberOfAttendees: event.attendees.length,
         eventId: event._id,
         registerClickHandler: '',
         shareClickHandler: '',
@@ -232,12 +235,18 @@ const ClubDetail = () => {
   return (
     <>
       <Box sx={{ width: '100%', typography: 'body1' }}>
-        <Card sx={{ width: '100%', height: '500px', pb: 4 }}>
+        <Card sx={{ position: 'relative', width: '100%', height: '250px', pb: 4 }}>
+          <Box
+            onClick={() => navigate(-1)}
+            sx={{ position: 'absolute', top: '30px', left: '30px' }}
+          >
+            <BackButton />
+          </Box>
           <CardMedia
             component="img"
             height="80"
             image={clubsDetailData.coverImage}
-            alt="green iguana"
+            alt={`Cover photo`}
           />
         </Card>
         <Grid spacing={4} sx={{ mx:'auto', pt: 4, pl: 4, pr: 4, pb: 4, maxWidth: '1200px'}} container>
