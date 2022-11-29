@@ -17,7 +17,7 @@ const ClubsManaged = () => {
 
   return (
     <>
-      <div style={{ padding: '2rem 0', paddingTop: '24px' }}>
+      <div style={{ padding: '2rem 0', paddingTop: '24px', marginTop: '4rem' }}>
         <Box sx={{px: '16px'}}>
           <h3>Clubs Managed</h3>
         </Box>

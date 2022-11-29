@@ -58,11 +58,10 @@ import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Landing from './views/Landing/Landing';
 
-const drawerWidth = 240;
-
 const App = (props) => {
   const { window } = props;
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [drawerWidth, setDrawerWidth] = useState(240);
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
@@ -89,6 +88,21 @@ const App = (props) => {
       getUser();
     }
   }, [location]);
+
+  useEffect(() => {
+    if (
+      location.pathname === '/proposal' ||
+      location.pathname === '/submit-proposal' ||
+      location.pathname === '/clubs/' ||
+      location.pathname === '/profile' ||
+      location.pathname === '/events/' ||
+      location.pathname.includes('/clubs/')
+    ) {
+      setDrawerWidth(0);
+    } else {
+      setDrawerWidth(240);
+    }
+  }, [location.pathname]);
 
   useEffect(() => {
     let menuItems = [];
@@ -224,7 +238,6 @@ const App = (props) => {
 
   return (
     <ThemeProvider theme={theme}>
-      <Header userIsLoggedIn={token} handleLogoutUser={handleLogoutUser} />
       {!token ? (
         <Routes>
           <Route path="/login" element={<Login />} />
@@ -253,45 +266,52 @@ const App = (props) => {
               <Header userIsLoggedIn={token} handleLogoutUser={handleLogoutUser} />
             </Toolbar>
           </AppBar>
-          <Box
-            component="nav"
-            sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 } }}
-            aria-label="mailbox folders"
-          >
-            {/* The implementation can be swapped with js to avoid SEO duplication of links. */}
-            <Drawer
-              container={container}
-              variant="temporary"
-              open={mobileOpen}
-              onClose={handleDrawerToggle}
-              ModalProps={{
-                keepMounted: true // Better open performance on mobile.
-              }}
-              sx={{
-                display: { xs: 'block', sm: 'none' },
-                '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth }
-              }}
+          {location.pathname.includes('/proposal') ||
+          location.pathname.includes('/submit-proposal') ||
+          location.pathname.includes('/clubs/') ||
+          location.pathname.includes('/profile') ||
+          location.pathname.includes('/events/') ? (
+            ''
+          ) : (
+            <Box
+              component="nav"
+              sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 } }}
+              aria-label="mailbox folders"
             >
-              <SideBar sidebardata={sideBarMenu} />
-            </Drawer>
-            <Drawer
-              variant="permanent"
-              sx={{
-                display: { xs: 'none', sm: 'block' },
-                '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth }
-              }}
-              open
-            >
-              <Divider />
-              <SideBar sidebardata={sideBarMenu} />
-            </Drawer>
-          </Box>
+              {/* The implementation can be swapped with js to avoid SEO duplication of links. */}
+              <Drawer
+                container={container}
+                variant="temporary"
+                open={mobileOpen}
+                onClose={handleDrawerToggle}
+                ModalProps={{
+                  keepMounted: true // Better open performance on mobile.
+                }}
+                sx={{
+                  display: { xs: 'block', sm: 'none' },
+                  '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth }
+                }}
+              >
+                <SideBar sidebardata={sideBarMenu} />
+              </Drawer>
+              <Drawer
+                variant="permanent"
+                sx={{
+                  display: { xs: 'none', sm: 'block' },
+                  '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth }
+                }}
+                open
+              >
+                <Divider />
+                <SideBar sidebardata={sideBarMenu} />
+              </Drawer>
+            </Box>
+          )}
           <Box
             component="main"
-            sx={{ flexGrow: 1, p: 3, width: { sm: `calc(100% - ${drawerWidth}px)` } }}
+            sx={{ flexGrow: 1, width: { sm: `calc(100% - ${drawerWidth}px)` } }}
           >
             <Routes>
-              <Route exact path="/" element={<Home />} />
               {/* <Route path="/admin-dashboard" element={<AdminDashboard />} /> */}
               <Route path="/admin-dashboard" element={<ClubRequests />} />
               <Route path="/club-requests" element={<ClubRequests />} />

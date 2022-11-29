@@ -104,7 +104,7 @@ const CreateEvent = (props) => {
           />
           <Box
             onClick={() => navigate(-1)}
-            sx={{ position: 'absolute', top: '30px', left: '30px' }}
+            sx={{ position: 'absolute', top: '100px', left: '30px' }}
           >
             <BackButton />
           </Box>

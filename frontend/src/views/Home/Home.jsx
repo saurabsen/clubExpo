@@ -182,36 +182,39 @@ const Home = () => {
 
   return (
     <>
-      <Box
-        sx={{
-          display: { xs: 'flex', lg: 'none' },
-          gap: '26px',
-          borderBottom: '1px solid #E0E2E0',
-          px: '24px',
-          py: '12px',
-          boxShadow: '2px 2px 4px rgba(0, 0, 0, 0.08)'
-        }}
-      >
-        {renderTabs()}
-      </Box>
-      <Grid container xs={12} columnSpacing={{ xs: 3 }} sx={{ pl: '24px' }}>
-        <Grid item xs={12} lg={9} sx={{ mt: 4 }}>
-          <Typography sx={styleLatestEvents}>Latest Events</Typography>
-          {feedView ? (
-            events.length !== 0 ? (
-              events.map((event) => renderEventCards(event))
+      <Box sx={{mt: '4rem'}}>
+        <Box
+          sx={{
+            display: { xs: 'flex', lg: 'none' },
+            gap: '26px',
+            borderBottom: '1px solid #E0E2E0',
+            px: '24px',
+            py: '12px',
+            pt: '3rem',
+            boxShadow: '2px 2px 4px rgba(0, 0, 0, 0.08)'
+          }}
+        >
+          {renderTabs()}
+        </Box>
+        <Grid container xs={12} columnSpacing={{ xs: 3 }} sx={{ pl: '24px' }}>
+          <Grid item xs={12} lg={9} sx={{ mt: 4 }}>
+            <Typography sx={styleLatestEvents}>Latest Events</Typography>
+            {feedView ? (
+              events.length !== 0 ? (
+                events.map((event) => renderEventCards(event))
+              ) : (
+                renderNoEvents()
+              )
             ) : (
-              renderNoEvents()
-            )
-          ) : (
-            <UpcomingEvents title={'Upcoming Events'} upcomingEvents={upcomingEvs} />
-          )}
+              <UpcomingEvents title={'Upcoming Events'} upcomingEvents={upcomingEvs} />
+            )}
+          </Grid>
+          <Grid item xs={12} lg={2} sx={{ mt: 4, display: { xs: 'none', lg: 'block' } }}>
+            <UpcomingEvents upcomingEvents={upcomingEvs} />
+            <Calendar />
+          </Grid>
         </Grid>
-        <Grid item xs={12} lg={2} sx={{ mt: 4, display: { xs: 'none', lg: 'block' } }}>
-          <UpcomingEvents upcomingEvents={upcomingEvs} />
-          <Calendar />
-        </Grid>
-      </Grid>
+      </Box>
     </>
   );
 };

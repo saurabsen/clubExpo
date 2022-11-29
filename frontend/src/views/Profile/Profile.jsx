@@ -87,7 +87,7 @@ const Profile = () => {
     <>
       <Box sx={{ position: 'relative' }} className="card-img">
         <CardMedia component="img" height={{ xs: '194px', md: '462px' }} image={profileCover} />
-        <Box onClick={() => navigate(-1)} sx={{ position: 'absolute', top: '30px', left: '30px' }}>
+        <Box onClick={() => navigate(-1)} sx={{ position: 'absolute', top: '100px', left: '30px' }}>
           <BackButton />
         </Box>
       </Box>
