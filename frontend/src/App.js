@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable react-hooks/exhaustive-deps */
 // import '@fontsource/raleway';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Routes, Route, useParams, useNavigate, useLocation } from 'react-router-dom';
 import { Box } from '@mui/material';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
@@ -40,8 +40,36 @@ import { useTypedSelector } from './hooks/useTypedSelector';
 import SearchResults from './views/SearchResults/SearchResults';
 import axios from 'axios';
 
-const App = () => {
-  const pathname = window.location.pathname;
+import PropTypes from 'prop-types';
+import AppBar from '@mui/material/AppBar';
+import CssBaseline from '@mui/material/CssBaseline';
+import Divider from '@mui/material/Divider';
+import Drawer from '@mui/material/Drawer';
+import IconButton from '@mui/material/IconButton';
+import InboxIcon from '@mui/icons-material/MoveToInbox';
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import ListItemButton from '@mui/material/ListItemButton';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import ListItemText from '@mui/material/ListItemText';
+import MailIcon from '@mui/icons-material/Mail';
+import MenuIcon from '@mui/icons-material/Menu';
+import Toolbar from '@mui/material/Toolbar';
+import Typography from '@mui/material/Typography';
+import Landing from './views/Landing/Landing';
+
+const drawerWidth = 240;
+
+const App = (props) => {
+  const { window } = props;
+  const [mobileOpen, setMobileOpen] = useState(false);
+
+  const handleDrawerToggle = () => {
+    setMobileOpen(!mobileOpen);
+  };
+
+  const container = window !== undefined ? () => window().document.body : undefined;
+  // const pathname = window.location.pathname;
   const { getUser, logoutUser } = useActions();
   const { data: userData } = useTypedSelector((state) => state.auth);
   const navigate = useNavigate();
@@ -51,13 +79,13 @@ const App = () => {
 
   useEffect(() => {
     if (!token) {
-      navigate('/login');
+      navigate('/');
     }
   }, [token]);
 
   useEffect(() => {
     const token = JSON.parse(localStorage.getItem('userToken'));
-    if (location.pathname !== '/login' && token) {
+    if (location.pathname !== '/' && token) {
       getUser();
     }
   }, [location]);
@@ -200,50 +228,151 @@ const App = () => {
       {!token ? (
         <Routes>
           <Route path="/login" element={<Login />} />
+          <Route path="/" element={<Landing />} />
         </Routes>
       ) : (
-        <Box sx={{ flexGrow: 1 }}>
-          <Box sx={{ display: 'flex', flexFlow: 'row' }}>
-            {pathname.includes('/proposal') ||
-            pathname.includes('/submit-proposal') ||
-            pathname.includes('/clubs/') ||
-            pathname.includes('/profile') ||
-            pathname.includes('/events/') ? (
-              ''
-            ) : (
-              <Box sx={{ display: { xs: 'none', md: 'block' }, flex: '0 0 231px' }}>
-                <SideBar sidebardata={sideBarMenu} />
-              </Box>
-            )}
-            <Box sx={{ flexGrow: '1' }}>
-              <Routes>
-                <Route exact path="/" element={<Home />} />
-                {/* <Route path="/admin-dashboard" element={<AdminDashboard />} /> */}
-                <Route path="/admin-dashboard" element={<ClubRequests />} />
-                <Route path="/club-requests" element={<ClubRequests />} />
-                <Route path="/all-proposal" element={<ProposalManagement />} />
-                <Route path="/proposals/:proposalId" element={<Proposal />} />
-                <Route path="/home" element={<Home />} />
-                <Route path="/discover-clubs" element={<DiscoverClubs />} />
-                <Route path="/clubs-joined" element={<ClubsJoined />} />
-                <Route path="/events-registered" element={<EventsRegistered />} />
-                <Route path="/events/:eventId" element={<UserEventsPage />} />
-                <Route path="/submit-proposal" element={<ClubProposal />} />
-                <Route path="/clubs/:id" element={<ClubDetail />} />
-                <Route path="/clubs/:clubId" element={<ClubSinglePage />} />
-                <Route path="/search" element={<SearchResults />} />
-                <Route path="/404" element={<NotFoundPage />} />
-                <Route path="/club-managed" element={<ClubsManaged />} />
-                <Route path="/clubs/:clubId/createevent" element={<CreateEventPage />} />
-                <Route path="/profile" element={<Profile />} />
-                <Route path="/notifications" element={<Notifications />} />
-              </Routes>
-            </Box>
+        <Box sx={{ display: 'flex' }}>
+          <CssBaseline />
+          <AppBar
+            position="fixed"
+            sx={{
+              width: { sm: `calc(100% - ${drawerWidth}px)` },
+              ml: { sm: `${drawerWidth}px` }
+            }}
+          >
+            <Toolbar sx={{ background: '#fff' }}>
+              <IconButton
+                color="inherit"
+                aria-label="open drawer"
+                edge="start"
+                onClick={handleDrawerToggle}
+                sx={{ display: { sm: 'none' } }}
+              >
+                <MenuIcon />
+              </IconButton>
+              <Header userIsLoggedIn={token} handleLogoutUser={handleLogoutUser} />
+            </Toolbar>
+          </AppBar>
+          <Box
+            component="nav"
+            sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 } }}
+            aria-label="mailbox folders"
+          >
+            {/* The implementation can be swapped with js to avoid SEO duplication of links. */}
+            <Drawer
+              container={container}
+              variant="temporary"
+              open={mobileOpen}
+              onClose={handleDrawerToggle}
+              ModalProps={{
+                keepMounted: true // Better open performance on mobile.
+              }}
+              sx={{
+                display: { xs: 'block', sm: 'none' },
+                '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth }
+              }}
+            >
+              <SideBar sidebardata={sideBarMenu} />
+            </Drawer>
+            <Drawer
+              variant="permanent"
+              sx={{
+                display: { xs: 'none', sm: 'block' },
+                '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth }
+              }}
+              open
+            >
+              <Divider />
+              <SideBar sidebardata={sideBarMenu} />
+            </Drawer>
+          </Box>
+          <Box
+            component="main"
+            sx={{ flexGrow: 1, p: 3, width: { sm: `calc(100% - ${drawerWidth}px)` } }}
+          >
+            <Routes>
+              <Route exact path="/" element={<Home />} />
+              {/* <Route path="/admin-dashboard" element={<AdminDashboard />} /> */}
+              <Route path="/admin-dashboard" element={<ClubRequests />} />
+              <Route path="/club-requests" element={<ClubRequests />} />
+              <Route path="/all-proposal" element={<ProposalManagement />} />
+              <Route path="/proposals/:proposalId" element={<Proposal />} />
+              <Route path="/home" element={<Home />} />
+              <Route path="/discover-clubs" element={<DiscoverClubs />} />
+              <Route path="/clubs-joined" element={<ClubsJoined />} />
+              <Route path="/events-registered" element={<EventsRegistered />} />
+              <Route path="/events/:eventId" element={<UserEventsPage />} />
+              <Route path="/submit-proposal" element={<ClubProposal />} />
+              <Route path="/clubs/:id" element={<ClubDetail />} />
+              <Route path="/clubs/:clubId" element={<ClubSinglePage />} />
+              <Route path="/search" element={<SearchResults />} />
+              <Route path="/404" element={<NotFoundPage />} />
+              <Route path="/club-managed" element={<ClubsManaged />} />
+              <Route path="/clubs/:clubId/createevent" element={<CreateEventPage />} />
+              <Route path="/profile" element={<Profile />} />
+              <Route path="/notifications" element={<Notifications />} />
+            </Routes>
           </Box>
         </Box>
       )}
     </ThemeProvider>
+    // <ThemeProvider theme={theme}>
+    //   <Header userIsLoggedIn={token} handleLogoutUser={handleLogoutUser} />
+    //   {!token ? (
+    //     <Routes>
+    //       <Route path="/login" element={<Login />} />
+    //     </Routes>
+    //   ) : (
+    //     <Box sx={{ flexGrow: 1 }}>
+    //       <Box sx={{ display: 'flex', flexFlow: 'row' }}>
+    //         {pathname.includes('/proposal') ||
+    //         pathname.includes('/submit-proposal') ||
+    //         pathname.includes('/clubs/') ||
+    //         pathname.includes('/profile') ||
+    //         pathname.includes('/events/') ? (
+    //           ''
+    //         ) : (
+    //           <Box sx={{ display: { xs: 'none', md: 'block' }, flex: '0 0 231px' }}>
+    //             <SideBar sidebardata={sideBarMenu} />
+    //           </Box>
+    //         )}
+    //         <Box sx={{ flexGrow: '1' }}>
+    //           <Routes>
+    //             <Route exact path="/" element={<Home />} />
+    //             {/* <Route path="/admin-dashboard" element={<AdminDashboard />} /> */}
+    //             <Route path="/admin-dashboard" element={<ClubRequests />} />
+    //             <Route path="/club-requests" element={<ClubRequests />} />
+    //             <Route path="/all-proposal" element={<ProposalManagement />} />
+    //             <Route path="/proposals/:proposalId" element={<Proposal />} />
+    //             <Route path="/home" element={<Home />} />
+    //             <Route path="/discover-clubs" element={<DiscoverClubs />} />
+    //             <Route path="/clubs-joined" element={<ClubsJoined />} />
+    //             <Route path="/events-registered" element={<EventsRegistered />} />
+    //             <Route path="/events/:eventId" element={<UserEventsPage />} />
+    //             <Route path="/submit-proposal" element={<ClubProposal />} />
+    //             <Route path="/clubs/:id" element={<ClubDetail />} />
+    //             <Route path="/clubs/:clubId" element={<ClubSinglePage />} />
+    //             <Route path="/search" element={<SearchResults />} />
+    //             <Route path="/404" element={<NotFoundPage />} />
+    //             <Route path="/club-managed" element={<ClubsManaged />} />
+    //             <Route path="/clubs/:clubId/createevent" element={<CreateEventPage />} />
+    //             <Route path="/profile" element={<Profile />} />
+    //             <Route path="/notifications" element={<Notifications />} />
+    //           </Routes>
+    //         </Box>
+    //       </Box>
+    //     </Box>
+    //   )}
+    // </ThemeProvider>
   );
+};
+
+App.propTypes = {
+  /**
+   * Injected by the documentation to work in an iframe.
+   * You won't need it on your project.
+   */
+  window: PropTypes.func
 };
 
 export default App;

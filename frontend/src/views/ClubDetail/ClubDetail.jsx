@@ -26,13 +26,15 @@ import ImageListItem from '@mui/material/ImageListItem';
 import CardMedia from '@mui/material/CardMedia';
 import Button from '@mui/material/Button';
 import Divider from '@mui/material/Divider';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { styled } from '@mui/material/styles';
 import Charts from '../../components/Charts/Charts';
 import ClubMembers from './ClubMembers';
 import Modal from '@mui/material/Modal';
 import { format } from 'date-fns';
+import { BackButton } from '../../components';
+import { nominalTypeHack } from 'prop-types';
 
 const Demo = styled('div')(({ theme }) => ({
   backgroundColor: theme.palette.background.paper
@@ -67,6 +69,7 @@ const ClubDetail = () => {
     setValue(newValue);
   };
   const { id } = useParams();
+  const navigate = useNavigate();
   const [openModal, setOpenModal] = useState(false);
   const handleOpenModal = () => {
     getClubMembersData('', { clubid: id }).then((resp) => {
@@ -181,7 +184,7 @@ const ClubDetail = () => {
     clubEventsData.data.forEach((event) => {
       const dayStart = new Date(event.startDate);
       const eventObj = {
-        clubName: 'Random name',
+        clubName: `HR Events Club`,
         clubLogoUrl: 'https://picsum.photos/200/200',
         eventName: event.name,
         eventDesc: event.description,
@@ -190,7 +193,7 @@ const ClubDetail = () => {
         eventLoc: event.location,
         eventPrice: event.price,
         eventImgUrl: event.featureImage,
-        numberOfAttendees: 100,
+        numberOfAttendees: event.attendees.length,
         eventId: event._id,
         registerClickHandler: '',
         shareClickHandler: '',
@@ -232,15 +235,21 @@ const ClubDetail = () => {
   return (
     <>
       <Box sx={{ width: '100%', typography: 'body1' }}>
-        <Card sx={{ width: '100%', height: '500px', pb: 4 }}>
+        <Card sx={{ position: 'relative', width: '100%', height: '250px', pb: 4 }}>
+          <Box
+            onClick={() => navigate(-1)}
+            sx={{ position: 'absolute', top: '30px', left: '30px' }}
+          >
+            <BackButton />
+          </Box>
           <CardMedia
             component="img"
             height="80"
             image={clubsDetailData.coverImage}
-            alt="green iguana"
+            alt={`Cover photo`}
           />
         </Card>
-        <Grid spacing={4} sx={{ pt: 4, pl: 4, pr: 4, pb: 4 }} container>
+        <Grid spacing={4} sx={{ mx:'auto', pt: 4, pl: 4, pr: 4, pb: 4, maxWidth: '1200px'}} container>
           <Grid item xs={12} md={8}>
             <Typography variant="h4" component="h4" sx={{ pb: 1 }}>
               {clubsDetailData.name}
@@ -274,7 +283,7 @@ const ClubDetail = () => {
         </Grid>
         <Divider />
 
-        <Grid spacing={4} sx={{ pt: 4, pl: 4, pr: 4 }} container>
+        <Grid spacing={4} sx={{ mx:'auto', pt: 4, pl: 4, pr: 4, maxWidth: '1200px' }} container>
           {userData !== null &&
           clubsDetailData !== null &&
           userData.userRole !== undefined &&
@@ -307,10 +316,11 @@ const ClubDetail = () => {
                       sx={{
                         width: '100%',
                         backgroundColor: '#F3EFFB',
-                        padding: '15px 10px 15px 10px'
+                        padding: '15px 10px 15px 10px',
+                        borderRadius: '8px'
                       }}
                     >
-                      <ListItem alignItems="flex-start">
+                      <ListItem alignItems="center">
                         <ListItemAvatar>
                           <Avatar
                             sx={{ border: '8px' }}
@@ -354,19 +364,20 @@ const ClubDetail = () => {
                           borderRadius: '4%'
                         }}
                       >
-                        <ImageList sx={{ width: 400, height: 150 }} cols={5} rowHeight={70}>
+                        <ImageList cols={5}>
                           {clubMembersData.data !== null &&
                             clubMembersData.data !== undefined &&
                             clubMembersData.data.length > 0 &&
                             clubMembersData.data
                               .filter((data) => data.status)
                               .map((item) => (
-                                <ImageListItem key={item._id}>
+                                <ImageListItem key={item._id} sx={{height: '56px', width: '56px', borderRadius: '8px'}}>
                                   <img
                                     src={`${item.profileImage}?w=164&h=164&fit=crop&auto=format`}
                                     srcSet={`${item.profileImage}?w=164&h=164&fit=crop&auto=format&dpr=2 2x`}
                                     alt={item.firstName}
                                     loading="lazy"
+                                    style={{borderRadius: '8px'}}
                                   />
                                 </ImageListItem>
                               ))}
@@ -401,6 +412,8 @@ const ClubDetail = () => {
                     ) : (
                       ''
                     )}
+                    {/* <Box sx={{display: 'grid', maxWidth: '1200px', }}>
+                    </Box> */}
                   </TabPanel>
                   <TabPanel value="2">
                     <Grid spacing={4} sx={{ pt: 2 }} container>
@@ -447,7 +460,7 @@ const ClubDetail = () => {
                         item
                         xs={12}
                         md={6}
-                        sx={{ display: 'flex', flexFlow: 'wrap', gap: '1rem' }}
+                        sx={{ display: 'flex', flexFlow: 'wrap', gap: '1rem', height: 'fit-content' }}
                       >
                         {userData !== null &&
                           userData.userRole !== undefined &&
@@ -501,10 +514,10 @@ const ClubDetail = () => {
                             width: '100%',
                             backgroundColor: '#F3EFFB',
                             padding: '15px 10px 15px 10px',
-                            borderRadius: '4%'
+                            borderRadius: '8px'
                           }}
                         >
-                          <ListItem alignItems="flex-start">
+                          <ListItem alignItems="center">
                             <ListItemAvatar>
                               <Avatar
                                 alt="Remy Sharp"

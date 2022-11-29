@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Box, Avatar, Menu, MenuItem } from '@mui/material';
 import SearchBar from '../SearchBar/SearchBar';
-import { LogoRectangle, NotificationsOff, NotificationsOn, Search } from '../../assets';
+import { NotificationsOff, NotificationsOn, Search } from '../../assets';
 import './header.css';
 import { useActions } from '../../hooks/useActions';
 import { useTypedSelector } from '../../hooks/useTypedSelector';
@@ -53,7 +53,6 @@ const Header = ({ userIsLoggedIn, handleSearch, handleLogoutUser }) => {
       {!userIsLoggedIn ? (
         <Box
           sx={{
-            padding: '1rem 4rem',
             width: '100%',
             border: '1px solid #e0e2e0',
             position: 'sticky',
@@ -62,7 +61,7 @@ const Header = ({ userIsLoggedIn, handleSearch, handleLogoutUser }) => {
             backgroundColor: '#fff'
           }}
         >
-          <img src={LogoRectangle} style={{ width: '130px' }} alt="Clubspace Logo" />
+          {/* <img src={LogoRectangle} style={{ width: '130px' }} alt="Clubspace Logo" /> */}
         </Box>
       ) : (
         <Box
@@ -88,9 +87,9 @@ const Header = ({ userIsLoggedIn, handleSearch, handleLogoutUser }) => {
               gap: '6rem'
             }}
           >
-            <Link to="/home">
+            {/* <Link to="/home">
               <img src={LogoRectangle} style={{ width: '130px' }} alt="Clubspace Logo" />
-            </Link>
+            </Link> */}
             <Box className="desktopSearchbar" sx={{ width: '100%' }}>
               <SearchBar handleSearch={handleSearch} />
             </Box>

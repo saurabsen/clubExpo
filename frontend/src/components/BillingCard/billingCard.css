@@ -1,0 +1,66 @@
+.billing {
+  width: 100%;
+}
+
+@media screen and (min-width: 1080px) {
+  .billing {
+    width: 300px;
+  }
+}
+
+@media screen and (min-width: 1290px) {
+  .billing {
+    width: 380px;
+  }
+}
+
+@media screen and (min-width: 1540px) {
+  .billing {
+    width: 480px;
+  }
+}
+
+.billing-card-title {
+  font-family: 'neue-haas-grotesk-text', sans-serif;
+  font-weight: 700;
+  font-size: 20px;
+  line-height: 150%;
+  color: #5d1ebf;
+  margin-bottom: 8px;
+}
+
+.billing-card-price {
+  font-family: 'neue-haas-grotesk-text', sans-serif;
+  font-weight: 700;
+  font-size: 24px;
+  font-weight: bold;
+  line-height: 36px;
+  margin-bottom: 16px;
+}
+
+.billing-card-price-period {
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 24px;
+  color: #808780;
+}
+
+.billing-card-content-1 {
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 25.6px;
+}
+
+.billing-card-content-2 {
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 25.6px;
+}
+
+.billing-card-content-2-number {
+  font-weight: 800;
+}
+
+hr {
+  margin: 24px 0;
+}
