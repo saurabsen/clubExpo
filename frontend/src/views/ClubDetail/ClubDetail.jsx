@@ -238,7 +238,7 @@ const ClubDetail = () => {
         <Card sx={{ position: 'relative', width: '100%', height: '250px', pb: 4 }}>
           <Box
             onClick={() => navigate(-1)}
-            sx={{ position: 'absolute', top: '30px', left: '30px' }}
+            sx={{ position: 'absolute', top: '100px', left: '30px' }}
           >
             <BackButton />
           </Box>

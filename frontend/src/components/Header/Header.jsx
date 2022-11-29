@@ -48,7 +48,8 @@ const Header = ({ userIsLoggedIn, handleSearch, handleLogoutUser }) => {
         }
       });
     }
-  }, [notifications]);
+  }, []);
+  // }, [notifications]);
 
   const stringAvatar = (name) => {
     return {

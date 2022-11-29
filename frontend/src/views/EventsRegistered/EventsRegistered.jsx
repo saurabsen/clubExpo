@@ -57,7 +57,7 @@ const EventsRegistered = () => {
 
   return (
     <>
-      <Box sx={{ flexGrow: 1 }}>
+      <Box sx={{ flexGrow: 1, mt: '4rem' }}>
         <Grid container spacing={3} sx={{ p: 2 }}>
           <Grid item xs={12} md={12}>
             <h3>Events Registered</h3>

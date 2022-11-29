@@ -26,7 +26,7 @@ const Notifications = () => {
   };
 
   return (
-    <Box sx={{ padding: '2rem' }}>
+    <Box sx={{ padding: '2rem', mt: '3rem' }}>
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
         <h3>Notifications</h3>
         <p style={{ cursor: 'pointer' }} onClick={markAllAsRead}>

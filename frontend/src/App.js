@@ -95,13 +95,14 @@ const App = (props) => {
       location.pathname === '/submit-proposal' ||
       location.pathname === '/clubs/' ||
       location.pathname === '/profile' ||
-      location.pathname === '/events/'
+      location.pathname === '/events/' ||
+      location.pathname.includes('/clubs/')
     ) {
       setDrawerWidth(0);
     } else {
       setDrawerWidth(240);
     }
-  }, [drawerWidth]);
+  }, [location.pathname]);
 
   useEffect(() => {
     let menuItems = [];

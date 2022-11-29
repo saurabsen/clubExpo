@@ -18,7 +18,7 @@ const DiscoverClubs = () => {
 
   return (
     <>
-      <Box sx={{ flexGrow: 1 }}>
+      <Box sx={{ flexGrow: 1, mt: '4rem' }}>
         <Grid item xs={12} md={12} sx={{ p: 2 }}>
           <h3>Discover Clubs</h3>
         </Grid>
