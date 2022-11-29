@@ -52,6 +52,11 @@ import LoginGirl from './Images/LoginGirl.png';
 import profileCover from './Images/profileCover.png';
 // import LoginGirl from './Images/ivana-cajina-7JWXbeBB4gY-unsplash.jpg';
 import Base from './Images/Base.png';
+import logoRectangle from './logo-rectangle.png';
+import createFeature from './create-feature.svg';
+import joinFeature from './join-feature.svg';
+import engagementFeature from './engagement-feature.svg';
+import application from './application.png';
 
 export {
   AddMember,
@@ -100,5 +105,10 @@ export {
   instagram,
   twitter,
   email,
-  Base
+  Base,
+  logoRectangle,
+  createFeature,
+  joinFeature,
+  engagementFeature,
+  application
 };

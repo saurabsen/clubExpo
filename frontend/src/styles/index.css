@@ -97,3 +97,11 @@ p {
     font-size: 18px;
   }
 }
+
+header div div.MuiBox-root {
+  border: 0;
+}
+
+header div button svg.MuiSvgIcon-root {
+  fill: black;
+}

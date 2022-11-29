@@ -1,0 +1,20 @@
+.feature-card-image {
+  width: 60px;
+  margin-bottom: 16px;
+}
+
+.feature-card-title {
+  font-family: 'neue-haas-grotesk-text', sans-serif;
+  font-weight: 700;
+  font-size: 18px;
+  line-height: 26px;
+  margin-bottom: 8px;
+}
+
+.feature-card-content {
+  font-weight: 400;
+  font-size: 16px;
+  color: #808780;
+  line-height: 25.6px;
+  width: 100%;
+}
