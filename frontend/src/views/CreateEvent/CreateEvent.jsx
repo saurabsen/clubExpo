@@ -29,14 +29,14 @@ const CreateEvent = (props) => {
 
   const eventModel = {
     name: '',
-    featureImage: 'https://picsum.photos/id/1006/600/600',
-    description: '',
-    startDate: JSON.stringify(new Date()),
-    endDate: JSON.stringify(new Date()),
+    featureImage: 'https://images.pexels.com/photos/3719037/pexels-photo-3719037.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
+    description: `A Meet the HR Team event is a great way to introduce a company's Human Resources Department to the rest of the organization. This is also an opportunity learn about the company's policies and procedures, and answer any questions that employees may have.`,
+    startDate: '2022-12-21T10:00',
+    endDate: '2022-12-21T10:00',
     attendees: [],
-    availableSpots: 0,
+    availableSpots: 30,
     type: 'Online',
-    location: '',
+    location: 'Zoom',
     clubId: clubId,
     createdByAdmin: userObj._id,
     contact: '1234'
@@ -144,6 +144,7 @@ const CreateEvent = (props) => {
                     shrink: true
                   }}
                   onChange={onChangeHandler}
+                  value='2022-12-21T10:00'
                 />
               </FormControl>
             </Card>
@@ -163,7 +164,7 @@ const CreateEvent = (props) => {
                 </RadioGroup>
                 <FormControl variant="standard">
                   <InputLabel htmlFor="formLinkOrAddress">Platform or Address</InputLabel>
-                  <Input id="formLinkOrAddress" onChange={onChangeHandler} name="location" />
+                  <Input id="formLinkOrAddress" onChange={onChangeHandler} name="location" value='Zoom' />
                 </FormControl>
               </FormControl>
             </Card>
@@ -171,7 +172,7 @@ const CreateEvent = (props) => {
               <h5>Event description</h5>
               <FormControl fullWidth variant="standard">
                 <InputLabel htmlFor="formEventDescription">Describe your event</InputLabel>
-                <Input id="formEventDescription" onChange={onChangeHandler} name="description" />
+                <Input id="formEventDescription" onChange={onChangeHandler} name="description" value={`A Meet the HR Team event is a great way to introduce a company's Human Resources Department to the rest of the organization. This is also an opportunity learn about the company's policies and procedures, and answer any questions that employees may have.`} />
               </FormControl>
             </Card>
             <Card sx={cardStyle}>
@@ -183,6 +184,7 @@ const CreateEvent = (props) => {
                   onChange={onChangeHandler}
                   name="availableSpots"
                   type="number"
+                  value='30'
                 />
               </FormControl>
             </Card>
@@ -210,7 +212,7 @@ const CreateEvent = (props) => {
                   id="formEventImageURL"
                   onChange={onChangeHandler}
                   name="featureImage"
-                  value="https://picsum.photos/id/1006/600/600"
+                  value={`https://picsum.photos/id/1006/600/600`}
                 />
               </FormControl>
             </Card>

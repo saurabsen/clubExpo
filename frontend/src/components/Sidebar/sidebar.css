@@ -1,6 +1,5 @@
 .sidebar {
   font-weight: 500;
-  border-right: 1px solid #e0e2e0;
   background: #fff;
   height: 100vh;
   width: max-content;
@@ -8,9 +7,8 @@
   top: 0;
   left: 0;
   align-self: start;
-  margin-top: 70px;
+  margin-top: 28px;
 }
-
 
 .sidebar ul {
   display: flex;

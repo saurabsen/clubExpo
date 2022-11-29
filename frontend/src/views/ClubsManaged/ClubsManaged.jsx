@@ -17,8 +17,10 @@ const ClubsManaged = () => {
 
   return (
     <>
-      <div style={{ padding: '2rem 0' }}>
-        <h3>Clubs Managed</h3>
+      <div style={{ padding: '2rem 0', paddingTop: '24px' }}>
+        <Box sx={{px: '16px'}}>
+          <h3>Clubs Managed</h3>
+        </Box>
         <br />
         <Box sx={{ flexGrow: 1 }}>
           <Grid container spacing={2} sx={{ p: 2 }}>
