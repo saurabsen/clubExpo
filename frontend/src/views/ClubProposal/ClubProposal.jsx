@@ -92,16 +92,23 @@ export default function ClubProposal() {
   return (
     <>
       <Card sx={{ background: 'transparent' }}>
-        <Box sx={{ position: 'relative', background: 'linear-gradient(90deg, rgba(0,0,0,0.7203256302521008) 0%, rgba(255,255,255,0) 54%)' }} className="card-img">
-          <CardMedia component="img" sx={{height: { xs: '194px', md: '231px' }}} image={Base} />
+        <Box
+          sx={{
+            position: 'relative',
+            background:
+              'linear-gradient(90deg, rgba(0,0,0,0.7203256302521008) 0%, rgba(255,255,255,0) 54%)'
+          }}
+          className="card-img"
+        >
+          <CardMedia component="img" sx={{ height: { xs: '194px', md: '231px' } }} image={Base} />
           <div
             className="base-title"
             style={{
               position: 'absolute',
               color: 'white',
               top: '40%',
-              left: '22%',
-              transform: 'translateX(-50%)',
+              left: '25%',
+              transform: 'translateX(-50%)'
             }}
           >
             {' '}
@@ -110,7 +117,7 @@ export default function ClubProposal() {
           </div>
           <Box
             onClick={() => navigate(-1)}
-            sx={{ position: 'absolute', top: '30px', left: '30px' }}
+            sx={{ position: 'absolute', top: '100px', left: '30px' }}
           >
             <BackButton />
           </Box>

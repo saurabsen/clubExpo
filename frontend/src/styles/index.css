@@ -98,6 +98,10 @@ p {
   }
 }
 
+header.MuiAppBar-colorPrimary {
+  box-shadow: none;
+}
+
 header div div.MuiBox-root {
   border: 0;
 }

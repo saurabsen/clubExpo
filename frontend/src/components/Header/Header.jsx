@@ -7,6 +7,7 @@ import { NotificationsOff, NotificationsOn, Search } from '../../assets';
 import './header.css';
 import { useActions } from '../../hooks/useActions';
 import { useTypedSelector } from '../../hooks/useTypedSelector';
+import { purple } from '@mui/material/colors';
 
 const Header = ({ userIsLoggedIn, handleSearch, handleLogoutUser }) => {
   const [newNotification, setNewNotification] = useState(false);
@@ -48,6 +49,18 @@ const Header = ({ userIsLoggedIn, handleSearch, handleLogoutUser }) => {
       });
     }
   }, [notifications]);
+
+  const stringAvatar = (name) => {
+    return {
+      sx: {
+        bgcolor: purple[500],
+        width: 100,
+        height: 100
+      },
+      children: `${name.split(' ')[0][0]}${name.split(' ')[1][0]}`
+    };
+  };
+
   return (
     <>
       {!userIsLoggedIn ? (
@@ -123,6 +136,7 @@ const Header = ({ userIsLoggedIn, handleSearch, handleLogoutUser }) => {
             </Box>
             <Box>
               <Avatar
+                {...stringAvatar(`${userData.firstName} ${userData.lastName}`)}
                 id="profile-icon"
                 alt="User profile image"
                 src={userData.profileImage}
