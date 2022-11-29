@@ -33,17 +33,17 @@ export default function ClubProposal() {
   const navigate = useNavigate();
 
   const [formValue, setFormValue] = React.useState({
-    clubName: '',
-    description: '',
-    noOfEventsMonth: '',
+    clubName: 'Parkour Club',
+    description: `A Parkour club is an organized group of people who train in the art of Parkour, a physical discipline that involves running, jumping, vaulting, and climbing over obstacles in an urban environment. Parkour clubs typically hold regular practice sessions that are focused on learning and mastering the various Parkour techniques, such as wall running, tic-tac, and precision jumps. The clubs also often hold competitions and other events, such as open gyms, workshops, and other social events. Parkour clubs are a great way to stay active and make friends who share a passion for the sport.`,
+    noOfEventsMonth: 4,
     createdBy: data ? data._id : '',
-    members: '',
+    members: 'Cordell Toplin',
     approvalStatus: '',
     approvalStatusReason: '',
     isManageClub: false,
-    clubPurpose: '',
-    clubInterest: '',
-    clubActivities: '',
+    clubPurpose: 'To develop a parkour community in our company',
+    clubInterest: 'Parkour',
+    clubActivities: 'Parkour Training, Parkour Exhibition',
     creatorName: data ? `${data.firstName} ${data.lastName}` : ''
   });
 
@@ -92,20 +92,20 @@ export default function ClubProposal() {
   return (
     <>
       <Card sx={{ background: 'transparent' }}>
-        <Box sx={{ position: 'relative' }} className="card-img">
-          <CardMedia component="img" height={{ xs: '194px', md: '462px' }} image={Base} />
+        <Box sx={{ position: 'relative', background: 'linear-gradient(90deg, rgba(0,0,0,0.7203256302521008) 0%, rgba(255,255,255,0) 54%)' }} className="card-img">
+          <CardMedia component="img" sx={{height: { xs: '194px', md: '231px' }}} image={Base} />
           <div
             className="base-title"
             style={{
               position: 'absolute',
               color: 'white',
               top: '40%',
-              left: '20%',
-              transform: 'translateX(-50%)'
+              left: '22%',
+              transform: 'translateX(-50%)',
             }}
           >
             {' '}
-            <h1>Build your Own club</h1>
+            <h1>Build your own club</h1>
             <div>Tell us a bit more about yourself so we can help create the perfect club </div>
           </div>
           <Box
@@ -120,7 +120,7 @@ export default function ClubProposal() {
             display: 'flex',
             flexFlow: 'row',
             justifyContent: 'center',
-            pt: '40px',
+            pt: '0',
             background: '#FBFCFF'
           }}
         >
