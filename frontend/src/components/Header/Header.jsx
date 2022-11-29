@@ -53,7 +53,6 @@ const Header = ({ userIsLoggedIn, handleSearch, handleLogoutUser }) => {
       {!userIsLoggedIn ? (
         <Box
           sx={{
-            padding: '1rem 4rem',
             width: '100%',
             border: '1px solid #e0e2e0',
             position: 'sticky',
