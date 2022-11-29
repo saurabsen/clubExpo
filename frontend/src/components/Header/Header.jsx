@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Box, Avatar, Menu, MenuItem } from '@mui/material';
 import SearchBar from '../SearchBar/SearchBar';
-import { LogoRectangle, NotificationsOff, NotificationsOn, Search } from '../../assets';
+import { NotificationsOff, NotificationsOn, Search } from '../../assets';
 import './header.css';
 import { useActions } from '../../hooks/useActions';
 import { useTypedSelector } from '../../hooks/useTypedSelector';
