@@ -15,7 +15,7 @@ const BillingCard = ({ type, padding, margin }) => {
         <div>
           <p className='billing-card-title'>Starter</p>
           <p className='billing-card-price'>
-            C$ 16.99 <span className='billing-card-price-period'>/ user / month</span>
+            C$ 10.99 <span className='billing-card-price-period'>/ user / month</span>
           </p>
           <p className='billing-card-content-1'>For small teams</p>
           <hr />
@@ -27,7 +27,7 @@ const BillingCard = ({ type, padding, margin }) => {
         <div>
           <p className='billing-card-title'>Growth</p>
           <p className='billing-card-price'>
-            C$ 14.99 <span className='billing-card-price-period'>/ user / month</span>
+            C$ 8.99 <span className='billing-card-price-period'>/ user / month</span>
           </p>
           <p className='billing-card-content-1'>For growing teams</p>
           <hr />

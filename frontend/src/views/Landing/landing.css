@@ -134,7 +134,7 @@
   padding: 1rem;
   border-top: 1px solid #e0e2e0;
   border-bottom: 1px solid #e0e2e0;
-  margin: 2rem 0;
+  margin: 2rem auto;
 }
 
 .features-title,
@@ -164,6 +164,9 @@
 
 .pricing {
   padding: 1rem 2rem;
+  max-width: 1400px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .pricing-toggle-icon {
@@ -349,6 +352,7 @@ input {
 
   .features {
     justify-content: space-evenly;
+    max-width: 1400px;
   }
 
   .features-title,
@@ -494,8 +498,9 @@ input {
 
 /* ONLY FOR PRICING CARDS */
 @media screen and (min-width: 1080px) {
+  
   .pricing-info-toggle-group {
-    padding: 0 1rem;
+    padding: 0;
     flex-direction: row;
     flex-wrap: wrap;
     gap: 1rem;
