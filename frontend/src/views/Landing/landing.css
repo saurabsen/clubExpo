@@ -164,6 +164,7 @@
 
 .pricing {
   padding: 1rem 2rem;
+  max-width: 1400px;
 }
 
 .pricing-toggle-icon {
@@ -349,6 +350,7 @@ input {
 
   .features {
     justify-content: space-evenly;
+    max-width: 1400px;
   }
 
   .features-title,
