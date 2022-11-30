@@ -14,11 +14,11 @@
   }
 }
 
-@media screen and (min-width: 1540px) {
+/* @media screen and (min-width: 1540px) {
   .billing {
     width: 480px;
   }
-}
+} */
 
 .billing-card-title {
   font-family: 'neue-haas-grotesk-text', sans-serif;
