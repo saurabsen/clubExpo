@@ -10,7 +10,7 @@ const SideBar = (props) => {
       <Link to="/home" style={{ paddingLeft: '28px' }}>
         <img src={LogoRectangle} style={{ width: '130px' }} alt="Clubspace Logo" />
       </Link>
-      <Divider sx={{pt: '2px'}}/>
+      <Divider sx={{pt: '11px', mr: '-10px'}}/>
       <ul>
         {props.sidebardata.map((sidebar) => (
           <NavLink
