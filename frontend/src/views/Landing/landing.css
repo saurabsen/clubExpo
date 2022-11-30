@@ -498,12 +498,9 @@ input {
 
 /* ONLY FOR PRICING CARDS */
 @media screen and (min-width: 1080px) {
-  .pricing-info-group {
-    padding: 0;
-  }
   
   .pricing-info-toggle-group {
-    padding: 0 1rem;
+    padding: 0;
     flex-direction: row;
     flex-wrap: wrap;
     gap: 1rem;
