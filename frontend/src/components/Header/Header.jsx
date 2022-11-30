@@ -89,7 +89,7 @@ const Header = ({ userIsLoggedIn, handleSearch, handleLogoutUser }) => {
             backgroundColor: '#fff',
             display: 'flex',
             justifyContent: 'space-between',
-            alignItems: 'center',
+            alignItems: 'flex-end',
             gap: '6rem'
           }}
         >
