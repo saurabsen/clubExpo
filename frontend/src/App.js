@@ -97,7 +97,8 @@ const App = (props) => {
       location.pathname === '/clubs/' ||
       location.pathname === '/profile' ||
       location.pathname === '/events/' ||
-      location.pathname.includes('/clubs/')
+      location.pathname.includes('/clubs/') ||
+      location.pathname.includes('/events/')
     ) {
       setDrawerWidth(0);
     } else {
