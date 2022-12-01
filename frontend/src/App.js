@@ -33,7 +33,8 @@ import {
   EventRegistered,
   ClubsManaged as ClubsManagedIcon,
   Dashboard,
-  Request
+  Request,
+  Members
 } from './assets';
 import { useActions } from './hooks/useActions';
 import { useTypedSelector } from './hooks/useTypedSelector';
@@ -119,7 +120,13 @@ const App = (props) => {
             icon: Dashboard,
             altText: 'Dashboard Icon',
             name: 'Dashboard'
-          }
+          },
+          {
+            routeLink: '/org-settings',
+            icon: Members,
+            altText: 'Dashboard Icon',
+            name: 'Org Settings'
+          },
           // {
           //   routeLink: '/club-requests',
           //   icon: Request,
