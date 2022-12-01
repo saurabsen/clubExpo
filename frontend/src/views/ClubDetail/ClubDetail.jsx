@@ -539,7 +539,7 @@ const ClubDetail = () => {
                           chartData={chartEventAnalyticsData}
                         />
                       </Grid>
-                      <Grid item xs={12} md={8}>
+                      <Grid item xs={12} md={12}>
                         <Charts
                           zoptions={optionsRegistration}
                           title={attendeesChartTitle}
