@@ -1,5 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
-import Lottie from 'lottie-web';
+import { useState, useRef } from 'react';
 import { logoRectangle, application } from '../../assets';
 import { FeatureCard, BillingCard } from '../../components';
 import './landing.css';
@@ -10,25 +9,6 @@ const Landing = () => {
   const [toggleIsOn, setToggleIsOn] = useState(false);
 
   const container = useRef(null);
-
-  useEffect(() => {
-    Lottie.loadAnimation({
-      container: container.current,
-      renderer: 'svg',
-      loop: true,
-      autoplay: true,
-      animationData: require('../../assets/banner.json'),
-      rendererSettings: {
-        preserveAspectRatio: 'xMidYMid slice',
-        className: 'lottie-svg-class',
-        id: 'lottie-svg-id'
-      }
-    });
-
-    return () => {
-      container.current = null;
-    };
-  });
 
   const showDrawerHandler = () => {
     setShowDrawer((prevState) => !prevState);
@@ -199,6 +179,7 @@ const Landing = () => {
         <div className="footer-links">
           <a href="#features">Features</a>
           <a href="#pricing">Pricing</a>
+          <Link to="/login">Login</Link>
         </div>
       </div>
 

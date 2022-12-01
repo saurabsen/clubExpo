@@ -57,7 +57,9 @@
   animation-timing-function: ease-in;
 }
 
-#pricing, #features, #contact {
+#pricing,
+#features,
+#contact {
   scroll-margin-top: 100px;
 }
 
@@ -502,7 +504,6 @@ input {
 
 /* ONLY FOR PRICING CARDS */
 @media screen and (min-width: 1080px) {
-  
   .pricing-info-toggle-group {
     padding: 0;
     flex-direction: row;
@@ -519,5 +520,27 @@ input {
     flex-direction: row;
     flex-wrap: wrap;
     justify-content: space-between;
+  }
+}
+
+.hero-background {
+  background: linear-gradient(-45deg, #fdba7b, #dce1a9, #d8949c, #a0c3e7);
+  background-size: 400% 400%;
+  animation: gradient 15s ease infinite;
+  height: 100vh;
+  -webkit-clip-path: polygon(0 0, 100% 0, 100% 60%, 0 100%);
+  clip-path: polygon(0 0, 100% 0, 100% 60%, 0 100%);
+  height: 800px !important;
+}
+
+@keyframes gradient {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
   }
 }
