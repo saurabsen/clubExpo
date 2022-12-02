@@ -189,8 +189,8 @@ const Landing = () => {
         </div>
       </div>
 
-      <Box sx={{ p: '4rem' }} id="team">
-        <p className="contact-info-title">Connect with us</p>
+      <Box sx={{ maxWidth: '1400px', mx: 'auto' }} id="team">
+        <p className="team-info-title">Connect with us</p>
         <Grid container spacing={2} className="team">
           <Grid item xs={8} sm={6} md={3}>
             <div>
