@@ -59,8 +59,14 @@
 
 #pricing,
 #features,
-#contact {
+#contact,
+#team {
   scroll-margin-top: 100px;
+}
+
+#contact,
+#team {
+  padding-bottom: 3rem;
 }
 
 @keyframes drawer {
@@ -226,7 +232,8 @@
   align-items: center;
 }
 
-.contact-info-title {
+.contact-info-title,
+.team-info-title {
   font-family: 'neue-haas-grotesk-text', sans-serif;
   font-weight: 800;
   font-size: 1.8rem;
@@ -296,6 +303,14 @@ input {
   display: block;
   font-size: 1rem;
   cursor: pointer;
+}
+
+#team {
+  padding: 1rem 2rem;
+}
+
+.team-info-title {
+  padding-bottom: 1rem;
 }
 
 .footer {
