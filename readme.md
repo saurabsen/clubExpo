@@ -1,5 +1,13 @@
 # Club Explore
 
+The Ultimate Club Management App
+
+- Create a new club with all the necessary information, such as the club name, description.
+- Create and join events that are relevant to their interests.
+- Admins with valuable insights into how engaged their members are with the club.
+
+Website Link: https://www.clubspace.ca/
+
 Team Members
 
 - Akhil noone
@@ -55,5 +63,19 @@ Start client
   cd frontend
   npm start
 ```
+
+## Sample Users Login
+
+Student/Employee
+Login ID: member@solarcorp.com
+Password: test
+
+Club Admin
+Login ID: clubadmin@solarcorp.com
+Password: test
+
+Organization/Hub Admin
+Login ID: hubadmin@solarcorp.com
+Password: test
 
 Go to http://localhost:3000 on your browser to interact with Club Explore application.
