@@ -544,3 +544,28 @@ input {
     background-position: 0% 50%;
   }
 }
+
+.team {
+  justify-content: center;
+}
+
+.team-member-name {
+  font-family: 'neue-haas-grotesk-text', sans-serif;
+  font-size: 20px;
+  font-weight: 500;
+  line-height: 30px;
+  letter-spacing: 0em;
+  text-align: center;
+}
+
+.linkedin-icon {
+  width: 22px;
+  height: 22px;
+  border-radius: 0.2rem;
+}
+
+.linkedin-details {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: center;
+}

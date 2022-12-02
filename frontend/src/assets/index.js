@@ -42,6 +42,7 @@ import Clock from './Icons/clock-icon.svg';
 import twitter from './Icons/twitter.svg';
 import instagram from './Icons/instagram.svg';
 import email from './Icons/email.svg';
+import LinkedIn from './Icons/LinkedIn.png';
 
 // Logos
 import LogoRectangle from './Logo/logo-rectangle.svg';
@@ -57,6 +58,15 @@ import createFeature from './create-feature.svg';
 import joinFeature from './join-feature.svg';
 import engagementFeature from './engagement-feature.svg';
 import application from './application.png';
+
+//team image
+import divyank from './team/divyank.png';
+import akhil from './team/akhil.png';
+import edward from './team/edward.png';
+import harshit from './team/harshit.png';
+import kiran from './team/kiran.png';
+import pavan from './team/pavan.png';
+import saurab from './team/saurab.png';
 
 export {
   AddMember,
@@ -110,5 +120,13 @@ export {
   createFeature,
   joinFeature,
   engagementFeature,
-  application
+  application,
+  LinkedIn,
+  divyank,
+  akhil,
+  edward,
+  harshit,
+  kiran,
+  pavan,
+  saurab
 };

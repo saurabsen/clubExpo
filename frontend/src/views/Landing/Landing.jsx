@@ -1,8 +1,20 @@
 import { useState, useRef } from 'react';
-import { logoRectangle, application } from '../../assets';
+import {
+  logoRectangle,
+  application,
+  akhil,
+  kiran,
+  harshit,
+  saurab,
+  edward,
+  pavan,
+  LinkedIn
+} from '../../assets';
 import { FeatureCard, BillingCard } from '../../components';
 import './landing.css';
 import { Link } from 'react-router-dom';
+import { Box, Grid } from '@mui/material';
+import { divyank } from '../../assets';
 
 const Landing = () => {
   const [showDrawer, setShowDrawer] = useState(false);
@@ -26,6 +38,7 @@ const Landing = () => {
         <div className="header-menu-items">
           <a href="#features">Features</a>
           <a href="#pricing">Pricing</a>
+          <a href="#team">Team</a>
           <Link to="/login">Login</Link>
           <a href="#contact">
             <button className="header-menu-items-btn">Let's Talk</button>
@@ -40,6 +53,10 @@ const Landing = () => {
             <a href="#features">Features</a>
             <hr />
             <a href="#pricing">Pricing</a>
+            <hr />
+            <a href="#team">Team</a>
+            <hr />
+            <Link to="/login">Login</Link>
             <hr />
           </div>
         </div>
@@ -172,6 +189,106 @@ const Landing = () => {
         </div>
       </div>
 
+      <Box sx={{ p: '4rem' }} id="team">
+        <p className="contact-info-title">Connect with us</p>
+        <Grid container spacing={2} className="team">
+          <Grid item xs={8} sm={6} md={3}>
+            <div>
+              <img src={divyank} alt="" />
+              <p className="team-member-name">Divyank Sachdeva</p>
+              <div className="linkedin-details">
+                <img className="linkedin-icon" src={LinkedIn} alt="" />
+                <a href="https://www.linkedin.com/in/divdesigns/" target="_blank" rel="noreferrer">
+                  @divyanksachdeva
+                </a>
+              </div>
+            </div>
+          </Grid>
+          <Grid item xs={8} sm={6} md={3}>
+            <div>
+              <img src={akhil} alt="" />
+              <p className="team-member-name">Akhil Noone</p>
+              <div className="linkedin-details">
+                <img className="linkedin-icon" src={LinkedIn} alt="" />
+                <a href="https://www.linkedin.com/in/akhil-noone/" target="_blank" rel="noreferrer">
+                  @akhil-noone
+                </a>
+              </div>
+            </div>
+          </Grid>
+          <Grid item xs={8} sm={6} md={3}>
+            <div>
+              <img src={kiran} alt="" />
+              <p className="team-member-name">Kiran Kavuri</p>
+              <div className="linkedin-details">
+                <img className="linkedin-icon" src={LinkedIn} alt="" />
+                <a
+                  href="https://www.linkedin.com/in/kiran-kavuri/"
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  @kiran-kavuri
+                </a>
+              </div>
+            </div>
+          </Grid>
+        </Grid>
+        <Grid container spacing={2} sx={{ mt: '2rem' }} className="team">
+          <Grid item xs={8} sm={6} md={3}>
+            <div>
+              <img src={harshit} alt="" />
+              <p className="team-member-name">Harshit Punn</p>
+              <div className="linkedin-details">
+                <img className="linkedin-icon" src={LinkedIn} alt="" />
+                <a href="https://www.linkedin.com/in/harshitpunn/" target="_blank" rel="noreferrer">
+                  @harshitpunn
+                </a>
+              </div>
+            </div>
+          </Grid>
+          <Grid item xs={8} sm={6} md={3}>
+            <div>
+              <img src={saurab} alt="" />
+              <p className="team-member-name">Saurab Sen</p>
+              <div className="linkedin-details">
+                <img className="linkedin-icon" src={LinkedIn} alt="" />
+                <a href="https://www.linkedin.com/in/saurab-sen/" target="_blank" rel="noreferrer">
+                  @saurab-sen
+                </a>
+              </div>
+            </div>
+          </Grid>
+          <Grid item xs={8} sm={6} md={3}>
+            <div>
+              <img src={edward} alt="" />
+              <p className="team-member-name">Edward Fernandez</p>
+              <div className="linkedin-details">
+                <img className="linkedin-icon" src={LinkedIn} alt="" />
+                <a href="https://www.linkedin.com/in/edwardmsf/" target="_blank" rel="noreferrer">
+                  @edwardmsf
+                </a>
+              </div>
+            </div>
+          </Grid>
+          <Grid item xs={8} sm={6} md={3}>
+            <div>
+              <img src={pavan} alt="" />
+              <p className="team-member-name">Pavan Soratur</p>
+              <div className="linkedin-details">
+                <img className="linkedin-icon" src={LinkedIn} alt="" />
+                <a
+                  href="https://www.linkedin.com/in/pavansoratur/"
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  @pavansoratur
+                </a>
+              </div>
+            </div>
+          </Grid>
+        </Grid>
+      </Box>
+
       <div className="footer">
         <div className="footer-logo">
           <img src={logoRectangle} className="header-logo" alt="Clubspace Logo" />
@@ -179,6 +296,7 @@ const Landing = () => {
         <div className="footer-links">
           <a href="#features">Features</a>
           <a href="#pricing">Pricing</a>
+          <a href="#team">Team</a>
           <Link to="/login">Login</Link>
         </div>
       </div>
